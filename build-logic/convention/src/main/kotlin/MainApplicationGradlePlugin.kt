@@ -16,4 +16,12 @@ class MainApplicationGradlePlugin: Plugin<Project> {
             }
         }
     }
+
+    private fun ApplicationExtension.configureDefaultConfig(project: Project) {
+        with(project) {
+            defaultConfig {
+
+            }
+        }
+    }
 }
