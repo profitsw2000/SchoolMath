@@ -34,4 +34,5 @@ kotlin-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "symbol-pr
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-
+sm-main-app-gradle-plugin = { id = "sm.main.app.gradle.plugin", version = "unspecified" }
+sm-main-lib-gradle-plugin = { id = "sm.main.lib.gradle.plugin", version = "unspecified" }
