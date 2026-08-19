@@ -14,6 +14,7 @@ constraintlayout = "2.1.4"
 
 applicationId = "ru.profitsw2000.schoolmath"
 minSdk = "28"
+compileSdk = "37"
 targetSdk = "37"
 versionCode = "1"
 versionName = "1.0"
