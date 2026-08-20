@@ -11,6 +11,7 @@ class MainApplicationGradlePlugin: Plugin<Project> {
             with(project.pluginManager) {
                 apply("com.android.application")
                 apply("com.google.devtools.ksp")
+                //apply("org.jetbrains.kotlin.plugin.serialization")
             }
 
             extensions.configure<ApplicationExtension> {
