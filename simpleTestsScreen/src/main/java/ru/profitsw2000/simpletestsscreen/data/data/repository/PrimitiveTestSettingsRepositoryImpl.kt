@@ -48,20 +48,83 @@ class PrimitiveTestSettingsRepositoryImpl(
             initialValue = PrimitiveTestSettingsModel()
         )
 
+    val subtractionTestSettingsFlow: StateFlow<PrimitiveTestSettingsModel> = context.settingsDataStore.data
+        .catch { exception ->
+            if (exception is IOException) emit(emptyPreferences())
+            else throw exception
+        }
+        .map { preferences ->
+            val jsonString = preferences[SUBTRACTION_TEST_SETTINGS_JSON_KEY]
+            if (jsonString != null) {
+                try {
+                    json.decodeFromString<PrimitiveTestSettingsModel>(jsonString)
+                } catch (e: Exception) {
+                    PrimitiveTestSettingsModel()
+                }
+            } else PrimitiveTestSettingsModel()
+        }
+        .stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.Eagerly,
+            initialValue = PrimitiveTestSettingsModel()
+        )
+
+    val multiplicationTestSettingsFlow: StateFlow<PrimitiveTestSettingsModel> = context.settingsDataStore.data
+        .catch { exception ->
+            if (exception is IOException) emit(emptyPreferences())
+            else throw exception
+        }
+        .map { preferences ->
+            val jsonString = preferences[MULTIPLICATION_TEST_SETTINGS_JSON_KEY]
+            if (jsonString != null) {
+                try {
+                    json.decodeFromString<PrimitiveTestSettingsModel>(jsonString)
+                } catch (e: Exception) {
+                    PrimitiveTestSettingsModel()
+                }
+            } else PrimitiveTestSettingsModel()
+        }
+        .stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.Eagerly,
+            initialValue = PrimitiveTestSettingsModel()
+        )
+
+    val divisionTestSettingsFlow: StateFlow<PrimitiveTestSettingsModel> = context.settingsDataStore.data
+        .catch { exception ->
+            if (exception is IOException) emit(emptyPreferences())
+            else throw exception
+        }
+        .map { preferences ->
+            val jsonString = preferences[DIVISION_TEST_SETTINGS_JSON_KEY]
+            if (jsonString != null) {
+                try {
+                    json.decodeFromString<PrimitiveTestSettingsModel>(jsonString)
+                } catch (e: Exception) {
+                    PrimitiveTestSettingsModel()
+                }
+            } else PrimitiveTestSettingsModel()
+        }
+        .stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.Eagerly,
+            initialValue = PrimitiveTestSettingsModel()
+        )
+
     override fun getAdditionTestSettings(): PrimitiveTestSettingsModel {
         return additionTestSettingsFlow.value
     }
 
     override fun getSubtractionTestSettings(): PrimitiveTestSettingsModel {
-        TODO("Not yet implemented")
+        return subtractionTestSettingsFlow.value
     }
 
     override fun getMultiplicationTestSettings(): PrimitiveTestSettingsModel {
-        TODO("Not yet implemented")
+        return multiplicationTestSettingsFlow.value
     }
 
     override fun getDivisionTestSettings(): PrimitiveTestSettingsModel {
-        TODO("Not yet implemented")
+        return divisionTestSettingsFlow.value
     }
 
     override suspend fun writeAdditionTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel) {
@@ -72,18 +135,89 @@ class PrimitiveTestSettingsRepositoryImpl(
     }
 
     override suspend fun writeSubtractionTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel) {
-        TODO("Not yet implemented")
+        context.settingsDataStore.edit { preferences ->
+            val jsonString = json.encodeToString(primitiveTestSettingsModel)
+            preferences[SUBTRACTION_TEST_SETTINGS_JSON_KEY] = jsonString
+        }
     }
 
     override suspend fun writeMultiplicationTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel) {
-        TODO("Not yet implemented")
+        context.settingsDataStore.edit { preferences ->
+            val jsonString = json.encodeToString(primitiveTestSettingsModel)
+            preferences[MULTIPLICATION_TEST_SETTINGS_JSON_KEY] = jsonString
+        }
     }
 
     override suspend fun writeDivisionTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel) {
-        TODO("Not yet implemented")
+        context.settingsDataStore.edit { preferences ->
+            val jsonString = json.encodeToString(primitiveTestSettingsModel)
+            preferences[DIVISION_TEST_SETTINGS_JSON_KEY] = jsonString
+        }
     }
 
     companion object {
         private val ADDITION_TEST_SETTINGS_JSON_KEY = stringPreferencesKey("addition_test_settings_json")
+        private val SUBTRACTION_TEST_SETTINGS_JSON_KEY = stringPreferencesKey("subtraction_test_settings_json")
+        private val MULTIPLICATION_TEST_SETTINGS_JSON_KEY = stringPreferencesKey("multiplication_test_settings_json")
+        private val DIVISION_TEST_SETTINGS_JSON_KEY = stringPreferencesKey("division_test_settings_json")
     }
 }
+
+/*
+class PrimitiveTestSettingsRepositoryImpl(
+    private val context: Context
+) : PrimitiveTestSettingsRepository {
+
+    private val json = Json { ignoreUnknownKeys = true }
+
+    // 1. Универсальный suspend-хелпер для чтения.
+    // .first() берет первое доступное значение из Flow и закрывает подписку.
+    private suspend fun getSettingsByKey(key: Preferences.Key<String>): PrimitiveTestSettingsModel {
+        return context.settingsDataStore.data
+            .catch { exception ->
+                if (exception is IOException) emit(emptyPreferences())
+                else throw exception
+            }
+            .map { preferences ->
+                val jsonString = preferences[key] ?: return@map PrimitiveTestSettingsModel()
+                try {
+                    json.decodeFromString<PrimitiveTestSettingsModel>(jsonString)
+                } catch (e: Exception) {
+                    PrimitiveTestSettingsModel()
+                }
+            }
+            .first() // Гарантирует ожидание загрузки с диска
+    }
+
+    // 2. Все геттеры теперь стали suspend функциями
+    override suspend fun getAdditionTestSettings(): PrimitiveTestSettingsModel =
+        getSettingsByKey(ADDITION_KEY)
+
+    override suspend fun getSubtractionTestSettings(): PrimitiveTestSettingsModel =
+        getSettingsByKey(SUBTRACTION_KEY)
+
+    override suspend fun getMultiplicationTestSettings(): PrimitiveTestSettingsModel =
+        getSettingsByKey(MULTIPLICATION_KEY)
+
+    override suspend fun getDivisionTestSettings(): PrimitiveTestSettingsModel =
+        getSettingsByKey(DIVISION_KEY)
+
+    // 3. Универсальный хелпер для записи
+    private suspend fun writeSettings(key: Preferences.Key<String>, model: PrimitiveTestSettingsModel) {
+        context.settingsDataStore.edit { preferences ->
+            preferences[key] = json.encodeToString(model)
+        }
+    }
+
+    override suspend fun writeAdditionTestSettings(model: PrimitiveTestSettingsModel) = writeSettings(ADDITION_KEY, model)
+    override suspend fun writeSubtractionTestSettings(model: PrimitiveTestSettingsModel) = writeSettings(SUBTRACTION_KEY, model)
+    override suspend fun writeMultiplicationTestSettings(model: PrimitiveTestSettingsModel) = writeSettings(MULTIPLICATION_KEY, model)
+    override suspend fun writeDivisionTestSettings(model: PrimitiveTestSettingsModel) = writeSettings(DIVISION_KEY, model)
+
+    companion object {
+        private val ADDITION_KEY = stringPreferencesKey("addition_test_settings_json")
+        private val SUBTRACTION_KEY = stringPreferencesKey("subtraction_test_settings_json")
+        private val MULTIPLICATION_KEY = stringPreferencesKey("multiplication_test_settings_json")
+        private val DIVISION_KEY = stringPreferencesKey("division_test_settings_json")
+    }
+}*/
