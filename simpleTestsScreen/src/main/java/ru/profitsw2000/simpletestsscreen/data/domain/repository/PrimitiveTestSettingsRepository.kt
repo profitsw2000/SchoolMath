@@ -12,12 +12,12 @@ interface PrimitiveTestSettingsRepository {
 
     fun getDivisionTestSettings(): PrimitiveTestSettingsModel
 
-    fun writeAdditionTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel)
+    suspend fun writeAdditionTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel)
 
-    fun writeSubtractionTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel)
+    suspend fun writeSubtractionTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel)
 
-    fun writeMultiplicationTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel)
+    suspend fun writeMultiplicationTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel)
 
-    fun writeDivisionTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel)
+    suspend fun writeDivisionTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel)
 
 }
