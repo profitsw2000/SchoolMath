@@ -4,13 +4,13 @@ import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestSettings
 
 interface PrimitiveTestSettingsRepository {
 
-    fun getAdditionTestSettings(): PrimitiveTestSettingsModel
+    suspend fun getAdditionTestSettings(): PrimitiveTestSettingsModel
 
-    fun getSubtractionTestSettings(): PrimitiveTestSettingsModel
+    suspend fun getSubtractionTestSettings(): PrimitiveTestSettingsModel
 
-    fun getMultiplicationTestSettings(): PrimitiveTestSettingsModel
+    suspend fun getMultiplicationTestSettings(): PrimitiveTestSettingsModel
 
-    fun getDivisionTestSettings(): PrimitiveTestSettingsModel
+    suspend fun getDivisionTestSettings(): PrimitiveTestSettingsModel
 
     suspend fun writeAdditionTestSettings(primitiveTestSettingsModel: PrimitiveTestSettingsModel)
 
