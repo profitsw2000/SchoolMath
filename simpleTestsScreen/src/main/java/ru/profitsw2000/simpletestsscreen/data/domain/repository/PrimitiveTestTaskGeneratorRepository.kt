@@ -4,6 +4,6 @@ import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskMode
 
 interface PrimitiveTestTaskGeneratorRepository {
 
-    fun generateTask(taskComplexityLevel: Int): PrimitiveMathTaskModel
+    suspend fun generateTask(taskComplexityLevel: Int): PrimitiveMathTaskModel
 
 }
