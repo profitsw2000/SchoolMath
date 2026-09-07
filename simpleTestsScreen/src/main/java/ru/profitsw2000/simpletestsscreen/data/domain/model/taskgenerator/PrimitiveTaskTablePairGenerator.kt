@@ -28,7 +28,7 @@ class PrimitiveTaskTablePairGenerator(
 
     }
 
-    private fun nextPair(): Pair<Int, Int> {
+    fun nextPair(): Pair<Int, Int> {
         if (simpleTaskPairs.isEmpty() && complexTaskPairs.isEmpty()) {
             throw IllegalStateException("No available pairs for selected conditions")
         }
