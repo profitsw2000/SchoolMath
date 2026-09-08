@@ -72,6 +72,29 @@ class AdditionTestTaskGeneratorRepository(
         return primitiveTaskTablePairGenerator.nextPair()
     }
 
+    private fun getSingleDigitWeightedNumber(): Int {
+        val items = mutableListOf<Int>()
+        val weights = mutableListOf<Double>()
+        val totalSum: Double = ((1.0 + 9.0)*9.0)/2
+
+        for (number in 1..9) {
+            items.add(number)
+            weights.add((10 - number)/totalSum)
+        }
+
+        val randomValue = Random.nextDouble()
+        var cumulativeWeight = 0.0
+
+        for (i in items.indices) {
+            cumulativeWeight += weights[i]
+
+            if (randomValue <= cumulativeWeight) {
+                return items[i]
+            }
+        }
+        return items.last()
+    }
+
     companion object {
         private const val ADDITION_TEST_MIN_NUMBER = 1
         private const val SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER = 5
