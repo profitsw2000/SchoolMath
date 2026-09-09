@@ -72,27 +72,65 @@ class AdditionTestTaskGeneratorRepository(
         return primitiveTaskTablePairGenerator.nextPair()
     }
 
-    private fun getSingleDigitWeightedNumber(): Int {
-        val items = mutableListOf<Int>()
-        val weights = mutableListOf<Double>()
-        val totalSum: Double = ((1.0 + 9.0)*9.0)/2
+    private fun getUnderTwentyResultTaskPair(
+        simpleTaskProb: Double,
+        middleTaskProbe: Double,
+        hardTaskProb: Double
+    ): Pair<Int, Int> {
+        if ((simpleTaskProb + middleTaskProbe + hardTaskProb) > 1.0) throw IllegalStateException("Probability sum should be lower than 1.0")
 
-        for (number in 1..9) {
-            items.add(number)
+        val randomValue = Random.nextDouble()
+        return if (randomValue <= simpleTaskProb) getUnderTwentySumSimpleTaskPair()
+        else if (randomValue <= (simpleTaskProb + middleTaskProbe)) getUnderTwentySumMiddleTaskPair()
+        else TODO()
+    }
+
+    private fun getUnderTwentySumSimpleTaskPair(): Pair<Int, Int> {
+        val numbersRange = 1..9
+        val numbersList = numbersRange.toList()
+        val weights = numbersWeightList(numbersRange, true)
+        val firstOperand = getProbWeightedNumber(numbersList, weights)
+        val secondOperand = Random.nextInt(1, 11 - firstOperand)
+
+        return Pair(firstOperand, secondOperand)
+    }
+
+    private fun getUnderTwentySumMiddleTaskPair(): Pair<Int, Int> {
+        val randomDouble = Random.nextDouble()
+        val simpleTaskPair = getUnderTwentySumSimpleTaskPair()
+
+        return if (randomDouble <= 0.5) simpleTaskPair
+        else if (randomDouble <= 0.75) Pair(simpleTaskPair.first + 10, simpleTaskPair.second)
+        else Pair(simpleTaskPair.first, simpleTaskPair.second + 10)
+    }
+
+    private fun numbersWeightList(numberRange: IntRange, isAscendingWeights: Boolean): List<Double> {
+        val totalSum: Double = ((1 + numberRange.count())*numberRange.count())/2.0
+        val weights = mutableListOf<Double>()
+
+        for (number in numberRange) {
             weights.add((10 - number)/totalSum)
         }
+
+        return if (isAscendingWeights) weights
+        else weights.asReversed()
+    }
+
+    private fun getProbWeightedNumber(numbersList: List<Int>, numbersProbList: List<Double>): Int {
+        require(numbersList.size == numbersProbList.size) {"Lists size should be equal"}
+        require(numbersList.isNotEmpty()) {"Empty lists is not allowed"}
 
         val randomValue = Random.nextDouble()
         var cumulativeWeight = 0.0
 
-        for (i in items.indices) {
-            cumulativeWeight += weights[i]
+        for (i in numbersList.indices) {
+            cumulativeWeight += numbersProbList[i]
 
             if (randomValue <= cumulativeWeight) {
-                return items[i]
+                return numbersList[i]
             }
         }
-        return items.last()
+        return numbersList.last()
     }
 
     companion object {
