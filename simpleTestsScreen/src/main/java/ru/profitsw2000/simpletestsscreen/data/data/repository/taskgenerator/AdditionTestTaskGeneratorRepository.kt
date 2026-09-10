@@ -87,9 +87,10 @@ class AdditionTestTaskGeneratorRepository(
 
     private fun getUnderTwentySumSimpleTaskPair(): Pair<Int, Int> {
         val numbersRange = 1..9
-        val numbersList = numbersRange.toList()
-        val weights = numbersWeightList(numbersRange, true)
-        val firstOperand = getProbWeightedNumber(numbersList, weights)
+        val firstOperand = getProbWeightedNumber(
+            numbersRange.toList(),
+            numbersWeightList(numbersRange, true)
+        )
         val secondOperand = Random.nextInt(1, 11 - firstOperand)
 
         return Pair(firstOperand, secondOperand)
@@ -97,11 +98,21 @@ class AdditionTestTaskGeneratorRepository(
 
     private fun getUnderTwentySumMiddleTaskPair(): Pair<Int, Int> {
         val randomDouble = Random.nextDouble()
-        val simpleTaskPair = getUnderTwentySumSimpleTaskPair()
+        val numbersRange = 0..9
+        val firstOperand = getProbWeightedNumber(
+            numbersRange.toList(),
+            numbersWeightList(numbersRange, true)
+        )
+        val secondOperand = Random.nextInt(1, 11 - firstOperand)
 
-        return if (randomDouble <= 0.5) simpleTaskPair
-        else if (randomDouble <= 0.75) Pair(simpleTaskPair.first + 10, simpleTaskPair.second)
-        else Pair(simpleTaskPair.first, simpleTaskPair.second + 10)
+        return when {
+            randomDouble <= 0.5 -> getUnderTwentySumSimpleTaskPair()
+            firstOperand == 0 -> Pair(10, secondOperand)
+            secondOperand == 0 -> Pair(firstOperand, 10)
+            randomDouble <= 0.75 -> Pair(firstOperand + 10, secondOperand)
+            randomDouble <= 1 -> Pair(firstOperand, secondOperand + 10)
+            else -> getUnderTwentySumSimpleTaskPair()
+        }
     }
 
     private fun numbersWeightList(numberRange: IntRange, isAscendingWeights: Boolean): List<Double> {
