@@ -11,6 +11,10 @@ import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_CO
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE
 import kotlin.random.Random
 
 class AdditionTestTaskGeneratorRepository(
@@ -51,7 +55,22 @@ class AdditionTestTaskGeneratorRepository(
                     ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER,
                     0.25
                 )
-
+            ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE ->
+                getUnderTwentyResultTaskPair(
+                    0.5, 0.5, 0.0
+                )
+            ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE ->
+                getUnderTwentyResultTaskPair(
+                    0.0, 0.5, 0.5
+                )
+            ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX ->
+                getUnderTwentyResultTaskPair(
+                    0.0, 0.25, 0.75
+                )
+            ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY ->
+                getUnderTwentyResultTaskPair(
+                    0.0, 0.0, 1.0
+                )
             else ->
                 Pair(
                     Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER),
