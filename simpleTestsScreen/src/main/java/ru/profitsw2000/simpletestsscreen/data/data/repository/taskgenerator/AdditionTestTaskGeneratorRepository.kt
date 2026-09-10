@@ -7,6 +7,10 @@ import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathOperatio
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
 import ru.profitsw2000.simpletestsscreen.data.domain.model.taskgenerator.PrimitiveTaskTablePairGenerator
 import ru.profitsw2000.simpletestsscreen.data.domain.repository.PrimitiveTestTaskGeneratorRepository
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE
@@ -71,6 +75,14 @@ class AdditionTestTaskGeneratorRepository(
                 getUnderTwentyResultTaskPair(
                     0.0, 0.0, 1.0
                 )
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE ->
+                getUnderHundredResultTaskPair(0.25, 0.25, 0.5, 0.0)
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE ->
+                getUnderHundredResultTaskPair(0.0, 0.25, 0.5, 0.25)
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX ->
+                getUnderHundredResultTaskPair(0.0, 0.0, 0.5, 0.5)
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY ->
+                getUnderHundredResultTaskPair(0.0, 0.0, 0.25, 0.75)
             else ->
                 Pair(
                     Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER),
@@ -148,7 +160,7 @@ class AdditionTestTaskGeneratorRepository(
             firstOperand == 0 -> Pair(10, secondOperand)
             secondOperand == 0 -> Pair(firstOperand, 10)
             randomDouble <= 0.75 -> Pair(firstOperand + 10, secondOperand)
-            randomDouble <= 1 -> Pair(firstOperand, secondOperand + 10)
+            randomDouble <= 1.0 -> Pair(firstOperand, secondOperand + 10)
             else -> getUnderTwentySumSimpleTaskPair()
         }
     }
