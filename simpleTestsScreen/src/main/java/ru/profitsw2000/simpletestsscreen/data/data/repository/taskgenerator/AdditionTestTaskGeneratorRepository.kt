@@ -105,6 +105,24 @@ class AdditionTestTaskGeneratorRepository(
         else getUnderTwentySumHardTaskPair()
     }
 
+    private fun getUnderHundredResultTaskPair(
+        simpleTaskProb: Double,
+        middleTaskProbe: Double,
+        hardTaskProb: Double,
+        superHardTaskProb: Double
+    ): Pair<Int, Int> {
+        if ((simpleTaskProb + middleTaskProbe + hardTaskProb + superHardTaskProb) > 1.0) throw IllegalStateException("Probability sum should be lower than 1.0")
+        val randomDouble = Random.nextDouble()
+
+        return when {
+            randomDouble <= simpleTaskProb -> getUnderHundredSumSimpleTaskPair()
+            randomDouble <= simpleTaskProb + middleTaskProbe -> getUnderHundredSumMiddleTaskPair()
+            randomDouble <= simpleTaskProb + middleTaskProbe + hardTaskProb -> getUnderHundredSumHardTaskPair(0.5)
+            randomDouble <= simpleTaskProb + middleTaskProbe + hardTaskProb + superHardTaskProb -> getUnderHundredSumHardTaskPair(0.25)
+            else -> getUnderHundredSumSimpleTaskPair()
+        }
+    }
+
     private fun getUnderTwentySumSimpleTaskPair(): Pair<Int, Int> {
         val numbersRange = 1..9
         val firstOperand = getProbWeightedNumber(
@@ -144,6 +162,61 @@ class AdditionTestTaskGeneratorRepository(
         val secondOperand = Random.nextInt(11 - firstOperand, 10)
 
         return Pair(firstOperand, secondOperand)
+    }
+
+    private fun getUnderHundredSumSimpleTaskPair(): Pair<Int, Int> {
+        val randomDouble = Random.nextDouble()
+
+        return when {
+            randomDouble <= 0.25 -> getConditionedProbTaskPair(ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER, 0.0)
+            randomDouble <= 0.5 -> getUnderTwentyResultTaskPair(
+                0.0, 0.5, 0.5
+            )
+            else -> getTwoDigitNumbersWithUnitsSumUnderTen()
+        }
+    }
+
+    private fun getUnderHundredSumMiddleTaskPair(): Pair<Int, Int> {
+        val randomDouble = Random.nextDouble()
+
+        return when {
+            randomDouble <= 0.25 -> getUnderTwentyResultTaskPair(
+                0.0, 0.5, 0.5
+            )
+            randomDouble <= 0.75 -> getTwoDigitNumbersWithUnitsSumUnderTen()
+            else -> getTwoDigitNumbersWithUnitsSumAboveTen()
+        }
+    }
+
+    private fun getUnderHundredSumHardTaskPair(hardProb: Double): Pair<Int, Int> {
+        val randomDouble = Random.nextDouble()
+
+        return when {
+            randomDouble <= hardProb -> getTwoDigitNumbersWithUnitsSumUnderTen()
+            else -> getTwoDigitNumbersWithUnitsSumAboveTen()
+        }
+    }
+
+    private fun getTwoDigitNumbersWithUnitsSumUnderTen(): Pair<Int, Int> {
+        val unitsPair = getConditionedProbTaskPair(10, 0.5)
+        val firstDecimal = Random.nextInt(1, 9)
+        val secondDecimal = Random.nextInt(0, 10 - firstDecimal)
+
+        return Pair(
+            10*firstDecimal + unitsPair.first,
+            10*secondDecimal + unitsPair.second
+        )
+    }
+
+    private fun getTwoDigitNumbersWithUnitsSumAboveTen(): Pair<Int, Int> {
+        val unitsPair = getUnderTwentySumHardTaskPair()
+        val firstDecimal = Random.nextInt(1, 8)
+        val secondDecimal = Random.nextInt(0, 9 - firstDecimal)
+
+        return Pair(
+            10*firstDecimal + unitsPair.first,
+            10*secondDecimal + unitsPair.second
+        )
     }
 
     private fun numbersWeightList(numberRange: IntRange, isAscendingWeights: Boolean): List<Double> {
