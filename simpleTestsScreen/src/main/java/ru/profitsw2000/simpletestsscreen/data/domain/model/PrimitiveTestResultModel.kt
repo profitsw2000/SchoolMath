@@ -8,5 +8,5 @@ data class PrimitiveTestResultModel(
     val primitiveMathOperationType: PrimitiveMathOperationType,
     val primitiveTestTaskResultModelList: List<PrimitiveMathTaskModel>,
     val testResultsList: List<Int>,
-    val testTasksTime: List<Int>
+    val testTasksTimeList: List<Int>
 )
