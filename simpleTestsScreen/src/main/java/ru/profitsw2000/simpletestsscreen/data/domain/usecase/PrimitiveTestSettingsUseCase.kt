@@ -8,7 +8,7 @@ class PrimitiveTestSettingsUseCase(
     private val primitiveTestSettingsRepository: PrimitiveTestSettingsRepository
 ) {
 
-    fun getTestSettings(operationType: PrimitiveMathOperationType): PrimitiveTestSettingsModel {
+    suspend fun getTestSettings(operationType: PrimitiveMathOperationType): PrimitiveTestSettingsModel {
         return when(operationType) {
             PrimitiveMathOperationType.ADDITION -> primitiveTestSettingsRepository.getAdditionTestSettings()
             PrimitiveMathOperationType.SUBTRACTION -> primitiveTestSettingsRepository.getSubtractionTestSettings()
