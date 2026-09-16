@@ -25,15 +25,26 @@ class AdditionTestTaskGeneratorRepository(
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
 ): PrimitiveTestTaskGeneratorRepository {
 
+    private var lastAdditionTestTaskModel: PrimitiveMathTaskModel =
+        PrimitiveMathTaskModel(
+            firstOperand = 0,
+            secondOperand = 0,
+            primitiveMathOperationType = PrimitiveMathOperationType.ADDITION
+        )
+
     override suspend fun generateTask(taskComplexityLevel: Int): PrimitiveMathTaskModel {
         return withContext(coroutineDispatcher) {
-            val taskPair = getTaskPair(taskComplexityLevel)
+            val additionTestTaskModel = generateSequence {
+                val taskPair = getTaskPair(taskComplexityLevel)
+                PrimitiveMathTaskModel(
+                    taskPair.first,
+                    secondOperand = taskPair.second,
+                    primitiveMathOperationType = PrimitiveMathOperationType.ADDITION
+                )
+            }.first { it != lastAdditionTestTaskModel }
+            lastAdditionTestTaskModel = additionTestTaskModel
 
-            return@withContext PrimitiveMathTaskModel(
-                firstOperand = taskPair.first,
-                secondOperand = taskPair.second,
-                primitiveMathOperationType = PrimitiveMathOperationType.ADDITION
-            )
+            return@withContext additionTestTaskModel
         }
     }
 
