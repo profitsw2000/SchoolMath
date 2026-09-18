@@ -8,5 +8,7 @@ data class PrimitiveTestUiStateModel(
     val totalTaskTime: Int = 10,
     val taskNumber: Int = 1,
     val totalTaskNumber: Int = 10,
+    val testComplexity: Int = 0,
+    val taskIsLoaded: Boolean = false,
     val testIsRunning: Boolean = false
 )

@@ -7,6 +7,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathOperationType
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
@@ -31,12 +32,9 @@ class SimpleTestViewModel(
 
     fun startTest(primitiveMathOperationType: PrimitiveMathOperationType) {
 
-
+        setInitialState(primitiveMathOperationType)
         testJob = viewModelScope.launch {
-            val primitiveTestSettingsModel =
-                primitiveTestSettingsUseCase.getTestSettings(primitiveMathOperationType)
-            setInitialState(primitiveTestSettingsModel, primitiveMathOperationType)
-
+            loadNextTest(primitiveMathOperationType)
             while (true) {
                 delay(1000L)
                 val currentTaskTime = _primitiveTestUiStateFlow.value.taskTime + 1
@@ -47,18 +45,33 @@ class SimpleTestViewModel(
         }
     }
 
-    private suspend fun setInitialState(
-        primitiveTestSettingsModel: PrimitiveTestSettingsModel,
+    private suspend fun loadNextTest(primitiveMathOperationType: PrimitiveMathOperationType) {
+        primitiveMathTaskModel =
+            primitiveTestTaskGeneratorUseCase.getAdditionTask(
+                primitiveTestUiStateFlow.value.testComplexity
+            )
+        _primitiveTestUiStateFlow.update {
+            it.copy(
+                firstOperand = primitiveMathTaskModel.firstOperand,
+                secondOperand = primitiveMathTaskModel.secondOperand,
+                taskTime = 0
+            )
+        }
+    }
+
+    private fun setInitialState(
         primitiveMathOperationType: PrimitiveMathOperationType
     ) {
-        generateTask(testComplexityLevel = primitiveTestSettingsModel.testComplexityLevel)
-        _primitiveTestUiStateFlow.value =
-            PrimitiveTestUiStateModel(
-                primitiveMathOperationType = primitiveMathOperationType,
-                totalTaskTime = primitiveTestSettingsModel.taskDurationTimeSeconds,
-                totalTaskNumber = primitiveTestSettingsModel.testTasksNumber,
-                testIsRunning = true
-            )
+        viewModelScope.launch {
+            val primitiveTestSettingsModel = primitiveTestSettingsUseCase.getTestSettings(primitiveMathOperationType)
+            _primitiveTestUiStateFlow.value =
+                PrimitiveTestUiStateModel(
+                    primitiveMathOperationType = primitiveMathOperationType,
+                    totalTaskTime = primitiveTestSettingsModel.taskDurationTimeSeconds,
+                    totalTaskNumber = primitiveTestSettingsModel.testTasksNumber,
+                    testIsRunning = true
+                )
+        }
     }
 
     private suspend fun generateTask(testComplexityLevel: Int): PrimitiveMathTaskModel {
