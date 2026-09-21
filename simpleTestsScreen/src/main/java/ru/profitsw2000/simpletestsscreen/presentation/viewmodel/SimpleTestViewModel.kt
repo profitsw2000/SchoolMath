@@ -38,9 +38,15 @@ class SimpleTestViewModel(
             while (true) {
                 delay(1000L)
                 val currentTaskTime = _primitiveTestUiStateFlow.value.taskTime + 1
+                val totalTaskTime = _primitiveTestUiStateFlow.value.totalTaskTime
 
-
-                if (currentTaskTime >= totalTestTaskTime)
+                if (currentTaskTime >= totalTaskTime) {
+                    loadNextTest(primitiveMathOperationType = primitiveMathOperationType)
+                } else {
+                    _primitiveTestUiStateFlow.update {
+                        it.copy(taskTime = it.taskTime + 1)
+                    }
+                }
             }
         }
     }
@@ -64,11 +70,15 @@ class SimpleTestViewModel(
     ) {
         viewModelScope.launch {
             val primitiveTestSettingsModel = primitiveTestSettingsUseCase.getTestSettings(primitiveMathOperationType)
+            primitiveMathTaskModel = generateTask(testComplexityLevel = primitiveTestSettingsModel.testComplexityLevel)
             _primitiveTestUiStateFlow.value =
                 PrimitiveTestUiStateModel(
                     primitiveMathOperationType = primitiveMathOperationType,
                     totalTaskTime = primitiveTestSettingsModel.taskDurationTimeSeconds,
                     totalTaskNumber = primitiveTestSettingsModel.testTasksNumber,
+                    firstOperand = primitiveMathTaskModel.firstOperand,
+                    secondOperand = primitiveMathTaskModel.secondOperand,
+                    taskTime = 0,
                     testIsRunning = true
                 )
         }
