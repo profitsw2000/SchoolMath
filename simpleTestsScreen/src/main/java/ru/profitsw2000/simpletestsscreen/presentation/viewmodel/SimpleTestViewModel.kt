@@ -20,10 +20,10 @@ class SimpleTestViewModel(
     private val primitiveTestSettingsUseCase: PrimitiveTestSettingsUseCase,
     private val primitiveTestTaskGeneratorUseCase: PrimitiveTestTaskGeneratorUseCase
 ): ViewModel() {
-    private var testTaskTime: Int = 0
-    private var testTaskNumber: Int = 0
     private var primitiveMathTaskModel: PrimitiveMathTaskModel =
         PrimitiveMathTaskModel(0, 0, PrimitiveMathOperationType.ADDITION)
+    val primitiveTestTaskResultModelList: MutableList<PrimitiveMathTaskModel> = mutableListOf()
+    val testResultsList: MutableList<Int> = mutableListOf()
 
     private val _primitiveTestUiStateFlow = MutableStateFlow(PrimitiveTestUiStateModel())
     val primitiveTestUiStateFlow: StateFlow<PrimitiveTestUiStateModel> = _primitiveTestUiStateFlow.asStateFlow()
@@ -34,24 +34,51 @@ class SimpleTestViewModel(
 
         setInitialState(primitiveMathOperationType)
         testJob = viewModelScope.launch {
-            loadNextTest(primitiveMathOperationType)
+            updateTask(primitiveTestUiStateFlow.value.testComplexity)
             while (true) {
                 delay(1000L)
                 val currentTaskTime = _primitiveTestUiStateFlow.value.taskTime + 1
                 val totalTaskTime = _primitiveTestUiStateFlow.value.totalTaskTime
 
                 if (currentTaskTime >= totalTaskTime) {
-                    loadNextTest(primitiveMathOperationType = primitiveMathOperationType)
+                    nextTask(-1)
                 } else {
                     _primitiveTestUiStateFlow.update {
-                        it.copy(taskTime = it.taskTime + 1)
+                        it.copy(
+                            taskTime = primitiveTestUiStateFlow.value.taskTime + 1
+                        )
                     }
                 }
             }
         }
     }
 
+    private suspend fun nextTask(taskResult: Int) {
+        val currentTaskNumber = primitiveTestUiStateFlow.value.taskNumber + 1
+        val totalTaskNumber = primitiveTestUiStateFlow.value.totalTaskNumber
+
+        if (currentTaskNumber > totalTaskNumber) {
+            finishTest()
+        } else {
+            saveTask(taskResult)
+            updateTask(primitiveTestUiStateFlow.value.testComplexity)
+        }
+    }
+
+    private fun saveTask(taskResult: Int) {
+        primitiveTestTaskResultModelList.add(primitiveMathTaskModel)
+        testResultsList.add(taskResult)
+    }
+
+    private fun finishTest() {
+        saveResultToDatabase()
+        resetAll()
+    }
+
     private suspend fun loadNextTest(primitiveMathOperationType: PrimitiveMathOperationType) {
+        _primitiveTestUiStateFlow.update {
+            it.copy(taskNumber = primitiveTestUiStateFlow.value.taskNumber + 1)
+        }
         primitiveMathTaskModel =
             primitiveTestTaskGeneratorUseCase.getAdditionTask(
                 primitiveTestUiStateFlow.value.testComplexity
@@ -63,6 +90,12 @@ class SimpleTestViewModel(
                 taskTime = 0
             )
         }
+
+        if (primitiveTestUiStateFlow.value.taskNumber >= primitiveTestUiStateFlow.value.totalTaskNumber) {
+
+        } else {
+
+        }
     }
 
     private fun setInitialState(
@@ -70,6 +103,8 @@ class SimpleTestViewModel(
     ) {
         viewModelScope.launch {
             val primitiveTestSettingsModel = primitiveTestSettingsUseCase.getTestSettings(primitiveMathOperationType)
+            primitiveTestTaskResultModelList.clear()
+            testResultsList.clear()
             primitiveMathTaskModel = generateTask(testComplexityLevel = primitiveTestSettingsModel.testComplexityLevel)
             _primitiveTestUiStateFlow.value =
                 PrimitiveTestUiStateModel(
@@ -79,14 +114,34 @@ class SimpleTestViewModel(
                     firstOperand = primitiveMathTaskModel.firstOperand,
                     secondOperand = primitiveMathTaskModel.secondOperand,
                     taskTime = 0,
+                    testComplexity = primitiveTestSettingsModel.testComplexityLevel,
                     testIsRunning = true
                 )
         }
     }
 
     private suspend fun generateTask(testComplexityLevel: Int): PrimitiveMathTaskModel {
-        primitiveTestTaskGeneratorUseCase.getAdditionTask(testComplexityLevel)
+        return primitiveTestTaskGeneratorUseCase.getAdditionTask(testComplexityLevel)
     }
 
+    private suspend fun updateTask(testComplexityLevel: Int) {
+        primitiveMathTaskModel = primitiveTestTaskGeneratorUseCase.getAdditionTask(testComplexityLevel)
+        _primitiveTestUiStateFlow.update {
+            it.copy(
+                firstOperand = primitiveMathTaskModel.firstOperand,
+                secondOperand = primitiveMathTaskModel.secondOperand
+            )
+        }
+    }
+
+    private fun saveResultToDatabase() {
+
+    }
+
+    private fun resetAll() {
+        testJob?.cancel()
+        testJob = null
+        _primitiveTestUiStateFlow.value = PrimitiveTestUiStateModel()
+    }
 
 }
