@@ -44,8 +44,16 @@ class SimpleTestViewModel(
     fun startTest(primitiveMathOperationType: PrimitiveMathOperationType) {
 
         setInitialState(primitiveMathOperationType)
-        testJob = viewModelScope.launch {
+        viewModelScope.launch {
             updateTask(primitiveTestUiStateFlow.value.testComplexity)
+            runTimerLoop()
+        }
+    }
+
+    private fun runTimerLoop() {
+        testJob?.cancel()
+
+        testJob = viewModelScope.launch {
             while (true) {
                 delay(1000L)
                 val currentTaskTime = primitiveTestUiStateFlow.value.taskTime + 1
@@ -53,14 +61,21 @@ class SimpleTestViewModel(
 
                 if (currentTaskTime >= totalTaskTime) {
                     nextTask(-1)
+                    break
                 } else {
                     _primitiveTestUiStateFlow.update {
-                        it.copy(
-                            taskTime = currentTaskTime
-                        )
+                        it.copy(taskTime = currentTaskTime)
                     }
                 }
             }
+        }
+    }
+
+    fun appendAnswerResult(taskResult: Int) {
+        testJob?.cancel()
+
+        viewModelScope.launch {
+            nextTask(taskResult)
         }
     }
 
@@ -75,9 +90,11 @@ class SimpleTestViewModel(
             updateTask(primitiveTestUiStateFlow.value.testComplexity)
             _primitiveTestUiStateFlow.update {
                 it.copy(
+                    taskTime = 0,
                     taskNumber = currentTaskNumber
                 )
             }
+            runTimerLoop()
         }
     }
 
@@ -99,7 +116,9 @@ class SimpleTestViewModel(
             testAssessment = getTestAssessment(),
             totalTimeSeconds = getTestTotalTime(),
             primitiveMathOperationType = primitiveMathTaskModel.primitiveMathOperationType,
-
+            primitiveTestTaskResultModelList = primitiveTestTaskResultModelList,
+            testResultsList = testResultsList,
+            testTasksTimeList = taskTimeList
         )
     }
 
@@ -181,7 +200,7 @@ class SimpleTestViewModel(
     }
 
     private fun saveResultToDatabase() {
-
+        TODO("Save result to database")
     }
 
     private fun resetAll() {
