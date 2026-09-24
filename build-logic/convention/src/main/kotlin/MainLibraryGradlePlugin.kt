@@ -11,6 +11,7 @@ class MainLibraryGradlePlugin: Plugin<Project> {
                 apply("com.android.library")
                 apply("com.google.devtools.ksp")
                 apply("org.jetbrains.kotlin.plugin.parcelize")
+                apply("org.jetbrains.kotlin.plugin.serialization")
             }
 
             extensions.configure<LibraryExtension> {
