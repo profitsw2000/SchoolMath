@@ -41,7 +41,7 @@ class PrimitiveTestSettingsRepositoryImplTest {
             scope = testScope,
             produceFile = { File(temporaryFolder.newFolder(), "test_settings.preferences_pb") }
         )
-        mockkStatic("ru.profitsw2000.simpletestsscreen.PrimitiveTestSettingsRepositoryImplKt")
+        mockkStatic("ru.profitsw2000.simpletestsscreen.data.data.repository.PrimitiveTestSettingsRepositoryImplKt")
 
         every { context.settingsDataStore } returns testDataStore
 
@@ -50,7 +50,7 @@ class PrimitiveTestSettingsRepositoryImplTest {
 
     @After
     fun tearDown() {
-        io.mockk.unmockkStatic("ru.profitsw2000.simpletestsscreen.PrimitiveTestSettingsRepositoryImplKt")
+        io.mockk.unmockkStatic("ru.profitsw2000.simpletestsscreen.data.data.repository.PrimitiveTestSettingsRepositoryImplKt")
     }
 
     @Test

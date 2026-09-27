@@ -16,3 +16,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 }
+
+tasks.withType<Test> {
+    systemProperty("net.bytebuddy.experimental", "true")
+}
