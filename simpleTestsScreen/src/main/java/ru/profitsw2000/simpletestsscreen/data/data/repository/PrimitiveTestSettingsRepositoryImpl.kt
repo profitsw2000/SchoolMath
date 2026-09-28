@@ -1,5 +1,6 @@
 package ru.profitsw2000.simpletestsscreen.data.data.repository
 import android.content.Context
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
@@ -17,13 +18,13 @@ import java.io.IOException
 val Context.settingsDataStore by preferencesDataStore(name = "app_settings_pref")
 
 class PrimitiveTestSettingsRepositoryImpl(
-    private val context: Context
+    private val dataStore: DataStore<Preferences>
 ) : PrimitiveTestSettingsRepository {
 
     private val json = Json { ignoreUnknownKeys = true }
 
     private suspend fun getSettingsByKey(key: Preferences.Key<String>): PrimitiveTestSettingsModel {
-        return context.settingsDataStore.data
+        return dataStore.data
             .catch { exception ->
                 if (exception is IOException) emit(emptyPreferences())
                 else throw exception
@@ -52,7 +53,7 @@ class PrimitiveTestSettingsRepositoryImpl(
         getSettingsByKey(DIVISION_KEY)
 
     private suspend fun writeSettings(key: Preferences.Key<String>, model: PrimitiveTestSettingsModel) {
-        context.settingsDataStore.edit { preferences ->
+        dataStore.edit { preferences ->
             preferences[key] = json.encodeToString(model)
         }
     }

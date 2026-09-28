@@ -19,6 +19,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestSettingsModel
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
 import java.io.File
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -45,7 +47,7 @@ class PrimitiveTestSettingsRepositoryImplTest {
 
         every { context.settingsDataStore } returns testDataStore
 
-        repository = PrimitiveTestSettingsRepositoryImpl(context)
+        repository = PrimitiveTestSettingsRepositoryImpl(testDataStore)
     }
 
     @After
@@ -63,11 +65,16 @@ class PrimitiveTestSettingsRepositoryImplTest {
     }
 
     @Test
-    fun getAdditionTestSettings() {
-    }
+    fun `запись настроек для примеров на сложение`() = runTest(testDispatcher) {
+        val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 15,
+            testComplexityLevel = ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY,
+            taskDurationTimeSeconds = 20
+        )
+        repository.writeAdditionTestSettings(primitiveTestSettingsModel)
+        val actual = repository.getAdditionTestSettings()
 
-    @Test
-    fun writeAdditionTestSettings() {
+        assertEquals(primitiveTestSettingsModel, actual)
     }
 
 }
