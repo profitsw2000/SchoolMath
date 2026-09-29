@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -28,6 +30,9 @@ class PrimitiveTestSettingsRepositoryImplTest {
 
     @get:Rule
     val temporaryFolder = TemporaryFolder()
+
+
+    lateinit var tempFold: File
 
     private val testDispatcher = UnconfinedTestDispatcher()
     private val testScope = TestScope(testDispatcher + Job())
@@ -75,6 +80,25 @@ class PrimitiveTestSettingsRepositoryImplTest {
         val actual = repository.getAdditionTestSettings()
 
         assertEquals(primitiveTestSettingsModel, actual)
+    }
+
+    @Test
+    fun `функция getSettingsByKey возвращает настройки по умолчанию если json неверный`() = runTest(testDispatcher) {
+        val additionKey = stringPreferencesKey("addition_test_settings_json")
+
+        testDataStore.edit { preferences ->
+            preferences[additionKey] = "{ invalid_json: [ } === сломанная строка ==="
+        }
+
+        val actual = repository.getAdditionTestSettings()
+        val expected = PrimitiveTestSettingsModel()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `возврат настроек по умолчанию при повреждении хранилища`() = runTest(testDispatcher) {
+        val corruptedFolder = { File() }
+
     }
 
 }
