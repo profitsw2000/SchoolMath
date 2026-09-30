@@ -21,7 +21,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestSettingsModel
-import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
 import java.io.File
 
@@ -30,9 +29,6 @@ class PrimitiveTestSettingsRepositoryImplTest {
 
     @get:Rule
     val temporaryFolder = TemporaryFolder()
-
-
-    lateinit var tempFold: File
 
     private val testDispatcher = UnconfinedTestDispatcher()
     private val testScope = TestScope(testDispatcher + Job())
@@ -97,8 +93,74 @@ class PrimitiveTestSettingsRepositoryImplTest {
 
     @Test
     fun `возврат настроек по умолчанию при повреждении хранилища`() = runTest(testDispatcher) {
-        val corruptedFolder = { File() }
+        val corruptedFolder = temporaryFolder.newFolder("corrupted_path_dir.preferences_pb")
 
+        val corruptedDataStore = PreferenceDataStoreFactory.create(
+            scope = testScope,
+            produceFile = { corruptedFolder }
+        )
+        val repositoryWithCorruptedStorage = PrimitiveTestSettingsRepositoryImpl(corruptedDataStore)
+        val actual = repositoryWithCorruptedStorage.getAdditionTestSettings()
+
+        val expected = PrimitiveTestSettingsModel()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `запись настроек для примеров на вычитание`() = runTest(testDispatcher) {
+        val subtractionModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 15,
+            taskDurationTimeSeconds = 20
+        )
+        val additionModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 20,
+            taskDurationTimeSeconds = 13
+        )
+        repository.writeSubtractionTestSettings(subtractionModel)
+        repository.writeAdditionTestSettings(additionModel)
+        val actual = repository.getSubtractionTestSettings()
+        val wrongActual = repository.getAdditionTestSettings()
+
+        assertEquals(subtractionModel, actual)
+        assertNotEquals(wrongActual, actual)
+    }
+
+    @Test
+    fun `запись настроек для примеров на умножение`() = runTest(testDispatcher) {
+        val multiplicationModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 15,
+            taskDurationTimeSeconds = 20
+        )
+        val additionModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 20,
+            taskDurationTimeSeconds = 13
+        )
+        repository.writeSubtractionTestSettings(multiplicationModel)
+        repository.writeAdditionTestSettings(additionModel)
+        val actual = repository.getSubtractionTestSettings()
+        val wrongActual = repository.getAdditionTestSettings()
+
+        assertEquals(multiplicationModel, actual)
+        assertNotEquals(wrongActual, actual)
+    }
+
+    @Test
+    fun `запись настроек для примеров на деление`() = runTest(testDispatcher) {
+        val divisionModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 15,
+            taskDurationTimeSeconds = 20
+        )
+        val additionModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 20,
+            taskDurationTimeSeconds = 13
+        )
+        repository.writeSubtractionTestSettings(divisionModel)
+        repository.writeAdditionTestSettings(additionModel)
+        val actual = repository.getSubtractionTestSettings()
+        val wrongActual = repository.getAdditionTestSettings()
+
+        assertEquals(divisionModel, actual)
+        assertNotEquals(wrongActual, actual)
     }
 
 }
