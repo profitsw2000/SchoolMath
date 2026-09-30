@@ -52,8 +52,8 @@ class AdditionTestTaskGeneratorRepository(
         return when(taskComplexityLevel) {
             ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE ->
                 Pair(
-                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER),
-                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER)
+                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER + 1),
+                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER + 1)
                 )
             ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE ->
                 getConditionedProbTaskPair(
