@@ -12,8 +12,11 @@ import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESUL
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
@@ -58,17 +61,17 @@ class AdditionTestTaskGeneratorRepository(
             ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE ->
                 getConditionedProbTaskPair(
                     ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER,
-                    0.75
+                    ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE_PROBABILITY
                 )
             ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX ->
                 getConditionedProbTaskPair(
                     ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER,
-                    0.5
+                    ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX_PROBABILITY
                 )
             ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY ->
                 getConditionedProbTaskPair(
                     ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER,
-                    0.25
+                    ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY_PROBABILITY
                 )
             ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE ->
                 getUnderTwentyResultTaskPair(

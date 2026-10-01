@@ -16,7 +16,7 @@ class PrimitiveTaskTablePairGenerator(
         require(simpleTasksProb in 0.0..1.0) {"Probability should be between in range 0.0 to 1.0"}
         require(maxSum <= MAX_ALLOWED_SUM) {"maxSum ${maxSum} is over allowed limit ${MAX_ALLOWED_SUM}"}
 
-        for (a in minNumber..maxSum) {
+        for (a in minNumber..<maxSum) {
             for (b in minNumber..(maxSum - a)) {
                 val pair = Pair(a, b)
                 if (a in simpleTaskNumbers || b in simpleTaskNumbers) {
