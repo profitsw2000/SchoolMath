@@ -197,4 +197,24 @@ class AdditionTestTaskGeneratorRepositoryTest {
         )
     }
 
+    @Test
+    fun `простой пример с суммой менее 20`() = runTest(testDispatcher) {
+        val iterations = 1000
+        val complexity = 5
+        var previousTask: PrimitiveMathTaskModel? = null
+
+        repeat(iterations) {
+            val currentTask = repository.generateTask(complexity)
+            val currentTaskSum = currentTask.firstOperand + currentTask.secondOperand
+
+            if (previousTask != null) {
+                assertNotEquals(
+                    "Одинаковые задачи два раза подряд",
+                    previousTask,
+                    currentTask
+                )
+            }
+        }
+    }
+
 }

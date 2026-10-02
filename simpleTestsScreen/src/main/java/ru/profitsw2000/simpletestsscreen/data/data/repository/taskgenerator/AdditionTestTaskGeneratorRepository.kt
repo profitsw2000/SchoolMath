@@ -22,6 +22,9 @@ import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
 import kotlin.random.Random
 
 class AdditionTestTaskGeneratorRepository(
@@ -75,7 +78,9 @@ class AdditionTestTaskGeneratorRepository(
                 )
             ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE ->
                 getUnderTwentyResultTaskPair(
-                    0.5, 0.5, 0.0
+                    SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
                 )
             ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE ->
                 getUnderTwentyResultTaskPair(
@@ -171,10 +176,11 @@ class AdditionTestTaskGeneratorRepository(
 
         return when {
             randomDouble <= 0.5 -> getUnderTwentySumSimpleTaskPair()
-            firstOperand == 0 -> Pair(10, secondOperand)
-            secondOperand == 0 -> Pair(firstOperand, 10)
             randomDouble <= 0.75 -> Pair(firstOperand + 10, secondOperand)
-            randomDouble <= 1.0 -> Pair(firstOperand, secondOperand + 10)
+            randomDouble <= 1.0 -> Pair(
+                if(firstOperand != 0) firstOperand else 10,
+                if(firstOperand != 0) secondOperand + 10 else secondOperand
+            )
             else -> getUnderTwentySumSimpleTaskPair()
         }
     }
