@@ -1,5 +1,6 @@
 package ru.profitsw2000.simpletestsscreen.data.data.repository.taskgenerator
 
+import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -14,6 +15,18 @@ class AdditionTestTaskGeneratorRepositoryTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
     private lateinit var repository: AdditionTestTaskGeneratorRepository
+    private val equiprobablePairsUnderTen: Set<Pair<Int, Int>> = (1..9).flatMap { x ->
+        (1..9).map { y -> x to y }
+    }.filter{ (x,y) -> x + y <= 10 }.toSet()
+    private val equiprobablePairsFirstAboveTen: Set<Pair<Int, Int>> = (10..19).flatMap { x ->
+        (1..10).map { y -> x to y }
+    }.filter{ (x,y) -> x + y <= 20 }.toSet()
+    private val equiprobablePairsSecondAboveTen: Set<Pair<Int, Int>> = (1..10).flatMap { x ->
+        (10..19).map { y -> x to y }
+    }.filter{ (x,y) -> x + y <= 20 }.toSet()
+    private val equiprobablePairsHardUnderTen: Set<Pair<Int, Int>> = (2..9).flatMap { x ->
+        (2..9).map { y -> x to y }
+    }.filter{ (x,y) -> x + y > 10 }.toSet()
 
     @Before
     fun setUp() {
@@ -202,9 +215,13 @@ class AdditionTestTaskGeneratorRepositoryTest {
         val iterations = 1000
         val complexity = 5
         var previousTask: PrimitiveMathTaskModel? = null
+        var simpleTaskPairs = 0
+        var middleTaskPairsFirstOperandAbove = 0
+        var middleTaskPairsSecondOperandAbove = 0
 
         repeat(iterations) {
             val currentTask = repository.generateTask(complexity)
+            val taskPair = Pair(currentTask.firstOperand, currentTask.secondOperand)
             val currentTaskSum = currentTask.firstOperand + currentTask.secondOperand
 
             if (previousTask != null) {
@@ -214,7 +231,34 @@ class AdditionTestTaskGeneratorRepositoryTest {
                     currentTask
                 )
             }
+            assertTrue("Сумма больше 20: ${currentTask.firstOperand} + ${currentTask.secondOperand} = ${currentTaskSum}", currentTaskSum <= 20)
+            if (taskPair in equiprobablePairsUnderTen) {
+                simpleTaskPairs++
+            }
+            if (taskPair in equiprobablePairsFirstAboveTen) {
+                middleTaskPairsFirstOperandAbove++
+            }
+            if (taskPair in equiprobablePairsSecondAboveTen) {
+                middleTaskPairsSecondOperandAbove++
+            }
         }
+
+        val simpleTaskPercentage = (simpleTaskPairs.toDouble()/iterations)*100
+        val middleTaskFirstAbovePercentage = (middleTaskPairsFirstOperandAbove.toDouble()/iterations)*100
+        val middleTaskSecondAbovePercentage = (middleTaskPairsSecondOperandAbove.toDouble()/iterations)*100
+
+        assertTrue(
+            "Процент простых примеров с суммой меньше 10 вышел за пределы 75+-5%: ${simpleTaskPercentage}",
+            simpleTaskPercentage in 70.0..80.0
+        )
+        assertTrue(
+            "Процент простых примеров с суммой меньше 10 вышел за пределы 12.5+-5%: ${middleTaskFirstAbovePercentage}",
+            middleTaskFirstAbovePercentage in 7.5..17.5
+        )
+        assertTrue(
+            "Процент простых примеров с суммой меньше 10 вышел за пределы 12.5+-5%: ${middleTaskSecondAbovePercentage}",
+            middleTaskSecondAbovePercentage in 7.5..17.5
+        )
     }
 
 }
