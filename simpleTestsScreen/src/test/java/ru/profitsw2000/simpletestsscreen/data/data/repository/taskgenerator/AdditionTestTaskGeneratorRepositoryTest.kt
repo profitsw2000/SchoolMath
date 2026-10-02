@@ -241,6 +241,7 @@ class AdditionTestTaskGeneratorRepositoryTest {
             if (taskPair in equiprobablePairsSecondAboveTen) {
                 middleTaskPairsSecondOperandAbove++
             }
+            previousTask = currentTask
         }
 
         val simpleTaskPercentage = (simpleTaskPairs.toDouble()/iterations)*100
@@ -252,12 +253,198 @@ class AdditionTestTaskGeneratorRepositoryTest {
             simpleTaskPercentage in 70.0..80.0
         )
         assertTrue(
-            "Процент простых примеров с суммой меньше 10 вышел за пределы 12.5+-5%: ${middleTaskFirstAbovePercentage}",
+            "Процент примеров средней сложности с первым слагаемым больше 10 и с суммой меньше 20 вышел за пределы 12.5+-5%: ${middleTaskFirstAbovePercentage}",
             middleTaskFirstAbovePercentage in 7.5..17.5
         )
         assertTrue(
-            "Процент простых примеров с суммой меньше 10 вышел за пределы 12.5+-5%: ${middleTaskSecondAbovePercentage}",
+            "Процент примеров средней сложности со вторым слагаемым больше 10 и с суммой меньше 20 вышел за пределы 12.5+-5%: ${middleTaskSecondAbovePercentage}",
             middleTaskSecondAbovePercentage in 7.5..17.5
+        )
+    }
+
+    @Test
+    fun `пример средней сложности с суммой менее 20`() = runTest(testDispatcher) {
+        val iterations = 1000
+        val complexity = 6
+        var previousTask: PrimitiveMathTaskModel? = null
+        var simpleTaskPairs = 0
+        var middleTaskPairsFirstOperandAbove = 0
+        var middleTaskPairsSecondOperandAbove = 0
+        var hardTaskPairs = 0
+
+        repeat(iterations) {
+            val currentTask = repository.generateTask(complexity)
+            val taskPair = Pair(currentTask.firstOperand, currentTask.secondOperand)
+            val currentTaskSum = currentTask.firstOperand + currentTask.secondOperand
+
+            if (previousTask != null) {
+                assertNotEquals(
+                    "Одинаковые задачи два раза подряд",
+                    previousTask,
+                    currentTask
+                )
+            }
+            assertTrue("Сумма больше 20: ${currentTask.firstOperand} + ${currentTask.secondOperand} = $currentTaskSum", currentTaskSum <= 20)
+            if (taskPair in equiprobablePairsUnderTen) {
+                simpleTaskPairs++
+            }
+            if (taskPair in equiprobablePairsFirstAboveTen) {
+                middleTaskPairsFirstOperandAbove++
+            }
+            if (taskPair in equiprobablePairsSecondAboveTen) {
+                middleTaskPairsSecondOperandAbove++
+            }
+            if (taskPair in equiprobablePairsHardUnderTen) {
+                hardTaskPairs++
+            }
+            previousTask = currentTask
+        }
+
+        val simpleTaskPercentage = (simpleTaskPairs.toDouble()/iterations)*100
+        val middleTaskFirstAbovePercentage = (middleTaskPairsFirstOperandAbove.toDouble()/iterations)*100
+        val middleTaskSecondAbovePercentage = (middleTaskPairsSecondOperandAbove.toDouble()/iterations)*100
+        val hardTaskPercentage = (hardTaskPairs.toDouble()/iterations)*100
+
+        assertTrue(
+            "Процент простых примеров с суммой меньше 10 вышел за пределы 25+-5%: $simpleTaskPercentage",
+            simpleTaskPercentage in 20.0..30.0
+        )
+        assertTrue(
+            "Процент примеров средней сложности с первым слагаемым больше 10 и с суммой меньше 20 вышел за пределы 12.5+-5%: $middleTaskFirstAbovePercentage",
+            middleTaskFirstAbovePercentage in 7.5..17.5
+        )
+        assertTrue(
+            "Процент примеров средней сложности с первым слагаемым больше 10 и с суммой меньше 20 вышел за пределы 12.5+-5%: $middleTaskSecondAbovePercentage",
+            middleTaskSecondAbovePercentage in 7.5..17.5
+        )
+
+        assertTrue(
+            "Процент сложных примеров с суммой меньше 20 вышел за пределы 50+-5%: $hardTaskPercentage",
+            hardTaskPercentage in 45.0..55.0
+        )
+    }
+
+    @Test
+    fun `сложный пример с суммой менее 20`() = runTest(testDispatcher) {
+        val iterations = 1000
+        val complexity = 7
+        var previousTask: PrimitiveMathTaskModel? = null
+        var simpleTaskPairs = 0
+        var middleTaskPairsFirstOperandAbove = 0
+        var middleTaskPairsSecondOperandAbove = 0
+        var hardTaskPairs = 0
+
+        repeat(iterations) {
+            val currentTask = repository.generateTask(complexity)
+            val taskPair = Pair(currentTask.firstOperand, currentTask.secondOperand)
+            val currentTaskSum = currentTask.firstOperand + currentTask.secondOperand
+
+            if (previousTask != null) {
+                assertNotEquals(
+                    "Одинаковые задачи два раза подряд",
+                    previousTask,
+                    currentTask
+                )
+            }
+            assertTrue("Сумма больше 20: ${currentTask.firstOperand} + ${currentTask.secondOperand} = $currentTaskSum", currentTaskSum <= 20)
+            if (taskPair in equiprobablePairsUnderTen) {
+                simpleTaskPairs++
+            }
+            if (taskPair in equiprobablePairsFirstAboveTen) {
+                middleTaskPairsFirstOperandAbove++
+            }
+            if (taskPair in equiprobablePairsSecondAboveTen) {
+                middleTaskPairsSecondOperandAbove++
+            }
+            if (taskPair in equiprobablePairsHardUnderTen) {
+                hardTaskPairs++
+            }
+            previousTask = currentTask
+        }
+
+        val simpleTaskPercentage = (simpleTaskPairs.toDouble()/iterations)*100
+        val middleTaskFirstAbovePercentage = (middleTaskPairsFirstOperandAbove.toDouble()/iterations)*100
+        val middleTaskSecondAbovePercentage = (middleTaskPairsSecondOperandAbove.toDouble()/iterations)*100
+        val hardTaskPercentage = (hardTaskPairs.toDouble()/iterations)*100
+
+        assertTrue(
+            "Процент простых примеров с суммой меньше 10 вышел за пределы 12.5+-5%: $simpleTaskPercentage",
+            simpleTaskPercentage in 7.5..17.5
+        )
+        assertTrue(
+            "Процент примеров средней сложности с первым слагаемым больше 10 и с суммой меньше 20 вышел за пределы 6.25+-3%: $middleTaskFirstAbovePercentage",
+            middleTaskFirstAbovePercentage in 3.25..9.25
+        )
+        assertTrue(
+            "Процент примеров средней сложности со вторым слагаемым больше 10 и с суммой меньше 20 вышел за пределы 6.25+-3%: $middleTaskSecondAbovePercentage",
+            middleTaskSecondAbovePercentage in 3.25..9.25
+        )
+
+        assertTrue(
+            "Процент сложных примеров с суммой меньше 20 вышел за пределы 75+-5%: $hardTaskPercentage",
+            hardTaskPercentage in 70.0..80.0
+        )
+    }
+
+    @Test
+    fun `супер сложный пример с суммой менее 20`() = runTest(testDispatcher) {
+        val iterations = 1000
+        val complexity = 8
+        var previousTask: PrimitiveMathTaskModel? = null
+        var simpleTaskPairs = 0
+        var middleTaskPairsFirstOperandAbove = 0
+        var middleTaskPairsSecondOperandAbove = 0
+        var hardTaskPairs = 0
+
+        repeat(iterations) {
+            val currentTask = repository.generateTask(complexity)
+            val taskPair = Pair(currentTask.firstOperand, currentTask.secondOperand)
+            val currentTaskSum = currentTask.firstOperand + currentTask.secondOperand
+
+            if (previousTask != null) {
+                assertNotEquals(
+                    "Одинаковые задачи два раза подряд",
+                    previousTask,
+                    currentTask
+                )
+            }
+            assertTrue("Сумма больше 20: ${currentTask.firstOperand} + ${currentTask.secondOperand} = $currentTaskSum", currentTaskSum <= 20)
+            if (taskPair in equiprobablePairsUnderTen) {
+                simpleTaskPairs++
+            }
+            if (taskPair in equiprobablePairsFirstAboveTen) {
+                middleTaskPairsFirstOperandAbove++
+            }
+            if (taskPair in equiprobablePairsSecondAboveTen) {
+                middleTaskPairsSecondOperandAbove++
+            }
+            if (taskPair in equiprobablePairsHardUnderTen) {
+                hardTaskPairs++
+            }
+            previousTask = currentTask
+        }
+
+        val simpleTaskPercentage = (simpleTaskPairs.toDouble()/iterations)*100
+        val middleTaskFirstAbovePercentage = (middleTaskPairsFirstOperandAbove.toDouble()/iterations)*100
+        val middleTaskSecondAbovePercentage = (middleTaskPairsSecondOperandAbove.toDouble()/iterations)*100
+        val hardTaskPercentage = (hardTaskPairs.toDouble()/iterations)*100
+
+        assertTrue(
+            "Процент простых примеров с суммой меньше 10 более 0%: $simpleTaskPercentage",
+            simpleTaskPercentage == 0.0
+        )
+        assertTrue(
+            "Процент примеров средней сложности с первым слагаемым больше 10 и с суммой меньше 20 более 0%: $middleTaskFirstAbovePercentage",
+            middleTaskFirstAbovePercentage == 0.0
+        )
+        assertTrue(
+            "Процент примеров средней сложности со вторым слагаемым больше 10 и с суммой меньше 20 более 0%: $middleTaskSecondAbovePercentage",
+            middleTaskSecondAbovePercentage == 0.0
+        )
+
+        assertTrue(
+            "Процент сложных примеров с суммой меньше 20 не равен 100%: $hardTaskPercentage",
+            hardTaskPercentage == 100.0
         )
     }
 
