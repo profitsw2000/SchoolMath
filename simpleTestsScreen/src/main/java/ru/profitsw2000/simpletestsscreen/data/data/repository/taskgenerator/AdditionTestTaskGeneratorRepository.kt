@@ -31,6 +31,10 @@ import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEXITY_TEST_UNDER_TWENTY
 import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
@@ -110,7 +114,12 @@ class AdditionTestTaskGeneratorRepository(
                     HIGH_COMPLEXITY_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
                 )
             ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE ->
-                getUnderHundredResultTaskPair(0.25, 0.25, 0.5, 0.0)
+                getUnderHundredResultTaskPair(
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+                )
             ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE ->
                 getUnderHundredResultTaskPair(0.0, 0.25, 0.5, 0.25)
             ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX ->
@@ -246,8 +255,8 @@ class AdditionTestTaskGeneratorRepository(
 
     private fun getTwoDigitNumbersWithUnitsSumUnderTen(): Pair<Int, Int> {
         val unitsPair = getConditionedProbTaskPair(10, 0.5)
-        val firstDecimal = Random.nextInt(1, 9)
-        val secondDecimal = Random.nextInt(0, 10 - firstDecimal)
+        val firstDecimal = Random.nextInt(1, 8)
+        val secondDecimal = Random.nextInt(1, 10 - firstDecimal)
 
         return Pair(
             10*firstDecimal + unitsPair.first,
@@ -257,8 +266,8 @@ class AdditionTestTaskGeneratorRepository(
 
     private fun getTwoDigitNumbersWithUnitsSumAboveTen(): Pair<Int, Int> {
         val unitsPair = getUnderTwentySumHardTaskPair()
-        val firstDecimal = Random.nextInt(1, 8)
-        val secondDecimal = Random.nextInt(0, 9 - firstDecimal)
+        val firstDecimal = Random.nextInt(1, 7)
+        val secondDecimal = Random.nextInt(1, 9 - firstDecimal)
 
         return Pair(
             10*firstDecimal + unitsPair.first,
