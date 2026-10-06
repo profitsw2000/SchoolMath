@@ -506,29 +506,29 @@ class AdditionTestTaskGeneratorRepositoryTest {
         val unitsAboveTenPercentage = (unitsAboveTen.toDouble()/iterations)*100
 
         assertTrue(
-            "Процент простых примеров с суммой меньше 10 вне диапазона 1 - 10%: $simpleTaskPercentage",
-            simpleTaskPercentage in 1.0..10.0
+            "Процент простых примеров с суммой меньше 10 вне диапазона 7.5 - 14.5%: $simpleTaskPercentage",
+            simpleTaskPercentage in 7.5..14.5
         )
         assertTrue(
-            "Процент примеров средней сложности с первым слагаемым больше 10 и с суммой меньше 20 более 2%: $middleTaskFirstAbovePercentage",
-            middleTaskFirstAbovePercentage > 2.0
+            "Процент примеров средней сложности с первым слагаемым больше 10 и с суммой меньше 20 более 5%: $middleTaskFirstAbovePercentage",
+            middleTaskFirstAbovePercentage < 5.0
         )
         assertTrue(
-            "Процент примеров средней сложности со вторым слагаемым больше 10 и с суммой меньше 20 более 2%: $middleTaskSecondAbovePercentage",
-            middleTaskSecondAbovePercentage > 2.0
+            "Процент примеров средней сложности со вторым слагаемым больше 10 и с суммой меньше 20 более 5%: $middleTaskSecondAbovePercentage",
+            middleTaskSecondAbovePercentage < 5.0
         )
 
         assertTrue(
-            "Процент сложных примеров с суммой меньше 20 более 6%: $hardTaskPercentage",
-            hardTaskPercentage > 6.0
+            "Процент сложных примеров с суммой меньше 20 вне диапазона 2 - 10%: $hardTaskPercentage",
+            hardTaskPercentage in 2.0..10.0
         )
         assertTrue(
-            "Процент примеров с суммой единиц менее 10 и с общей суммой меньше 100 вне диапазона 57.5 - 67.5%: $unitsUnderTenPercentage",
-            unitsUnderTenPercentage in 57.5..62.5
+            "Процент примеров с суммой единиц менее 10 и с общей суммой меньше 100 вне диапазона 39 - 49%: $unitsUnderTenPercentage",
+            unitsUnderTenPercentage in 39.0..49.0
         )
         assertTrue(
-            "Процент примеров с суммой единиц более 10 и с общей суммой меньше 100 вне диапазона 2 - 10%: $unitsAboveTenPercentage",
-            unitsAboveTenPercentage in 2.0..10.0
+            "Процент примеров с суммой единиц более 10 и с общей суммой меньше 100 вне диапазона 26 - 36%: $unitsAboveTenPercentage",
+            unitsAboveTenPercentage in 26.0..36.0
         )
 
     }
