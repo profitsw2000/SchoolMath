@@ -1,13 +1,12 @@
 package ru.profitsw2000.simpletestsscreen.data.data.repository.taskgenerator
 
-import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathOperationType
+import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
 
 @OptIn(ExperimentalCoroutinesApi::class)

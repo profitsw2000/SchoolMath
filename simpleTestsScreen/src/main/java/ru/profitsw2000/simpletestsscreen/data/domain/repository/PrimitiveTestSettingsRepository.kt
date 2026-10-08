@@ -1,6 +1,6 @@
 package ru.profitsw2000.simpletestsscreen.data.domain.repository
 
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestSettingsModel
+import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 
 interface PrimitiveTestSettingsRepository {
 

@@ -1,5 +1,7 @@
 package ru.profitsw2000.simpletestsscreen.data.domain.model
 
+import ru.profitsw2000.core.utils.PrimitiveMathOperationType
+
 data class PrimitiveTestUiStateModel(
     val firstOperand: Int = 0,
     val secondOperand: Int = 0,
