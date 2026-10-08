@@ -14,6 +14,8 @@ constraintlayout = "2.2.2"
 ktxJson = "1.7.3"
 datastore = "1.1.1"
 lifecycle = "2.8.7"
+ktxTest = "1.10.1"
+mockk = "1.13.13"
 
 applicationId = "ru.profitsw2000.schoolmath"
 minSdk = "28"
@@ -39,6 +41,8 @@ kotlin-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "symbol-pr
 kotlin-serialization-gradlePlugin = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "ktxJson" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "ktxTest" }
+io-mockk = { group = "io.mockk", name = "mockk-jvm", version.ref = "mockk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
