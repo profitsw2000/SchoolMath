@@ -1,0 +1,343 @@
+package ru.profitsw2000.simpletestsscreen.data.data.repository.taskgenerator
+
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathOperationType
+import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
+import ru.profitsw2000.simpletestsscreen.data.domain.model.taskgenerator.PrimitiveTaskTablePairGenerator
+import ru.profitsw2000.simpletestsscreen.data.domain.repository.PrimitiveTestTaskGeneratorRepository
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEXITY_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEXITY_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEXITY_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
+import kotlin.random.Random
+
+class AdditionTestTaskGeneratorRepository(
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
+): PrimitiveTestTaskGeneratorRepository {
+
+    private var lastAdditionTestTaskModel: PrimitiveMathTaskModel =
+        PrimitiveMathTaskModel(
+            firstOperand = 0,
+            secondOperand = 0,
+            primitiveMathOperationType = PrimitiveMathOperationType.ADDITION
+        )
+
+    override suspend fun generateTask(taskComplexityLevel: Int): PrimitiveMathTaskModel {
+        return withContext(coroutineDispatcher) {
+            val additionTestTaskModel = generateSequence {
+                val taskPair = getTaskPair(taskComplexityLevel)
+                PrimitiveMathTaskModel(
+                    taskPair.first,
+                    secondOperand = taskPair.second,
+                    primitiveMathOperationType = PrimitiveMathOperationType.ADDITION
+                )
+            }.first { it != lastAdditionTestTaskModel }
+            lastAdditionTestTaskModel = additionTestTaskModel
+
+            return@withContext additionTestTaskModel
+        }
+    }
+
+    private fun getTaskPair(taskComplexityLevel: Int): Pair<Int, Int> {
+        return when(taskComplexityLevel) {
+            ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE ->
+                Pair(
+                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER + 1),
+                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER + 1)
+                )
+            ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE ->
+                getConditionedProbTaskPair(
+                    ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER,
+                    ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE_PROBABILITY
+                )
+            ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX ->
+                getConditionedProbTaskPair(
+                    ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER,
+                    ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX_PROBABILITY
+                )
+            ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY ->
+                getConditionedProbTaskPair(
+                    ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER,
+                    ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY_PROBABILITY
+                )
+            ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE ->
+                getUnderTwentyResultTaskPair(
+                    SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+                )
+            ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE ->
+                getUnderTwentyResultTaskPair(
+                    INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY,
+                    INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY,
+                    INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+                )
+            ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX ->
+                getUnderTwentyResultTaskPair(
+                    COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY,
+                    COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY,
+                    COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+                )
+            ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY ->
+                getUnderTwentyResultTaskPair(
+                    HIGH_COMPLEXITY_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY,
+                    HIGH_COMPLEXITY_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY,
+                    HIGH_COMPLEXITY_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+                )
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE ->
+                getUnderHundredResultTaskPair(
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+                )
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE ->
+                getUnderHundredResultTaskPair(
+                    INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY,
+                    INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY,
+                    INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY,
+                    INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+                )
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX ->
+                getUnderHundredResultTaskPair(
+                    COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY,
+                    COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY,
+                    COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY,
+                    COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+                )
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY ->
+                getUnderHundredResultTaskPair(
+                    HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY,
+                    HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY,
+                    HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY,
+                    HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+                )
+            else ->
+                Pair(
+                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER),
+                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER)
+                )
+        }
+    }
+
+    private fun getConditionedProbTaskPair(
+        maxSum: Int,
+        simpleTaskProb: Double
+    ): Pair<Int, Int> {
+        val primitiveTaskTablePairGenerator = PrimitiveTaskTablePairGenerator(
+            maxSum,
+            UNDER_TEN_SIMPLE_TASK_NUMBERS_SET,
+            simpleTaskProb
+        )
+
+        return primitiveTaskTablePairGenerator.nextPair()
+    }
+
+    private fun getUnderTwentyResultTaskPair(
+        simpleTaskProb: Double,
+        middleTaskProbe: Double,
+        hardTaskProb: Double
+    ): Pair<Int, Int> {
+        if ((simpleTaskProb + middleTaskProbe + hardTaskProb) > 1.0) throw IllegalStateException("Probability sum should be lower than 1.0")
+
+        val randomValue = Random.nextDouble()
+        return if (randomValue <= simpleTaskProb) getUnderTwentySumSimpleTaskPair()
+        else if (randomValue <= (simpleTaskProb + middleTaskProbe)) getUnderTwentySumMiddleTaskPair()
+        else getUnderTwentySumHardTaskPair()
+    }
+
+    private fun getUnderHundredResultTaskPair(
+        simpleTaskProb: Double,
+        middleTaskProbe: Double,
+        hardTaskProb: Double,
+        superHardTaskProb: Double
+    ): Pair<Int, Int> {
+        if ((simpleTaskProb + middleTaskProbe + hardTaskProb + superHardTaskProb) > 1.0) throw IllegalStateException("Probability sum should be lower than 1.0")
+        val randomDouble = Random.nextDouble()
+
+        return when {
+            randomDouble <= simpleTaskProb -> getUnderHundredSumSimpleTaskPair()
+            randomDouble <= simpleTaskProb + middleTaskProbe -> getUnderHundredSumMiddleTaskPair()
+            randomDouble <= simpleTaskProb + middleTaskProbe + hardTaskProb -> getUnderHundredSumHardTaskPair(0.5)
+            randomDouble <= simpleTaskProb + middleTaskProbe + hardTaskProb + superHardTaskProb -> getUnderHundredSumHardTaskPair(0.25)
+            else -> getUnderHundredSumSimpleTaskPair()
+        }
+    }
+
+    private fun getUnderTwentySumSimpleTaskPair(): Pair<Int, Int> {
+        val numbersRange = 1..9
+        val firstOperand = getProbWeightedNumber(
+            numbersRange.toList(),
+            numbersWeightList(numbersRange, true)
+        )
+        val secondOperand = Random.nextInt(1, 11 - firstOperand)
+
+        return Pair(firstOperand, secondOperand)
+    }
+
+    private fun getUnderTwentySumMiddleTaskPair(): Pair<Int, Int> {
+        val randomDouble = Random.nextDouble()
+        val numbersRange = 0..9
+        val firstOperand = getProbWeightedNumber(
+            numbersRange.toList(),
+            numbersWeightList(numbersRange, true)
+        )
+        val secondOperand = Random.nextInt(1, 11 - firstOperand)
+
+        return when {
+            randomDouble <= 0.5 -> getUnderTwentySumSimpleTaskPair()
+            randomDouble <= 0.75 -> Pair(firstOperand + 10, secondOperand)
+            randomDouble <= 1.0 -> Pair(
+                if(firstOperand != 0) firstOperand else 10,
+                if(firstOperand != 0) secondOperand + 10 else secondOperand
+            )
+            else -> getUnderTwentySumSimpleTaskPair()
+        }
+    }
+
+    private fun getUnderTwentySumHardTaskPair(): Pair<Int, Int> {
+        val numbersRange = 2..9
+        val firstOperand = getProbWeightedNumber(
+            numbersRange.toList(),
+            numbersWeightList(numbersRange, false)
+        )
+        val secondOperand = Random.nextInt(11 - firstOperand, 10)
+
+        return Pair(firstOperand, secondOperand)
+    }
+
+    private fun getUnderHundredSumSimpleTaskPair(): Pair<Int, Int> {
+        val randomDouble = Random.nextDouble()
+
+        return when {
+            randomDouble <= 0.25 -> getConditionedProbTaskPair(ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER, 0.0)
+            randomDouble <= 0.5 -> getUnderTwentyResultTaskPair(
+                0.0, 0.5, 0.5
+            )
+            else -> getTwoDigitNumbersWithUnitsSumUnderTen()
+        }
+    }
+
+    private fun getUnderHundredSumMiddleTaskPair(): Pair<Int, Int> {
+        val randomDouble = Random.nextDouble()
+
+        return when {
+            randomDouble <= 0.25 -> getUnderTwentyResultTaskPair(
+                0.0, 0.5, 0.5
+            )
+            randomDouble <= 0.75 -> getTwoDigitNumbersWithUnitsSumUnderTen()
+            else -> getTwoDigitNumbersWithUnitsSumAboveTen()
+        }
+    }
+
+    private fun getUnderHundredSumHardTaskPair(hardProb: Double): Pair<Int, Int> {
+        val randomDouble = Random.nextDouble()
+
+        return when {
+            randomDouble <= hardProb -> getTwoDigitNumbersWithUnitsSumUnderTen()
+            else -> getTwoDigitNumbersWithUnitsSumAboveTen()
+        }
+    }
+
+    private fun getTwoDigitNumbersWithUnitsSumUnderTen(): Pair<Int, Int> {
+        val unitsPair = getConditionedProbTaskPair(10, 0.5)
+        val firstDecimal = Random.nextInt(1, 8)
+        val secondDecimal = Random.nextInt(1, 10 - firstDecimal)
+
+        return Pair(
+            10*firstDecimal + unitsPair.first,
+            10*secondDecimal + unitsPair.second
+        )
+    }
+
+    private fun getTwoDigitNumbersWithUnitsSumAboveTen(): Pair<Int, Int> {
+        val unitsPair = getUnderTwentySumHardTaskPair()
+        val firstDecimal = Random.nextInt(1, 7)
+        val secondDecimal = Random.nextInt(1, 9 - firstDecimal)
+
+        return Pair(
+            10*firstDecimal + unitsPair.first,
+            10*secondDecimal + unitsPair.second
+        )
+    }
+
+    private fun numbersWeightList(numberRange: IntRange, isAscendingWeights: Boolean): List<Double> {
+        val totalSum: Double = ((1 + numberRange.count())*numberRange.count())/2.0
+        val weights = mutableListOf<Double>()
+
+        for (number in numberRange) {
+            weights.add((10 - number)/totalSum)
+        }
+
+        return if (isAscendingWeights) weights
+        else weights.asReversed()
+    }
+
+    private fun getProbWeightedNumber(numbersList: List<Int>, numbersProbList: List<Double>): Int {
+        require(numbersList.size == numbersProbList.size) {"Lists size should be equal"}
+        require(numbersList.isNotEmpty()) {"Empty lists is not allowed"}
+
+        val randomValue = Random.nextDouble()
+        var cumulativeWeight = 0.0
+
+        for (i in numbersList.indices) {
+            cumulativeWeight += numbersProbList[i]
+
+            if (randomValue <= cumulativeWeight) {
+                return numbersList[i]
+            }
+        }
+        return numbersList.last()
+    }
+
+    companion object {
+        private const val ADDITION_TEST_MIN_NUMBER = 1
+        private const val SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER = 5
+        private const val ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER = 10
+        private val UNDER_TEN_SIMPLE_TASK_NUMBERS_SET = setOf(1, 2, 8, 9)
+    }
+
+
+
+}
