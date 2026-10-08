@@ -12,13 +12,44 @@ import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESUL
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE
+import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE_PROBABILITY
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEXITY_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEXITY_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEXITY_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY
+import ru.profitsw2000.simpletestsscreen.utils.SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY
 import kotlin.random.Random
 
 class AdditionTestTaskGeneratorRepository(
@@ -52,48 +83,76 @@ class AdditionTestTaskGeneratorRepository(
         return when(taskComplexityLevel) {
             ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE ->
                 Pair(
-                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER),
-                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER)
+                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER + 1),
+                    Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER + 1)
                 )
             ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE ->
                 getConditionedProbTaskPair(
                     ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER,
-                    0.75
+                    ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE_PROBABILITY
                 )
             ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX ->
                 getConditionedProbTaskPair(
                     ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER,
-                    0.5
+                    ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX_PROBABILITY
                 )
             ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY ->
                 getConditionedProbTaskPair(
                     ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER,
-                    0.25
+                    ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY_PROBABILITY
                 )
             ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE ->
                 getUnderTwentyResultTaskPair(
-                    0.5, 0.5, 0.0
+                    SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
                 )
             ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE ->
                 getUnderTwentyResultTaskPair(
-                    0.0, 0.5, 0.5
+                    INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY,
+                    INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY,
+                    INTERMEDIATE_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
                 )
             ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX ->
                 getUnderTwentyResultTaskPair(
-                    0.0, 0.25, 0.75
+                    COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY,
+                    COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY,
+                    COMPLEX_ADDITION_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
                 )
             ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY ->
                 getUnderTwentyResultTaskPair(
-                    0.0, 0.0, 1.0
+                    HIGH_COMPLEXITY_ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE_TASK_PROBABILITY,
+                    HIGH_COMPLEXITY_TEST_UNDER_TWENTY_RESULT_MIDDLE_TASK_PROBABILITY,
+                    HIGH_COMPLEXITY_TEST_UNDER_TWENTY_RESULT_HARD_TASK_PROBABILITY
                 )
             ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE ->
-                getUnderHundredResultTaskPair(0.25, 0.25, 0.5, 0.0)
+                getUnderHundredResultTaskPair(
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY,
+                    SIMPLE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+                )
             ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE ->
-                getUnderHundredResultTaskPair(0.0, 0.25, 0.5, 0.25)
+                getUnderHundredResultTaskPair(
+                    INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY,
+                    INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY,
+                    INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY,
+                    INTERMEDIATE_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+                )
             ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX ->
-                getUnderHundredResultTaskPair(0.0, 0.0, 0.5, 0.5)
+                getUnderHundredResultTaskPair(
+                    COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY,
+                    COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY,
+                    COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY,
+                    COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+                )
             ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY ->
-                getUnderHundredResultTaskPair(0.0, 0.0, 0.25, 0.75)
+                getUnderHundredResultTaskPair(
+                    HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE_TASK_PROBABILITY,
+                    HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_MIDDLE_TASK_PROBABILITY,
+                    HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_HARD_TASK_PROBABILITY,
+                    HIGH_COMPLEX_ADDITION_TEST_UNDER_HUNDRED_RESULT_SUPER_HARD_TASK_PROBABILITY
+                )
             else ->
                 Pair(
                     Random.nextInt(ADDITION_TEST_MIN_NUMBER, SIMPLE_ADDITION_TEST_UNDER_10_MAX_RESULT_NUMBER),
@@ -168,10 +227,11 @@ class AdditionTestTaskGeneratorRepository(
 
         return when {
             randomDouble <= 0.5 -> getUnderTwentySumSimpleTaskPair()
-            firstOperand == 0 -> Pair(10, secondOperand)
-            secondOperand == 0 -> Pair(firstOperand, 10)
             randomDouble <= 0.75 -> Pair(firstOperand + 10, secondOperand)
-            randomDouble <= 1.0 -> Pair(firstOperand, secondOperand + 10)
+            randomDouble <= 1.0 -> Pair(
+                if(firstOperand != 0) firstOperand else 10,
+                if(firstOperand != 0) secondOperand + 10 else secondOperand
+            )
             else -> getUnderTwentySumSimpleTaskPair()
         }
     }
@@ -222,8 +282,8 @@ class AdditionTestTaskGeneratorRepository(
 
     private fun getTwoDigitNumbersWithUnitsSumUnderTen(): Pair<Int, Int> {
         val unitsPair = getConditionedProbTaskPair(10, 0.5)
-        val firstDecimal = Random.nextInt(1, 9)
-        val secondDecimal = Random.nextInt(0, 10 - firstDecimal)
+        val firstDecimal = Random.nextInt(1, 8)
+        val secondDecimal = Random.nextInt(1, 10 - firstDecimal)
 
         return Pair(
             10*firstDecimal + unitsPair.first,
@@ -233,8 +293,8 @@ class AdditionTestTaskGeneratorRepository(
 
     private fun getTwoDigitNumbersWithUnitsSumAboveTen(): Pair<Int, Int> {
         val unitsPair = getUnderTwentySumHardTaskPair()
-        val firstDecimal = Random.nextInt(1, 8)
-        val secondDecimal = Random.nextInt(0, 9 - firstDecimal)
+        val firstDecimal = Random.nextInt(1, 7)
+        val secondDecimal = Random.nextInt(1, 9 - firstDecimal)
 
         return Pair(
             10*firstDecimal + unitsPair.first,
