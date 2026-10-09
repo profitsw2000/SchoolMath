@@ -1,7 +1,7 @@
 package ru.profitsw2000.simpletestsscreen.data.domain.model
 
-import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
+import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 
 data class PrimitiveTestResultModel(
     val settingsModel: PrimitiveTestSettingsModel,

@@ -4,7 +4,6 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import ru.profitsw2000.core.model.PrimitiveMathTaskOperandsModel
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.core.room.mappers.MathOperationTypeConverter
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType

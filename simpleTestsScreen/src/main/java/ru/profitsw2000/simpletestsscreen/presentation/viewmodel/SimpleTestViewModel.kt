@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestResultModel
-import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestUiStateModel
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestTaskGeneratorUseCase
