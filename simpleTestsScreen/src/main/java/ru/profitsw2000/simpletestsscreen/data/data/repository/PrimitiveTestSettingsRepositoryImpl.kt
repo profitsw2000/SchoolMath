@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestSettingsModel
+import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.simpletestsscreen.data.domain.repository.PrimitiveTestSettingsRepository
 import java.io.IOException
 

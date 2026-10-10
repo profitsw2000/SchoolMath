@@ -20,7 +20,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestSettingsModel
+import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
 import java.io.File
 
