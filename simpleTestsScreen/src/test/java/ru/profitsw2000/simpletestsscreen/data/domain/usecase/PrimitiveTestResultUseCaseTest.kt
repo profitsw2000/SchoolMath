@@ -1,10 +1,9 @@
 package ru.profitsw2000.simpletestsscreen.data.domain.usecase
 
-import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathOperationType
+import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
 
 class PrimitiveTestResultUseCaseTest {

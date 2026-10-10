@@ -9,11 +9,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathOperationType
+import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
+import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestResultModel
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestUiStateModel
+import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultDbWriteUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestTaskGeneratorUseCase
 import ru.profitsw2000.simpletestsscreen.utils.FIVE_ASSESSMENT
@@ -27,7 +28,8 @@ import ru.profitsw2000.simpletestsscreen.utils.TWO_ASSESSMENT_RIGHT_ANSWERS_PERC
 
 class SimpleTestViewModel(
     private val primitiveTestSettingsUseCase: PrimitiveTestSettingsUseCase,
-    private val primitiveTestTaskGeneratorUseCase: PrimitiveTestTaskGeneratorUseCase
+    private val primitiveTestTaskGeneratorUseCase: PrimitiveTestTaskGeneratorUseCase,
+    private val primitiveTestResultDbWriteUseCase: PrimitiveTestResultDbWriteUseCase
 ): ViewModel() {
     private var primitiveMathTaskModel: PrimitiveMathTaskModel =
         PrimitiveMathTaskModel(0, 0, PrimitiveMathOperationType.ADDITION)
@@ -104,7 +106,7 @@ class SimpleTestViewModel(
         taskTimeList.add(primitiveTestUiStateFlow.value.taskTime)
     }
 
-    private fun finishTest() {
+    private suspend fun finishTest() {
         saveResultToDatabase()
         resetAll()
     }
@@ -116,7 +118,7 @@ class SimpleTestViewModel(
             testAssessment = getTestAssessment(),
             totalTimeSeconds = getTestTotalTime(),
             primitiveMathOperationType = primitiveMathTaskModel.primitiveMathOperationType,
-            primitiveTestTaskResultModelList = primitiveTestTaskResultModelList,
+            primitiveMathTaskModelList = primitiveTestTaskResultModelList,
             testResultsList = testResultsList,
             testTasksTimeList = taskTimeList
         )
@@ -199,8 +201,10 @@ class SimpleTestViewModel(
         }
     }
 
-    private fun saveResultToDatabase() {
-        TODO("Save result to database")
+    private suspend fun saveResultToDatabase() {
+        primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(
+            getPrimitiveTestResultModel()
+        )
     }
 
     private fun resetAll() {

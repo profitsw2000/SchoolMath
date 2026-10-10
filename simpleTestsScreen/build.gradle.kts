@@ -7,6 +7,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
+
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle)
     implementation(libs.androidx.core.ktx)

@@ -3,7 +3,7 @@ package ru.profitsw2000.simpletestsscreen.data.data.repository.taskgenerator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathOperationType
+import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
 import ru.profitsw2000.simpletestsscreen.data.domain.model.taskgenerator.PrimitiveTaskTablePairGenerator
 import ru.profitsw2000.simpletestsscreen.data.domain.repository.PrimitiveTestTaskGeneratorRepository
