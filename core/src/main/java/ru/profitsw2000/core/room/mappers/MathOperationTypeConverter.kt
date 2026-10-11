@@ -11,6 +11,10 @@ class MathOperationTypeConverter {
 
     @TypeConverter
     fun toMathOperationType(mathOperationType: String): PrimitiveMathOperationType {
-        return PrimitiveMathOperationType.valueOf(mathOperationType)
+        return try {
+            PrimitiveMathOperationType.valueOf(mathOperationType)
+        } catch (exc: Exception) {
+            PrimitiveMathOperationType.ADDITION
+        }
     }
 }
