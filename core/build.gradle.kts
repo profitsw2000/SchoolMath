@@ -16,6 +16,9 @@ dependencies {
     implementation(libs.androidx.paging)
     implementation(libs.kotlinx.serialization)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.io.mockk)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
