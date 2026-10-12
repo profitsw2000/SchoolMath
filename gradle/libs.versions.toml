@@ -19,6 +19,8 @@ mockk = "1.13.13"
 room_version = "2.8.4"
 recyclerview = "1.4.0"
 paging = "3.3.6"
+androidx_test = "1.6.1"
+robolectric = "4.12.2"
 
 applicationId = "ru.profitsw2000.schoolmath"
 minSdk = "28"
@@ -34,6 +36,8 @@ androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-viewmodel
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-test = { group = "androidx.test", name = "core-ktx", version.ref = "androidx_test" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
