@@ -15,6 +15,7 @@ import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskMode
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestResultModel
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestUiStateModel
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultDbWriteUseCase
+import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestTaskGeneratorUseCase
 import ru.profitsw2000.simpletestsscreen.utils.FIVE_ASSESSMENT
@@ -29,6 +30,7 @@ import ru.profitsw2000.simpletestsscreen.utils.TWO_ASSESSMENT_RIGHT_ANSWERS_PERC
 class SimpleTestViewModel(
     private val primitiveTestSettingsUseCase: PrimitiveTestSettingsUseCase,
     private val primitiveTestTaskGeneratorUseCase: PrimitiveTestTaskGeneratorUseCase,
+    private val primitiveTestResultUseCase: PrimitiveTestResultUseCase,
     private val primitiveTestResultDbWriteUseCase: PrimitiveTestResultDbWriteUseCase
 ): ViewModel() {
     private var primitiveMathTaskModel: PrimitiveMathTaskModel =
@@ -111,7 +113,7 @@ class SimpleTestViewModel(
         resetAll()
     }
 
-    private fun getPrimitiveTestResultModel(): PrimitiveTestResultModel {
+    private suspend fun getPrimitiveTestResultModel(): PrimitiveTestResultModel {
         return PrimitiveTestResultModel(
             settingsModel = primitiveTestSettingsModel,
             correctAnswersNumber = getCorrectAnswersNumber(),
@@ -124,19 +126,16 @@ class SimpleTestViewModel(
         )
     }
 
-    private fun getCorrectAnswersNumber(): Int {
+    private suspend fun getCorrectAnswersNumber(): Int {
         var correctAnswersNumber = 0
         primitiveTestTaskResultModelList.forEachIndexed { index, model ->
-            val testResult = testResultsList[index]
-            val calculatedResult = getTaskCalculationResult(model)
-
-            if (testResult == calculatedResult) correctAnswersNumber++
+            if (primitiveTestResultUseCase.checkCalculationResult(model, testResultsList[index])) correctAnswersNumber++
         }
 
         return correctAnswersNumber
     }
 
-    private fun getTestAssessment(): Int {
+    private suspend fun getTestAssessment(): Int {
         val correctAnswersPercentage = getCorrectAnswersNumber()/primitiveTestSettingsModel.testTasksNumber
 
         return when {
