@@ -17,7 +17,7 @@ interface PrimitiveTestResultDao {
             "AND (:testComplexityLevel IS NULL OR testComplexityLevel = :testComplexityLevel) " +
             "AND (:testDurationTime IS NULL OR taskDurationTimeSeconds = :testDurationTime) " +
             "ORDER BY id DESC")
-    suspend fun getPagedTestResults(
+    fun getPagedTestResults(
         primitiveMathOperationType: PrimitiveMathOperationType? = null,
         testTasksNumber: Int? = null,
         testComplexityLevel: Int? = null,

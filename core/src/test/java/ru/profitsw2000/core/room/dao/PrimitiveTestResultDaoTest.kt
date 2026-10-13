@@ -20,7 +20,7 @@ import java.io.IOException
 import kotlin.jvm.Throws
 
 @RunWith(AndroidJUnit4::class)
-@Config(manifest = Config.NONE)
+@Config(sdk = [35])
 class PrimitiveTestResultDaoTest {
 
     private lateinit var db: AppDatabase

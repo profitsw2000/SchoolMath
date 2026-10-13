@@ -16,11 +16,11 @@ datastore = "1.1.1"
 lifecycle = "2.8.7"
 ktxTest = "1.10.1"
 mockk = "1.13.13"
-room_version = "2.8.4"
+room_version = "2.8.5"
 recyclerview = "1.4.0"
 paging = "3.3.6"
 androidx_test = "1.6.1"
-robolectric = "4.12.2"
+robolectric = "4.14"
 
 applicationId = "ru.profitsw2000.schoolmath"
 minSdk = "28"
@@ -52,6 +52,8 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 io-mockk = { group = "io.mockk", name = "mockk-jvm", version.ref = "mockk" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room_version"}
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room_version" }
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room_version"}
+room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room_version" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room_version" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 androidx-paging  ={ group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
