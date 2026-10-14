@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -217,6 +218,16 @@ class SimpleTestViewModel(
         testJob?.cancel()
         testJob = null
         _primitiveTestUiStateFlow.update { PrimitiveTestUiStateModel() }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        viewModelScope.launch {
+            withContext(NonCancellable) {
+                saveResultToDatabase()
+            }
+        }
     }
 
 }

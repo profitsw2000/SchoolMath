@@ -1,5 +1,8 @@
 package ru.profitsw2000.simpletestsscreen.presentation.viewmodel
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
@@ -36,24 +39,34 @@ class SimpleTestViewModelTest {
     private val primitiveTestResultUseCase: PrimitiveTestResultUseCase = mockk()
     private val primitiveTestResultDbWriteUseCase: PrimitiveTestResultDbWriteUseCase = mockk()
 
+    private lateinit var viewModelStore: ViewModelStore
     private lateinit var simpleTestViewModel: SimpleTestViewModel
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
-        simpleTestViewModel = SimpleTestViewModel(
-            primitiveTestSettingsUseCase,
-            primitiveTestTaskGeneratorUseCase,
-            primitiveTestResultUseCase,
-            primitiveTestResultDbWriteUseCase,
-            testDispatcher
-        )
+        viewModelStore = ViewModelStore()
+        val factory = object : ViewModelProvider.Factory{
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return SimpleTestViewModel(
+                    primitiveTestSettingsUseCase,
+                    primitiveTestTaskGeneratorUseCase,
+                    primitiveTestResultUseCase,
+                    primitiveTestResultDbWriteUseCase,
+                    testDispatcher
+                ) as T
+            }
+        }
+        val provider = ViewModelProvider(viewModelStore, factory)
+
+        simpleTestViewModel = provider.get(SimpleTestViewModel::class.java)
     }
 
     @After
     fun tearDown() {
         Dispatchers.resetMain()
+        viewModelStore.clear()
     }
 
     @Test
@@ -209,6 +222,35 @@ class SimpleTestViewModelTest {
         val finalState = simpleTestViewModel.primitiveTestUiStateFlow.value
         assertFalse(finalState.testIsRunning)
         assertEquals(1, finalState.taskNumber)
+    }
+
+    @Test
+    fun `при уничтожении вью модели все задачи отменяются`() = runTest {
+        val operation = PrimitiveMathOperationType.ADDITION
+        val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 10,
+            taskDurationTimeSeconds = 20,
+            testComplexityLevel = 1
+        )
+        val task = PrimitiveMathTaskModel(2, 2, operation)
+
+        coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
+        coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
+
+        simpleTestViewModel.startTest(operation)
+        runCurrent()
+
+        advanceTimeBy(6000)
+        runCurrent()
+        assertEquals(6, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
+
+        viewModelStore.clear()
+        runCurrent()
+
+        advanceTimeBy(2000)
+        runCurrent()
+
+        assertEquals(6, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
     }
 
 }
@@ -417,3 +459,66 @@ fun `тест корректно завершается при комбинац�
     assertEquals(8, finalResult.totalTimeSeconds)     // Суммарное время: 2 + 5 + 1 = 8 секунд
 }
 */
+/*
+
+@Test
+fun `при уничтожении вью модели результат сохраняется в БД`() = runTest {
+    val operation = PrimitiveMathOperationType.ADDITION
+    val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
+        testTasksNumber = 10,
+        taskDurationTimeSeconds = 10,
+        testComplexityLevel = 1
+    )
+    val task = PrimitiveMathTaskModel(2, 2, operation)
+    val result = PrimitiveTestResultModel(
+        settingsModel = primitiveTestSettingsModel,
+        correctAnswersNumber = 4,
+        testAssessment = 2,
+        totalTimeSeconds = 22,
+        primitiveMathOperationType = operation,
+        primitiveMathTaskModelList = listOf(task, task, task, task, task),
+        testResultsList = listOf(4, 4, 4, 4, -1),
+        testTasksTimeList = listOf(3, 3, 3, 3, 10)
+    )
+
+    coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
+    coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
+    coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), -1) } returns false
+    coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), 4) } returns false
+    coJustRun { primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(any()) }
+
+    simpleTestViewModel.startTest(operation)
+    runCurrent()
+
+    advanceTimeBy(3000)
+    simpleTestViewModel.appendAnswerResult(4)
+    runCurrent()
+
+    advanceTimeBy(3000)
+    simpleTestViewModel.appendAnswerResult(4)
+    runCurrent()
+
+    advanceTimeBy(3000)
+    simpleTestViewModel.appendAnswerResult(4)
+    runCurrent()
+
+    advanceTimeBy(3000)
+    simpleTestViewModel.appendAnswerResult(4)
+    runCurrent()
+
+    advanceTimeBy(10000)
+    runCurrent()
+    assertEquals(0, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
+
+    advanceTimeBy(1000)
+    runCurrent()
+
+    viewModelStore.clear()
+    runCurrent()
+
+    coVerify(exactly = 1) {
+        primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(any())
+    }
+
+    //assertEquals(6, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
+}*/
