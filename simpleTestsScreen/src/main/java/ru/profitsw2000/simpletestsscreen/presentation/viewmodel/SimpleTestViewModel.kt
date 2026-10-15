@@ -72,14 +72,12 @@ class SimpleTestViewModel(
                 delay(1000L)
                 val currentTaskTime = primitiveTestUiStateFlow.value.taskTime + 1
                 val totalTaskTime = primitiveTestUiStateFlow.value.totalTaskTime
-
+                _primitiveTestUiStateFlow.update {
+                    it.copy(taskTime = currentTaskTime)
+                }
                 if (currentTaskTime >= totalTaskTime) {
                     nextTask(-1)
                     break
-                } else {
-                    _primitiveTestUiStateFlow.update {
-                        it.copy(taskTime = currentTaskTime)
-                    }
                 }
             }
         }

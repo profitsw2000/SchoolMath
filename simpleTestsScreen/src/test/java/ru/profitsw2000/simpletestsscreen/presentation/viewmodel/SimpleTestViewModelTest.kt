@@ -271,6 +271,16 @@ class SimpleTestViewModelTest {
             testComplexityLevel = 1
         )
         val task = PrimitiveMathTaskModel(2, 2, operation)
+        val expectedResult = PrimitiveTestResultModel(
+            settingsModel = primitiveTestSettingsModel,
+            correctAnswersNumber = 4,
+            testAssessment = 2,
+            totalTimeSeconds = 22,
+            primitiveMathOperationType = PrimitiveMathOperationType.ADDITION,
+            primitiveMathTaskModelList = listOf(task, task, task, task, task),
+            testResultsList = listOf(4, 4, 4, 4, -1),
+            testTasksTimeList = listOf(3,3,3,3,10)
+        )
 
         coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
         coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
@@ -284,23 +294,23 @@ class SimpleTestViewModelTest {
         simpleTestViewModel.startTest(operation)
         runCurrent()
 
-        advanceTimeBy(3000)
+        advanceTimeBy(3100)
         simpleTestViewModel.appendAnswerResult(4)
         runCurrent()
 
-        advanceTimeBy(3000)
+        advanceTimeBy(3100)
         simpleTestViewModel.appendAnswerResult(4)
         runCurrent()
 
-        advanceTimeBy(3000)
+        advanceTimeBy(3100)
         simpleTestViewModel.appendAnswerResult(4)
         runCurrent()
 
-        advanceTimeBy(3000)
+        advanceTimeBy(3100)
         simpleTestViewModel.appendAnswerResult(4)
         runCurrent()
 
-        advanceTimeBy(10000)
+        advanceTimeBy(10100)
         runCurrent()
         assertEquals(0, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
 
@@ -310,7 +320,87 @@ class SimpleTestViewModelTest {
         viewModelStore.clear()
         advanceUntilIdle()
 
-        //assertEquals(6, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
+        coVerify(exactly = 1) {
+            primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(any())
+        }
+
+        val capturedResult = resultSlot.captured
+
+        assertEquals(expectedResult, capturedResult)
+    }
+
+    @Test
+    fun `запись в БД результата проверки на тройку`() = runTest(mainDispatcherRule.testDispatcher) {
+        val operation = PrimitiveMathOperationType.ADDITION
+        val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 10,
+            taskDurationTimeSeconds = 10,
+            testComplexityLevel = 1
+        )
+        val task = PrimitiveMathTaskModel(2, 2, operation)
+        val expectedResult = PrimitiveTestResultModel(
+            settingsModel = primitiveTestSettingsModel,
+            correctAnswersNumber = 8,
+            testAssessment = 3,
+            totalTimeSeconds = 37,
+            primitiveMathOperationType = PrimitiveMathOperationType.ADDITION,
+            primitiveMathTaskModelList = listOf(task, task, task, task, task, task, task, task, task, task),
+            testResultsList = listOf(4, 4, 4, 4, -1, 4, 4, 4, 4, 5),
+            testTasksTimeList = listOf(3,3,3,3,10,3,3,3,3,3)
+        )
+
+        coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
+        coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), 4) } returns true
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), 5) } returns false
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), -1) } returns false
+
+        val resultSlot = slot<PrimitiveTestResultModel>()
+
+        coEvery { primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(capture(resultSlot)) } returns Unit
+
+        simpleTestViewModel.startTest(operation)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(10100)
+        runCurrent()
+        //assertEquals(0, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(5)
+        advanceUntilIdle()
 
         coVerify(exactly = 1) {
             primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(any())
@@ -318,275 +408,171 @@ class SimpleTestViewModelTest {
 
         val capturedResult = resultSlot.captured
 
-        assertEquals(4, capturedResult.correctAnswersNumber)
+        assertEquals(expectedResult, capturedResult)
     }
 
-}
-/*
+    @Test
+    fun `запись в БД результата проверки на четвёрку`() = runTest(mainDispatcherRule.testDispatcher) {
+        val operation = PrimitiveMathOperationType.ADDITION
+        val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 10,
+            taskDurationTimeSeconds = 10,
+            testComplexityLevel = 1
+        )
+        val task = PrimitiveMathTaskModel(2, 2, operation)
+        val expectedResult = PrimitiveTestResultModel(
+            settingsModel = primitiveTestSettingsModel,
+            correctAnswersNumber = 9,
+            testAssessment = 4,
+            totalTimeSeconds = 30,
+            primitiveMathOperationType = PrimitiveMathOperationType.ADDITION,
+            primitiveMathTaskModelList = listOf(task, task, task, task, task, task, task, task, task, task),
+            testResultsList = listOf(4, 4, 4, 4, 4, 4, 4, 4, 4, 5),
+            testTasksTimeList = listOf(3,3,3,3,3,3,3,3,3,3)
+        )
 
-@Test
-fun `при уничтожении ViewModel все фоновые задачи и таймер отменяются`() = runTest {
-    val operation = PrimitiveMathOperationType.ADDITION
-    val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
-        testTasksNumber = 10,
-        taskDurationTimeSeconds = 60,
-        testComplexityLevel = 1
-    )
-    val task = PrimitiveMathTaskModel(2, 2, operation)
+        coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
+        coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), 4) } returns true
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), 5) } returns false
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), -1) } returns false
 
-    coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
-    coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
+        val resultSlot = slot<PrimitiveTestResultModel>()
 
-    // 1. Запускаем тест и активируем таймер
-    simpleTestViewModel.startTest(operation)
-    runCurrent()
+        coEvery { primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(capture(resultSlot)) } returns Unit
 
-    // Проверяем, что таймер успел потикать (прошла 1 секунда)
-    advanceTimeBy(1000)
-    runCurrent()
-    assertEquals(1, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
+        simpleTestViewModel.startTest(operation)
+        runCurrent()
 
-    // 2. Имитируем уничтожение ViewModel (выход из Фрагмента).
-    // Так как метод onCleared() имеет статус protected, вызываем его через рефлексию:
-    val onClearedMethod = simpleTestViewModel.javaClass.superclass.getDeclaredMethod("onCleared")
-    onClearedMethod.isAccessible = true
-    onClearedMethod.invoke(simpleTestViewModel)
-    runCurrent()
-
-    // 3. Проматываем время дальше (еще на 3 секунды вперед)
-    advanceTimeBy(3000)
-    runCurrent()
-
-    // 4. Проверяем, что таймер ОСТАНОВИЛСЯ и время больше НЕ увеличивается.
-    // Если бы ViewModel не уничтожилась, время стало бы равным 4 (1 + 3).
-    // Но так как корутины отменились, оно жестко застыло на 1.
-    assertEquals(1, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
-}*/
-/*
-
-@Test
-fun `выставление оценки 5 при 100 процентов правильных ответов`() = runTest {
-    val operation = PrimitiveMathOperationType.ADDITION
-    val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
-        testTasksNumber = 2, // 2 вопроса
-        taskDurationTimeSeconds = 10,
-        testComplexityLevel = 1
-    )
-    val task = PrimitiveMathTaskModel(2, 2, operation)
-
-    coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
-    coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
-
-    // Симулируем, что ВСЕ ответы верны
-    coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), any()) } returns true
-
-    // Создаем слот для перехвата итоговой модели, отправляемой в БД
-    val resultSlot = io.mockk.slot<PrimitiveTestResultModel>()
-    coJustRun { primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(capture(resultSlot)) }
-
-    // Запуск
-    simpleTestViewModel.startTest(operation)
-    runCurrent()
-
-    // Даем два ответа
-    simpleTestViewModel.appendAnswerResult(4)
-    runCurrent()
-    simpleTestViewModel.appendAnswerResult(4)
-    runCurrent()
-
-    // Проверяем, что в базу записалась отличная оценка (Замени на свою константу, например FIVE_ASSESSMENT)
-    val capturedResult = resultSlot.captured
-    assertEquals(2, capturedResult.correctAnswersNumber) // 2 из 2 верно
-    // На месте цифры 5 должна быть твоя константа FIVE_ASSESSMENT:
-    assertEquals(5, capturedResult.testAssessment)
-}
-
-@Test
-fun `выставление плохой оценки при 0 процентов правильных ответов`() = runTest {
-    val operation = PrimitiveMathOperationType.ADDITION
-    val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
-        testTasksNumber = 2,
-        taskDurationTimeSeconds = 10,
-        testComplexityLevel = 1
-    )
-    val task = PrimitiveMathTaskModel(2, 2, operation)
-
-    coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
-    coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
-
-    // Симулируем, что ВСЕ ответы НЕВЕРНЫ
-    coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), any()) } returns false
-
-    val resultSlot = io.mockk.slot<PrimitiveTestResultModel>()
-    coJustRun { primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(capture(resultSlot)) }
-
-    simpleTestViewModel.startTest(operation)
-    runCurrent()
-
-    simpleTestViewModel.appendAnswerResult(99) // заведомо неверный
-    runCurrent()
-    simpleTestViewModel.appendAnswerResult(99)
-    runCurrent()
-
-    val capturedResult = resultSlot.captured
-    assertEquals(0, capturedResult.correctAnswersNumber) // 0 из 2 верно
-    // На месте цифры 2 должна быть твоя константа TWO_ASSESSMENT:
-    assertEquals(2, capturedResult.testAssessment)
-}
-
-@Test
-fun `выставление средней оценки при части правильных ответов`() = runTest {
-    val operation = PrimitiveMathOperationType.ADDITION
-    val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
-        testTasksNumber = 4, // возьмем 4 вопроса для ровного деления
-        taskDurationTimeSeconds = 10,
-        testComplexityLevel = 1
-    )
-    val task = PrimitiveMathTaskModel(2, 2, operation)
-
-    coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
-    coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
-
-    // Настраиваем поочередный ответ: 1-й верный, 2-й неверный, 3-й верный, 4-й неверный (итого 50%)
-    coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), any()) } returnsMany listOf(true, false, true, false)
-
-    val resultSlot = io.mockk.slot<PrimitiveTestResultModel>()
-    coJustRun { primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(capture(resultSlot)) }
-
-    simpleTestViewModel.startTest(operation)
-    runCurrent()
-
-    // Проходим все 4 вопроса
-    repeat(4) {
+        advanceTimeBy(3100)
         simpleTestViewModel.appendAnswerResult(4)
         runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(5)
+        advanceUntilIdle()
+
+        coVerify(exactly = 1) {
+            primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(any())
+        }
+
+        val capturedResult = resultSlot.captured
+
+        assertEquals(expectedResult, capturedResult)
     }
 
-    val capturedResult = resultSlot.captured
-    assertEquals(2, capturedResult.correctAnswersNumber) // 2 из 4 верно (50%)
+    @Test
+    fun `запись в БД результата проверки на пятёрку`() = runTest(mainDispatcherRule.testDispatcher) {
+        val operation = PrimitiveMathOperationType.ADDITION
+        val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 10,
+            taskDurationTimeSeconds = 10,
+            testComplexityLevel = 1
+        )
+        val task = PrimitiveMathTaskModel(2, 2, operation)
+        val expectedResult = PrimitiveTestResultModel(
+            settingsModel = primitiveTestSettingsModel,
+            correctAnswersNumber = 10,
+            testAssessment = 5,
+            totalTimeSeconds = 34,
+            primitiveMathOperationType = PrimitiveMathOperationType.ADDITION,
+            primitiveMathTaskModelList = listOf(task, task, task, task, task, task, task, task, task, task),
+            testResultsList = listOf(4, 4, 4, 4, 4, 4, 4, 4, 4, 4),
+            testTasksTimeList = listOf(3,3,5,5,3,3,3,3,3,3)
+        )
 
-    // Здесь проверяем, какая оценка должна быть при 50% правильных ответов.
-    // Подставь константу, под которую подпадает 0.5 (например, THREE_ASSESSMENT)
-    assertEquals(3, capturedResult.testAssessment)
-}
-В третьем тесте используется классная фича MockK — returnsMany. При первом вызове checkCalculationResult мок вернет true, при втором — false, при третьем — снова true и так далее. Это позволяет легко симулировать реальное прохождение теста с ошибками, не усложняя код.
-Попробуй подставить свои константные оценки вместо жестко прописанных 5, 2 и 3.
-*/
-/*
+        coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
+        coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), 4) } returns true
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), 5) } returns false
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), -1) } returns false
 
-@Test
-fun `тест корректно завершается при комбинации ручных ответов и пропуска по таймеру`() = runTest {
-    val operation = PrimitiveMathOperationType.ADDITION
-    val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
-        testTasksNumber = 3,          // Всего 3 вопроса в тесте
-        taskDurationTimeSeconds = 5,  // 5 секунд на каждый вопрос
-        testComplexityLevel = 1
-    )
-    val task = PrimitiveMathTaskModel(3, 3, operation)
+        val resultSlot = slot<PrimitiveTestResultModel>()
 
-    coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
-    coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
+        coEvery { primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(capture(resultSlot)) } returns Unit
 
-    // Мокаем проверку: пусть ручные ответы будут верными, а пропуск (-1) — неверным
-    coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), 6) } returns true
-    coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), -1) } returns false
+        simpleTestViewModel.startTest(operation)
+        runCurrent()
 
-    val resultSlot = io.mockk.slot<PrimitiveTestResultModel>()
-    coJustRun { primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(capture(resultSlot)) }
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
 
-    // Инициализация теста
-    simpleTestViewModel.startTest(operation)
-    runCurrent()
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
 
-    // --- ВОПРОС 1 ---
-    // Думаем 2 секунды и вручную отвечаем "6"
-    advanceTimeBy(2000)
-    simpleTestViewModel.appendAnswerResult(6)
-    runCurrent()
+        advanceTimeBy(5100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
 
-    // --- ВОПРОС 2 ---
-    // Ничего не нажимаем. Ждем 5 секунд, пока время полностью выйдет (таймаут)
-    advanceTimeBy(5000)
-    runCurrent()
+        advanceTimeBy(5100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
 
-    // --- ВОПРОС 3 (Последний) ---
-    // Думаем 1 секунду и вручную отвечаем "6"
-    advanceTimeBy(1000)
-    simpleTestViewModel.appendAnswerResult(6)
-    runCurrent()
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
 
-    // --- ПРОВЕРКИ ---
-    val finalResult = resultSlot.captured
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
 
-    // 1. Проверяем, что в базу ушли правильные списки ответов и времени
-    assertEquals(listOf(6, -1, 6), finalResult.testResultsList)   // [Ответ, Пропуск, Ответ]
-    assertEquals(listOf(2, 5, 1), finalResult.testTasksTimeList)  // [2 сек, 5 сек, 1 сек]
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
 
-    // 2. Проверяем расчет времени и правильных ответов
-    assertEquals(2, finalResult.correctAnswersNumber) // 2 верных из 3
-    assertEquals(8, finalResult.totalTimeSeconds)     // Суммарное время: 2 + 5 + 1 = 8 секунд
-}
-*/
-/*
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
 
-@Test
-fun `при уничтожении вью модели результат сохраняется в БД`() = runTest {
-    val operation = PrimitiveMathOperationType.ADDITION
-    val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
-        testTasksNumber = 10,
-        taskDurationTimeSeconds = 10,
-        testComplexityLevel = 1
-    )
-    val task = PrimitiveMathTaskModel(2, 2, operation)
-    val result = PrimitiveTestResultModel(
-        settingsModel = primitiveTestSettingsModel,
-        correctAnswersNumber = 4,
-        testAssessment = 2,
-        totalTimeSeconds = 22,
-        primitiveMathOperationType = operation,
-        primitiveMathTaskModelList = listOf(task, task, task, task, task),
-        testResultsList = listOf(4, 4, 4, 4, -1),
-        testTasksTimeList = listOf(3, 3, 3, 3, 10)
-    )
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
 
-    coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
-    coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
-    coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), -1) } returns false
-    coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), 4) } returns false
-    coJustRun { primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(any()) }
+        advanceTimeBy(3100)
+        simpleTestViewModel.appendAnswerResult(4)
+        advanceUntilIdle()
 
-    simpleTestViewModel.startTest(operation)
-    runCurrent()
+        coVerify(exactly = 1) {
+            primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(any())
+        }
 
-    advanceTimeBy(3000)
-    simpleTestViewModel.appendAnswerResult(4)
-    runCurrent()
+        val capturedResult = resultSlot.captured
 
-    advanceTimeBy(3000)
-    simpleTestViewModel.appendAnswerResult(4)
-    runCurrent()
-
-    advanceTimeBy(3000)
-    simpleTestViewModel.appendAnswerResult(4)
-    runCurrent()
-
-    advanceTimeBy(3000)
-    simpleTestViewModel.appendAnswerResult(4)
-    runCurrent()
-
-    advanceTimeBy(10000)
-    runCurrent()
-    assertEquals(0, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
-
-    advanceTimeBy(1000)
-    runCurrent()
-
-    viewModelStore.clear()
-    runCurrent()
-
-    coVerify(exactly = 1) {
-        primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(any())
+        assertEquals(expectedResult, capturedResult)
     }
 
-    //assertEquals(6, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
-}*/
+}
