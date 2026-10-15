@@ -3,9 +3,11 @@ package ru.profitsw2000.simpletestsscreen.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,7 +39,8 @@ class SimpleTestViewModel(
     private val primitiveTestTaskGeneratorUseCase: PrimitiveTestTaskGeneratorUseCase,
     private val primitiveTestResultUseCase: PrimitiveTestResultUseCase,
     private val primitiveTestResultDbWriteUseCase: PrimitiveTestResultDbWriteUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val externalScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 ): ViewModel() {
     private var primitiveMathTaskModel: PrimitiveMathTaskModel =
         PrimitiveMathTaskModel(0, 0, PrimitiveMathOperationType.ADDITION)
@@ -223,7 +226,7 @@ class SimpleTestViewModel(
     override fun onCleared() {
         super.onCleared()
 
-        viewModelScope.launch {
+        externalScope.launch(ioDispatcher) {
             withContext(NonCancellable) {
                 saveResultToDatabase()
             }

@@ -8,11 +8,14 @@ import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.slot
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.currentTime
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runCurrent
@@ -21,10 +24,13 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
+import ru.profitsw2000.simpletestsscreen.coroutines.MainDispatcherRule
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
+import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestResultModel
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultDbWriteUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestSettingsUseCase
@@ -32,7 +38,9 @@ import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestTaskGe
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SimpleTestViewModelTest {
-    private val testDispatcher = StandardTestDispatcher()
+    //private val testDispatcher = StandardTestDispatcher()
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val primitiveTestSettingsUseCase: PrimitiveTestSettingsUseCase = mockk()
     private val primitiveTestTaskGeneratorUseCase: PrimitiveTestTaskGeneratorUseCase = mockk()
@@ -44,7 +52,7 @@ class SimpleTestViewModelTest {
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(testDispatcher)
+        //Dispatchers.setMain(testDispatcher)
 
         viewModelStore = ViewModelStore()
         val factory = object : ViewModelProvider.Factory{
@@ -54,7 +62,8 @@ class SimpleTestViewModelTest {
                     primitiveTestTaskGeneratorUseCase,
                     primitiveTestResultUseCase,
                     primitiveTestResultDbWriteUseCase,
-                    testDispatcher
+                    mainDispatcherRule.testDispatcher,
+                    TestScope(mainDispatcherRule.testDispatcher)
                 ) as T
             }
         }
@@ -65,12 +74,12 @@ class SimpleTestViewModelTest {
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
+        //Dispatchers.resetMain()
         viewModelStore.clear()
     }
 
     @Test
-    fun `загрузка настроек теста и первого примера`() = runTest {
+    fun `загрузка настроек теста и первого примера`() = runTest(mainDispatcherRule.testDispatcher) {
         val operation = PrimitiveMathOperationType.ADDITION
         val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
             testTasksNumber = 11,
@@ -97,7 +106,7 @@ class SimpleTestViewModelTest {
     }
 
     @Test
-    fun `таймер тикает каждую секунду`() = runTest {
+    fun `таймер тикает каждую секунду`() = runTest(mainDispatcherRule.testDispatcher) {
         val operation = PrimitiveMathOperationType.ADDITION
         val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
             testTasksNumber = 10,
@@ -122,7 +131,7 @@ class SimpleTestViewModelTest {
     }
 
     @Test
-    fun `переход на следующее задание при истечении времени таймера`() = runTest {
+    fun `переход на следующее задание при истечении времени таймера`() = runTest(mainDispatcherRule.testDispatcher) {
         val operation = PrimitiveMathOperationType.ADDITION
         val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
             testTasksNumber = 10,
@@ -148,7 +157,7 @@ class SimpleTestViewModelTest {
     }
 
     @Test
-    fun `переход на следующее задание при ответе пользователя`() = runTest {
+    fun `переход на следующее задание при ответе пользователя`() = runTest(mainDispatcherRule.testDispatcher) {
         val operation = PrimitiveMathOperationType.ADDITION
         val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
             testTasksNumber = 10,
@@ -178,7 +187,7 @@ class SimpleTestViewModelTest {
     }
 
     @Test
-    fun `завершение теста, расчёт результатов, запись в БД, сброс состояния`() = runTest {
+    fun `завершение теста, расчёт результатов, запись в БД, сброс состояния`() = runTest(mainDispatcherRule.testDispatcher) {
         val operation = PrimitiveMathOperationType.ADDITION
         val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
             testTasksNumber = 5,
@@ -225,7 +234,7 @@ class SimpleTestViewModelTest {
     }
 
     @Test
-    fun `при уничтожении вью модели все задачи отменяются`() = runTest {
+    fun `при уничтожении вью модели все задачи отменяются`() = runTest(mainDispatcherRule.testDispatcher) {
         val operation = PrimitiveMathOperationType.ADDITION
         val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
             testTasksNumber = 10,
@@ -251,6 +260,65 @@ class SimpleTestViewModelTest {
         runCurrent()
 
         assertEquals(6, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
+    }
+
+    @Test
+    fun `при уничтожении вью модели результат сохраняется в БД`() = runTest(mainDispatcherRule.testDispatcher) {
+        val operation = PrimitiveMathOperationType.ADDITION
+        val primitiveTestSettingsModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 10,
+            taskDurationTimeSeconds = 10,
+            testComplexityLevel = 1
+        )
+        val task = PrimitiveMathTaskModel(2, 2, operation)
+
+        coEvery { primitiveTestSettingsUseCase.getTestSettings(operation) } returns primitiveTestSettingsModel
+        coEvery { primitiveTestTaskGeneratorUseCase.getAdditionTask(any()) } returns task
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), 4) } returns true
+        coEvery { primitiveTestResultUseCase.checkCalculationResult(any(), -1) } returns false
+
+        val resultSlot = slot<PrimitiveTestResultModel>()
+
+        coEvery { primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(capture(resultSlot)) } returns Unit
+
+        simpleTestViewModel.startTest(operation)
+        runCurrent()
+
+        advanceTimeBy(3000)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3000)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3000)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(3000)
+        simpleTestViewModel.appendAnswerResult(4)
+        runCurrent()
+
+        advanceTimeBy(10000)
+        runCurrent()
+        assertEquals(0, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
+
+        advanceTimeBy(1000)
+        runCurrent()
+
+        viewModelStore.clear()
+        advanceUntilIdle()
+
+        //assertEquals(6, simpleTestViewModel.primitiveTestUiStateFlow.value.taskTime)
+
+        coVerify(exactly = 1) {
+            primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(any())
+        }
+
+        val capturedResult = resultSlot.captured
+
+        assertEquals(4, capturedResult.correctAnswersNumber)
     }
 
 }
