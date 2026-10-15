@@ -21,6 +21,10 @@ internal fun Project.configureKotlinAndroid(
             targetCompatibility = JavaVersion.VERSION_17
         }
 
+        testOptions.unitTests {
+            isIncludeAndroidResources = true
+        }
+
         buildFeatures.viewBinding = true
     }
 
