@@ -42,9 +42,6 @@ class SimpleTestViewModel(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val externalScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 ): ViewModel() {
-
-    private var isTestCompleted: Boolean = false
-
     private var primitiveMathTaskModel: PrimitiveMathTaskModel =
         PrimitiveMathTaskModel(0, 0, PrimitiveMathOperationType.ADDITION)
     private var primitiveTestSettingsModel = PrimitiveTestSettingsModel()
@@ -70,6 +67,47 @@ class SimpleTestViewModel(
         }
     }
 
+    fun appendAnswerResult(taskResult: Int) {
+        testJob?.cancel()
+
+        viewModelScope.launch {
+            nextTask(taskResult)
+        }
+    }
+
+    private suspend fun setInitialState(
+        primitiveMathOperationType: PrimitiveMathOperationType
+    ) {
+        primitiveTestSettingsModel = primitiveTestSettingsUseCase.getTestSettings(primitiveMathOperationType)
+
+        primitiveTestTaskResultModelList.clear()
+        testResultsList.clear()
+        taskTimeList.clear()
+
+        _primitiveTestUiStateFlow.update {
+            PrimitiveTestUiStateModel(
+                primitiveMathOperationType = primitiveMathOperationType,
+                totalTaskTime = primitiveTestSettingsModel.taskDurationTimeSeconds,
+                totalTaskNumber = primitiveTestSettingsModel.testTasksNumber,
+                taskTime = 0,
+                taskNumber = 1,
+                testComplexity = primitiveTestSettingsModel.testComplexityLevel,
+                testSettingsIsLoaded = true,
+                testIsCompleted = false
+            )
+        }
+    }
+
+    private suspend fun updateTask(testComplexityLevel: Int) {
+        primitiveMathTaskModel = primitiveTestTaskGeneratorUseCase.getAdditionTask(testComplexityLevel)
+        _primitiveTestUiStateFlow.update {
+            it.copy(
+                firstOperand = primitiveMathTaskModel.firstOperand,
+                secondOperand = primitiveMathTaskModel.secondOperand
+            )
+        }
+    }
+
     private fun runTimerLoop() {
         testJob?.cancel()
 
@@ -86,14 +124,6 @@ class SimpleTestViewModel(
                     break
                 }
             }
-        }
-    }
-
-    fun appendAnswerResult(taskResult: Int) {
-        testJob?.cancel()
-
-        viewModelScope.launch {
-            nextTask(taskResult)
         }
     }
 
@@ -124,8 +154,12 @@ class SimpleTestViewModel(
     }
 
     private suspend fun finishTest() {
-        testJob?.cancel()
-        isTestCompleted = true
+        _primitiveTestUiStateFlow.update {
+            it.copy(
+                testSettingsIsLoaded = false,
+                testIsCompleted = true
+            )
+        }
         saveResultToDatabase()
         resetAll()
     }
@@ -169,54 +203,7 @@ class SimpleTestViewModel(
         }
     }
 
-    private fun getTaskCalculationResult(primitiveMathTaskModel: PrimitiveMathTaskModel): Int {
-
-        return when(primitiveMathTaskModel.primitiveMathOperationType) {
-            PrimitiveMathOperationType.ADDITION ->
-                primitiveMathTaskModel.firstOperand + primitiveMathTaskModel.secondOperand
-            PrimitiveMathOperationType.SUBTRACTION ->
-                primitiveMathTaskModel.firstOperand - primitiveMathTaskModel.secondOperand
-            PrimitiveMathOperationType.MULTIPLICATION ->
-                primitiveMathTaskModel.firstOperand * primitiveMathTaskModel.secondOperand
-            PrimitiveMathOperationType.DIVISION ->
-                primitiveMathTaskModel.firstOperand / primitiveMathTaskModel.secondOperand
-        }
-    }
-
     private fun getTestTotalTime(): Int = taskTimeList.sum()
-
-    private suspend fun setInitialState(
-        primitiveMathOperationType: PrimitiveMathOperationType
-    ) {
-        primitiveTestSettingsModel = primitiveTestSettingsUseCase.getTestSettings(primitiveMathOperationType)
-
-        primitiveTestTaskResultModelList.clear()
-        testResultsList.clear()
-        taskTimeList.clear()
-
-        _primitiveTestUiStateFlow.update {
-            PrimitiveTestUiStateModel(
-                primitiveMathOperationType = primitiveMathOperationType,
-                totalTaskTime = primitiveTestSettingsModel.taskDurationTimeSeconds,
-                totalTaskNumber = primitiveTestSettingsModel.testTasksNumber,
-                taskTime = 0,
-                taskNumber = 1,
-                testComplexity = primitiveTestSettingsModel.testComplexityLevel,
-                testIsCompleted = true
-            )
-        }
-
-    }
-
-    private suspend fun updateTask(testComplexityLevel: Int) {
-        primitiveMathTaskModel = primitiveTestTaskGeneratorUseCase.getAdditionTask(testComplexityLevel)
-        _primitiveTestUiStateFlow.update {
-            it.copy(
-                firstOperand = primitiveMathTaskModel.firstOperand,
-                secondOperand = primitiveMathTaskModel.secondOperand
-            )
-        }
-    }
 
     private suspend fun saveResultToDatabase() {
         withContext(ioDispatcher) {
@@ -229,12 +216,12 @@ class SimpleTestViewModel(
     private fun resetAll() {
         testJob?.cancel()
         testJob = null
-        _primitiveTestUiStateFlow.update { PrimitiveTestUiStateModel() }
+        //_primitiveTestUiStateFlow.update { PrimitiveTestUiStateModel() }
     }
 
     override fun onCleared() {
         super.onCleared()
-        if (!isTestCompleted) {
+        if (!primitiveTestUiStateFlow.value.testIsCompleted) {
             externalScope.launch(ioDispatcher) {
                 withContext(NonCancellable) {
                     saveResultToDatabase()
