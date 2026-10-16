@@ -154,6 +154,7 @@ class SimpleTestViewModel(
     }
 
     private suspend fun finishTest() {
+        testJob?.cancel()
         _primitiveTestUiStateFlow.update {
             it.copy(
                 testSettingsIsLoaded = false,
@@ -216,7 +217,7 @@ class SimpleTestViewModel(
     private fun resetAll() {
         testJob?.cancel()
         testJob = null
-        //_primitiveTestUiStateFlow.update { PrimitiveTestUiStateModel() }
+        _primitiveTestUiStateFlow.update { PrimitiveTestUiStateModel() }
     }
 
     override fun onCleared() {

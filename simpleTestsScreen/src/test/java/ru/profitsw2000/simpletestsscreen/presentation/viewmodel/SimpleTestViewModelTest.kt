@@ -88,7 +88,7 @@ class SimpleTestViewModelTest {
         runCurrent()
 
         val state = simpleTestViewModel.primitiveTestUiStateFlow.value
-        assertTrue(state.testIsCompleted)
+        assertFalse(state.testIsCompleted)
         assertEquals(4, state.firstOperand)
         assertEquals(3, state.secondOperand)
         assertEquals(20, state.totalTaskTime)
