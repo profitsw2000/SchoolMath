@@ -202,7 +202,7 @@ class SimpleTestViewModel(
                 taskTime = 0,
                 taskNumber = 1,
                 testComplexity = primitiveTestSettingsModel.testComplexityLevel,
-                testIsRunning = true
+                testIsCompleted = true
             )
         }
 

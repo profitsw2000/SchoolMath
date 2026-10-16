@@ -7,20 +7,13 @@ import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.slot
-import io.mockk.unmockkStatic
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.currentTime
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -95,7 +88,7 @@ class SimpleTestViewModelTest {
         runCurrent()
 
         val state = simpleTestViewModel.primitiveTestUiStateFlow.value
-        assertTrue(state.testIsRunning)
+        assertTrue(state.testIsCompleted)
         assertEquals(4, state.firstOperand)
         assertEquals(3, state.secondOperand)
         assertEquals(20, state.totalTaskTime)
@@ -229,7 +222,7 @@ class SimpleTestViewModelTest {
         }
 
         val finalState = simpleTestViewModel.primitiveTestUiStateFlow.value
-        assertFalse(finalState.testIsRunning)
+        assertFalse(finalState.testIsCompleted)
         assertEquals(1, finalState.taskNumber)
     }
 
