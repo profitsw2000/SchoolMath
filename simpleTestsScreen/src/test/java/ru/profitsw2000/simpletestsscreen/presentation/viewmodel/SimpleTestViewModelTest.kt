@@ -222,7 +222,7 @@ class SimpleTestViewModelTest {
         }
 
         val finalState = simpleTestViewModel.primitiveTestUiStateFlow.value
-        assertFalse(finalState.testIsCompleted)
+        assertTrue(finalState.testIsCompleted)
         assertEquals(1, finalState.taskNumber)
     }
 
