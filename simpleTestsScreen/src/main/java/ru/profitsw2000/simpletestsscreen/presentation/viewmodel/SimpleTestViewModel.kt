@@ -166,6 +166,7 @@ class SimpleTestViewModel(
     }
 
     private suspend fun getPrimitiveTestResultModel(): PrimitiveTestResultModel {
+        getTestTotalTime()
         val result = PrimitiveTestResultModel(
             settingsModel = primitiveTestSettingsModel,
             correctAnswersNumber = getCorrectAnswersNumber(),
@@ -207,7 +208,9 @@ class SimpleTestViewModel(
     private fun getTestTotalTime(): Int = taskTimeList.sum()
 
     private suspend fun saveResultToDatabase() {
+        getTestTotalTime()
         withContext(ioDispatcher) {
+            getTestTotalTime()
             primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(
                 getPrimitiveTestResultModel()
             )
@@ -232,59 +235,3 @@ class SimpleTestViewModel(
     }
 
 }
-/*
-private fun runTimerLoop() {
-    testJob?.cancel() // Сбрасываем старый таймер, если он был
-
-    testJob = viewModelScope.launch {
-        // Зануляем время при старте нового таймера прямо здесь,
-        // чтобы не размазывать логику состояния
-        _primitiveTestUiStateFlow.update { it.copy(taskTime = 0) }
-
-        while (isActive) {
-            delay(1000L)
-
-            val state = primitiveTestUiStateFlow.value
-            val currentTaskTime = state.taskTime + 1
-
-            _primitiveTestUiStateFlow.update {
-                it.copy(taskTime = currentTaskTime)
-            }
-
-            if (currentTaskTime >= state.totalTaskTime) {
-                // Время вышло! Выходим из цикла таймера.
-                break
-            }
-        }
-
-        // КЛЮЧЕВОЙ МОМЕНТ: Если корутина НЕ была отменена извне (кнопкой),
-        // а цикл завершился сам по break — значит время ИСТЕКЛО.
-        // Переходим к следующей задаче.
-        if (isActive) {
-            nextTask(-1)
-        }
-    }
-}
-
-// Теперь эта функция обычная (не suspend), и она просто управляет состоянием
-private fun nextTask(taskResult: Int) {
-    // Рекомендуется выполнять сохранение во внутреннем scope,
-    // чтобы не блокировать и не завязывать логику на suspend
-    viewModelScope.launch {
-        saveTask(taskResult)
-    }
-
-    val state = primitiveTestUiStateFlow.value
-    val currentTaskNumber = state.taskNumber + 1
-
-    if (currentTaskNumber > state.totalTaskNumber) {
-        finishTest()
-    } else {
-        updateTask(state.testComplexity)
-        _primitiveTestUiStateFlow.update {
-            it.copy(taskNumber = currentTaskNumber)
-        }
-        // Запускаем новый таймер. Старый к этому моменту уже САМ умер (вышел из цикла)
-        runTimerLoop()
-    }
-}*/

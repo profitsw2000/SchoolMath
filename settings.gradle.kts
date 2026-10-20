@@ -24,3 +24,4 @@ rootProject.name = "SchoolMath"
 include(":app")
 include(":core")
 include(":simpleTestsScreen")
+include(":mainScreen")
