@@ -24,6 +24,14 @@ interface PrimitiveTestResultDao {
         testDurationTime: Int? = null
     ): PagingSource<Int, PrimitiveTestResultEntity>
 
+    @Query("SELECT * FROM `test results` " +
+            "WHERE (:primitiveMathOperationType IS NULL OR primitiveMathOperationType = :primitiveMathOperationType) " +
+            "ORDER BY id DESC LIMIT :number")
+    fun getLastDatabaseEntriesWithGivenOperationType(
+        primitiveMathOperationType: PrimitiveMathOperationType? = null,
+        number: Int
+    ): List<PrimitiveTestResultEntity>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(primitiveTestResultEntity: PrimitiveTestResultEntity)
 
