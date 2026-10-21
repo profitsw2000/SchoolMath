@@ -6,7 +6,7 @@ class TestCategoryUseCase(
     private val testCategoryRepository: TestCategoryRepository
 ) {
 
-    private suspend fun getTestCategoriesCodesList(): List<Int> {
+    suspend fun getTestCategoriesCodesList(): List<Int> {
         return testCategoryRepository.getTestCategoriesCodesList()
     }
 

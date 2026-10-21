@@ -4,7 +4,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
+import ru.profitsw2000.core.model.PrimitiveMathTaskModel
 import ru.profitsw2000.simpletestsscreen.data.domain.model.taskgenerator.PrimitiveTaskTablePairGenerator
 import ru.profitsw2000.simpletestsscreen.data.domain.repository.PrimitiveTestTaskGeneratorRepository
 import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX

@@ -22,8 +22,8 @@ import org.junit.Test
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.simpletestsscreen.coroutines.MainDispatcherRule
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestResultModel
+import ru.profitsw2000.core.model.PrimitiveMathTaskModel
+import ru.profitsw2000.core.model.PrimitiveTestResultModel
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultDbWriteUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultUseCase
 import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase

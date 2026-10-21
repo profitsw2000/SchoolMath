@@ -6,7 +6,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
+import ru.profitsw2000.core.model.PrimitiveMathTaskModel
 import ru.profitsw2000.simpletestsscreen.data.domain.repository.PrimitiveTestTaskGeneratorRepository
 
 class PrimitiveTestTaskGeneratorUseCaseTest {

@@ -1,4 +1,4 @@
-package ru.profitsw2000.simpletestsscreen.data.domain.model
+package ru.profitsw2000.core.model
 
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 

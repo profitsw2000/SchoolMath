@@ -1,11 +1,11 @@
-package ru.profitsw2000.simpletestsscreen.data.mappers
+package ru.profitsw2000.core.mappers
 
 import ru.profitsw2000.core.room.entity.PrimitiveTestResultEntity
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestResultModel
+import ru.profitsw2000.core.model.PrimitiveMathTaskModel
+import ru.profitsw2000.core.model.PrimitiveTestResultModel
 
-class PrimitiveTestResultMapper {
+class PrimitiveTestResultMapper() {
 
     fun map(primitiveTestResultModel: PrimitiveTestResultModel): PrimitiveTestResultEntity {
         return PrimitiveTestResultEntity(
@@ -37,6 +37,26 @@ class PrimitiveTestResultMapper {
             testResultsList = primitiveTestResultEntity.testResultList,
             testTasksTimeList = primitiveTestResultEntity.testTasksTimeList
         )
+    }
+
+    fun map(primitiveTestResultEntityList: List<PrimitiveTestResultEntity>): List<PrimitiveTestResultModel> {
+        val modelList = mutableListOf<PrimitiveTestResultModel>()
+        primitiveTestResultEntityList.forEach { entity ->
+            modelList.add(
+                map(entity)
+            )
+        }
+        return modelList
+    }
+
+    fun map(primitiveTestResultModelList: List<PrimitiveTestResultModel>): List<PrimitiveTestResultEntity> {
+        val modelList = mutableListOf<PrimitiveTestResultEntity>()
+        primitiveTestResultModelList.forEach { model ->
+            modelList.add(
+                map(model)
+            )
+        }
+        return modelList
     }
 
     private fun firstOperandListFromModel(

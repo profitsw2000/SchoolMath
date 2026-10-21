@@ -1,9 +1,8 @@
 package ru.profitsw2000.simpletestsscreen.data.domain.usecase
 
-import ru.profitsw2000.core.room.entity.PrimitiveTestResultEntity
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestResultModel
+import ru.profitsw2000.core.model.PrimitiveTestResultModel
 import ru.profitsw2000.simpletestsscreen.data.domain.repository.PrimitiveTestResultDatabaseRepository
-import ru.profitsw2000.simpletestsscreen.data.mappers.PrimitiveTestResultMapper
+import ru.profitsw2000.core.mappers.PrimitiveTestResultMapper
 
 class PrimitiveTestResultDbWriteUseCase(
     private val primitiveTestResultDatabaseRepository: PrimitiveTestResultDatabaseRepository,

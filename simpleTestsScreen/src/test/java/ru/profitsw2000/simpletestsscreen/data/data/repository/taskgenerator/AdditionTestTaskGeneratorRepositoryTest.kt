@@ -7,7 +7,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
+import ru.profitsw2000.core.model.PrimitiveMathTaskModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AdditionTestTaskGeneratorRepositoryTest {

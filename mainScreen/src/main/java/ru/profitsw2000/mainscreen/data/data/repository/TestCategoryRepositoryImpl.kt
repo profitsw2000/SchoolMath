@@ -15,5 +15,4 @@ class TestCategoryRepositoryImpl(): TestCategoryRepository {
             DIVISION_CATEGORY_CODE
         )
     }
-
 }
