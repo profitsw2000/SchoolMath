@@ -27,7 +27,7 @@ interface PrimitiveTestResultDao {
     @Query("SELECT * FROM `test results` " +
             "WHERE (:primitiveMathOperationType IS NULL OR primitiveMathOperationType = :primitiveMathOperationType) " +
             "ORDER BY id DESC LIMIT :number")
-    fun getLastDatabaseEntriesWithGivenOperationType(
+    suspend fun getLastDatabaseEntriesWithGivenOperationType(
         primitiveMathOperationType: PrimitiveMathOperationType? = null,
         number: Int
     ): List<PrimitiveTestResultEntity>
