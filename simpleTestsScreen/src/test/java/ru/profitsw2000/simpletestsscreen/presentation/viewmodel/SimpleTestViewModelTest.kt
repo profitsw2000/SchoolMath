@@ -26,7 +26,7 @@ import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskMode
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestResultModel
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultDbWriteUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultUseCase
-import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestSettingsUseCase
+import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestTaskGeneratorUseCase
 
 @OptIn(ExperimentalCoroutinesApi::class)

@@ -1,4 +1,4 @@
-package ru.profitsw2000.simpletestsscreen.data.data.repository
+package ru.profitsw2000.core.data.repository
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
-import ru.profitsw2000.simpletestsscreen.data.domain.repository.PrimitiveTestSettingsRepository
+import ru.profitsw2000.core.domain.repository.PrimitiveTestSettingsRepository
 import java.io.IOException
 
 val Context.settingsDataStore by preferencesDataStore(name = "app_settings_pref")

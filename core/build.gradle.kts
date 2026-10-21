@@ -25,6 +25,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.paging)
     implementation(libs.kotlinx.serialization)
+    implementation(libs.datastore.preferences)
     //Тесты
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

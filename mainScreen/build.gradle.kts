@@ -14,9 +14,6 @@ dependencies {
     implementation(libs.material)
     //для ViewModel
     implementation(libs.androidx.lifecycle)
-    //Сериализация
-    implementation(libs.kotlinx.serialization)
-    implementation(libs.datastore.preferences)
     //Тесты
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

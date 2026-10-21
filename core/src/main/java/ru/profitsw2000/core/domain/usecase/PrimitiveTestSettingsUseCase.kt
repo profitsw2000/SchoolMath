@@ -1,8 +1,8 @@
-package ru.profitsw2000.simpletestsscreen.data.domain.usecase
+package ru.profitsw2000.core.domain.usecase
 
+import ru.profitsw2000.core.domain.repository.PrimitiveTestSettingsRepository
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
-import ru.profitsw2000.simpletestsscreen.data.domain.repository.PrimitiveTestSettingsRepository
 
 class PrimitiveTestSettingsUseCase(
     private val primitiveTestSettingsRepository: PrimitiveTestSettingsRepository

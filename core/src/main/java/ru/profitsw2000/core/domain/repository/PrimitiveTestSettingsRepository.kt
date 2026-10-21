@@ -1,4 +1,4 @@
-package ru.profitsw2000.simpletestsscreen.data.domain.repository
+package ru.profitsw2000.core.domain.repository
 
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 

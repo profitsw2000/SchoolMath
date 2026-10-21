@@ -23,7 +23,7 @@ import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestResultMo
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestUiStateModel
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultDbWriteUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultUseCase
-import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestSettingsUseCase
+import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestTaskGeneratorUseCase
 import ru.profitsw2000.simpletestsscreen.utils.FIVE_ASSESSMENT
 import ru.profitsw2000.simpletestsscreen.utils.FIVE_ASSESSMENT_RIGHT_ANSWERS_PERCENTAGE
