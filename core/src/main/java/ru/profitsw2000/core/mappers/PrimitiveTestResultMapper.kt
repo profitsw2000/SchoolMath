@@ -5,7 +5,7 @@ import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.core.model.PrimitiveMathTaskModel
 import ru.profitsw2000.core.model.PrimitiveTestResultModel
 
-class PrimitiveTestResultMapper() {
+class PrimitiveTestResultMapper {
 
     fun map(primitiveTestResultModel: PrimitiveTestResultModel): PrimitiveTestResultEntity {
         return PrimitiveTestResultEntity(
