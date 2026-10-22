@@ -22,6 +22,7 @@ class PrimitiveTestResultMapper {
         )
     }
 
+    @JvmName("mapToModel")
     fun map(primitiveTestResultEntity: PrimitiveTestResultEntity): PrimitiveTestResultModel {
         return PrimitiveTestResultModel(
             settingsModel = primitiveTestResultEntity.settings,
@@ -39,6 +40,7 @@ class PrimitiveTestResultMapper {
         )
     }
 
+    @JvmName("mapToModelList")
     fun map(primitiveTestResultEntityList: List<PrimitiveTestResultEntity>): List<PrimitiveTestResultModel> {
         val modelList = mutableListOf<PrimitiveTestResultModel>()
         primitiveTestResultEntityList.forEach { entity ->
