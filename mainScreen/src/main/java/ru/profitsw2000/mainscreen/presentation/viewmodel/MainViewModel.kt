@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
@@ -26,11 +27,11 @@ class MainViewModel(
 
     private var selectedPrimitiveMathOperationTypeCode = 0
     private val _categoryUiState = MutableStateFlow<MainUiState>(MainUiState.Loading)
-    val categoryUiState: StateFlow<MainUiState> by this :: _categoryUiState
+    val categoryUiState: StateFlow<MainUiState> = _categoryUiState.asStateFlow()
     private val _settingsUiState = MutableStateFlow<CategorySettingsUiState>(CategorySettingsUiState.Loading)
-    val settingsUiState: StateFlow<CategorySettingsUiState> by this :: _settingsUiState
+    val settingsUiState: StateFlow<CategorySettingsUiState> = _settingsUiState.asStateFlow()
     private val _historyUiState = MutableStateFlow<CategoryHistoryUiState>(CategoryHistoryUiState.Loading)
-    val historyUiState: StateFlow<CategoryHistoryUiState> by this :: _historyUiState
+    val historyUiState: StateFlow<CategoryHistoryUiState> = _historyUiState.asStateFlow()
 
     fun loadCategories() {
         _categoryUiState.value = MainUiState.Loading
