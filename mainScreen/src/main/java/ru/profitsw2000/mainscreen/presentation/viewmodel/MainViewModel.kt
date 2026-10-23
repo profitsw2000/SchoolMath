@@ -10,11 +10,11 @@ import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.mainscreen.data.domain.usecase.TestCategoryUseCase
 import ru.profitsw2000.mainscreen.data.domain.usecase.TestHistoryUseCase
-import ru.profitsw2000.mainscreen.data.utils.ADDITION_CATEGORY_CODE
-import ru.profitsw2000.mainscreen.data.utils.DIVISION_CATEGORY_CODE
+import ru.profitsw2000.core.utils.ADDITION_CATEGORY_CODE
+import ru.profitsw2000.core.utils.DIVISION_CATEGORY_CODE
 import ru.profitsw2000.mainscreen.data.utils.LOADED_TEST_RESULTS_NUMBER
-import ru.profitsw2000.mainscreen.data.utils.MULTIPLICATION_CATEGORY_CODE
-import ru.profitsw2000.mainscreen.data.utils.SUBTRACTION_CATEGORY_CODE
+import ru.profitsw2000.core.utils.MULTIPLICATION_CATEGORY_CODE
+import ru.profitsw2000.core.utils.SUBTRACTION_CATEGORY_CODE
 import ru.profitsw2000.mainscreen.presentation.uiState.CategoryHistoryUiState
 import ru.profitsw2000.mainscreen.presentation.uiState.CategorySettingsUiState
 import ru.profitsw2000.mainscreen.presentation.uiState.MainUiState

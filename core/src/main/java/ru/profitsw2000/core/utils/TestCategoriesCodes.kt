@@ -1,4 +1,4 @@
-package ru.profitsw2000.mainscreen.data.utils
+package ru.profitsw2000.core.utils
 
 const val ADDITION_CATEGORY_CODE = 0x1
 const val SUBTRACTION_CATEGORY_CODE = 0x2
