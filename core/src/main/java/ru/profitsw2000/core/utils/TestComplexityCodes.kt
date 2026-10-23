@@ -1,4 +1,9 @@
-package ru.profitsw2000.simpletestsscreen.utils
+package ru.profitsw2000.core.utils
+
+const val GENERAL_TEST_LIGHT_COMPLEXITY_CODE = 1
+const val GENERAL_TEST_NORMAL_COMPLEXITY_CODE = 2
+const val GENERAL_TEST_MIDDLE_COMPLEXITY_CODE = 3
+const val GENERAL_TEST_HARD_COMPLEXITY_CODE = 4
 
 const val ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE = 1
 const val ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE = 2

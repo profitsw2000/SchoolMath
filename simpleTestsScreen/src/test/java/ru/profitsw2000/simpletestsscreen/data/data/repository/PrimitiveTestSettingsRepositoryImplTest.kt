@@ -23,7 +23,7 @@ import org.junit.rules.TemporaryFolder
 import ru.profitsw2000.core.data.repository.PrimitiveTestSettingsRepositoryImpl
 import ru.profitsw2000.core.data.repository.settingsDataStore
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
-import ru.profitsw2000.simpletestsscreen.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
 import java.io.File
 
 @OptIn(ExperimentalCoroutinesApi::class)
