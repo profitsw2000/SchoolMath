@@ -63,6 +63,8 @@ class SettingsViewModel(
     ) {
         _primitiveTestSettingsPairFlow.value = PrimitiveTestSettingsPairModel(
             testTaskTimePairList = setSelectedPairList(settingsItems.testTaskTimePairList, selectedSettings.taskDurationTimeSeconds),
+            primitiveMathOperationType = settingsItems.primitiveMathOperationType,
+            extraFieldNumbersList = setSelectedPairList(settingsItems.extraFieldNumbersList, 20),
             testTaskComplexityPairList = setSelectedPairList(settingsItems.testTaskComplexityPairList, selectedSettings.testComplexityLevel),
             testTasksNumberPairList = setSelectedPairList(settingsItems.testTasksNumberPairList, selectedSettings.testTasksNumber)
         )
