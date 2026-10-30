@@ -14,6 +14,8 @@ class PrimitiveTestSettingsItemsRepositoryImpl : PrimitiveTestSettingsItemsRepos
     ): PrimitiveTestSettingsItemsModel {
         return PrimitiveTestSettingsItemsModel(
             testTaskTimeList(),
+            primitiveMathOperationType,
+            getExtraFieldNumbersList(primitiveMathOperationType),
             testComplexityLevelList(primitiveMathOperationType),
             testTaskNumberList()
         )
@@ -21,6 +23,15 @@ class PrimitiveTestSettingsItemsRepositoryImpl : PrimitiveTestSettingsItemsRepos
 
     private fun testTaskTimeList(): List<Int> {
         return listOf(10, 20, 30, 45, 60, 90, 120)
+    }
+
+    private fun getExtraFieldNumbersList(primitiveMathOperationType: PrimitiveMathOperationType): List<Int> {
+        return when(primitiveMathOperationType) {
+            PrimitiveMathOperationType.ADDITION -> listOf(10, 20, 100)
+            PrimitiveMathOperationType.SUBTRACTION -> listOf(10, 20, 100)
+            PrimitiveMathOperationType.MULTIPLICATION -> listOf()
+            PrimitiveMathOperationType.DIVISION -> listOf()
+        }
     }
 
     private fun testComplexityLevelList(primitiveMathOperationType: PrimitiveMathOperationType): List<Int> {
