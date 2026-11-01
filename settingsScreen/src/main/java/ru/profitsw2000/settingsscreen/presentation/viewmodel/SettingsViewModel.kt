@@ -10,6 +10,18 @@ import kotlinx.coroutines.launch
 import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.core.utils.ADDITION_CATEGORY_CODE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE
 import ru.profitsw2000.core.utils.DIVISION_CATEGORY_CODE
 import ru.profitsw2000.core.utils.MULTIPLICATION_CATEGORY_CODE
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
@@ -68,6 +80,38 @@ class SettingsViewModel(
             testTaskComplexityPairList = setSelectedPairList(settingsItems.testTaskComplexityPairList, selectedSettings.testComplexityLevel),
             testTasksNumberPairList = setSelectedPairList(settingsItems.testTasksNumberPairList, selectedSettings.testTasksNumber)
         )
+    }
+
+    private fun getExtraFieldTargetNumber(
+        primitiveMathOperationType: PrimitiveMathOperationType,
+        testComplexityLevel: Int
+    ): Int {
+        return when(primitiveMathOperationType) {
+            PrimitiveMathOperationType.ADDITION -> getAdditionSettingsExtraFieldTargetNumber(testComplexityLevel)
+            PrimitiveMathOperationType.SUBTRACTION -> TODO()
+            PrimitiveMathOperationType.MULTIPLICATION -> TODO()
+            PrimitiveMathOperationType.DIVISION -> TODO()
+        }
+    }
+
+    private fun getAdditionSettingsExtraFieldTargetNumber(
+        testComplexityLevel: Int
+    ): Int {
+        return when(testComplexityLevel) {
+            ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE -> 10
+            ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE -> 10
+            ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX -> 10
+            ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY -> 10
+            ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE -> 20
+            ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE -> 20
+            ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX -> 20
+            ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY -> 20
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE -> 100
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE -> 100
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX -> 100
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY -> 100
+            else -> 10
+        }
     }
 
     private fun setSelectedPairList(
