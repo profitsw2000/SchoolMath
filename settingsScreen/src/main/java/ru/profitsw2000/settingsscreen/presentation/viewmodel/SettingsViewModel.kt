@@ -52,6 +52,12 @@ class SettingsViewModel(
 
             val settingsItems = settingsItemsDeferred.await()
             val selectedSettings = selectedSettingsDeferred.await()
+
+            createSettingsPair(
+                settingsItems,
+                selectedSettings,
+                categoryCode
+            )
         }
     }
 
@@ -71,12 +77,15 @@ class SettingsViewModel(
 
     private fun createSettingsPair(
         settingsItems: PrimitiveTestSettingsPairModel,
-        selectedSettings: PrimitiveTestSettingsModel
+        selectedSettings: PrimitiveTestSettingsModel,
+        categoryCode: Int
     ) {
         _primitiveTestSettingsPairFlow.value = PrimitiveTestSettingsPairModel(
             testTaskTimePairList = setSelectedPairList(settingsItems.testTaskTimePairList, selectedSettings.taskDurationTimeSeconds),
             primitiveMathOperationType = settingsItems.primitiveMathOperationType,
-            extraFieldNumbersList = setSelectedPairList(settingsItems.extraFieldNumbersList, 20),
+            extraFieldNumbersList = setSelectedPairList(
+                settingsItems.extraFieldNumbersList,
+                getExtraFieldTargetNumber(getPrimitiveMathOperationTypeFromCode(categoryCode), selectedSettings.testComplexityLevel)),
             testTaskComplexityPairList = setSelectedPairList(settingsItems.testTaskComplexityPairList, selectedSettings.testComplexityLevel),
             testTasksNumberPairList = setSelectedPairList(settingsItems.testTasksNumberPairList, selectedSettings.testTasksNumber)
         )
@@ -88,9 +97,9 @@ class SettingsViewModel(
     ): Int {
         return when(primitiveMathOperationType) {
             PrimitiveMathOperationType.ADDITION -> getAdditionSettingsExtraFieldTargetNumber(testComplexityLevel)
-            PrimitiveMathOperationType.SUBTRACTION -> TODO()
-            PrimitiveMathOperationType.MULTIPLICATION -> TODO()
-            PrimitiveMathOperationType.DIVISION -> TODO()
+            PrimitiveMathOperationType.SUBTRACTION -> getSubtractionSettingsExtraFieldTargetNumber(testComplexityLevel)
+            PrimitiveMathOperationType.MULTIPLICATION -> 0
+            PrimitiveMathOperationType.DIVISION -> 0
         }
     }
 
@@ -112,6 +121,12 @@ class SettingsViewModel(
             ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY -> 100
             else -> 10
         }
+    }
+
+    private fun getSubtractionSettingsExtraFieldTargetNumber(
+        testComplexityLevel: Int
+    ): Int {
+        return 0
     }
 
     private fun setSelectedPairList(
