@@ -6,6 +6,6 @@ data class PrimitiveTestSettingsItemsModel(
     val taskTimesList: List<Int>,
     val primitiveMathOperationType: PrimitiveMathOperationType,
     val extraFieldNumbersList: List<Int>,
-    val taskComplexityList: List<Int>,
+    val taskComplexityCodesList: List<Int>,
     val taskNumberList: List<Int>
 )

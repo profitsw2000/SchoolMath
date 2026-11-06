@@ -24,6 +24,10 @@ import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEX
 import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE
 import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE
 import ru.profitsw2000.core.utils.DIVISION_CATEGORY_CODE
+import ru.profitsw2000.core.utils.GENERAL_TEST_HARD_COMPLEXITY_CODE
+import ru.profitsw2000.core.utils.GENERAL_TEST_LIGHT_COMPLEXITY_CODE
+import ru.profitsw2000.core.utils.GENERAL_TEST_MIDDLE_COMPLEXITY_CODE
+import ru.profitsw2000.core.utils.GENERAL_TEST_NORMAL_COMPLEXITY_CODE
 import ru.profitsw2000.core.utils.MULTIPLICATION_CATEGORY_CODE
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.core.utils.SUBTRACTION_CATEGORY_CODE
@@ -79,10 +83,10 @@ class SettingsViewModel(
         }
     }
 
-    fun updateTestComplexity(complexity: Int) {
+    fun updateTestComplexityCode(complexity: Int) {
         _primitiveTestSettingsPairFlow.update {
             it?.copy(
-                testTaskComplexityPairList = setSelectedPairList(it.testTaskComplexityPairList, complexity)
+                testTaskComplexityCodesPairList = setSelectedPairList(it.testTaskComplexityCodesPairList, complexity)
             )
         }
     }
@@ -96,7 +100,19 @@ class SettingsViewModel(
     }
 
     fun writeTestSettings() {
+        val operation =
+            primitiveTestSettingsPairModel.value?.primitiveMathOperationType ?: PrimitiveMathOperationType.ADDITION
+        val testTaskNumber =
+            getSelectedFromPairList(
+                primitiveTestSettingsPairModel.value?.testTasksNumberPairList
+            )
 
+/*        primitiveTestSettingsUseCase.writeTestSettings(
+            operation,
+            PrimitiveTestSettingsModel(
+                _primitiveTestSettingsPairFlow.value
+            )
+        )*/
     }
 
     private fun settingsItemsToPairsList(
@@ -106,7 +122,7 @@ class SettingsViewModel(
             testTaskTimePairList = intListToPairs(primitiveTestSettingsItemsModel.taskTimesList),
             primitiveMathOperationType = primitiveTestSettingsItemsModel.primitiveMathOperationType,
             extraFieldNumbersList = intListToPairs(primitiveTestSettingsItemsModel.extraFieldNumbersList),
-            testTaskComplexityPairList = intListToPairs(primitiveTestSettingsItemsModel.taskComplexityList),
+            testTaskComplexityCodesPairList = intListToPairs(primitiveTestSettingsItemsModel.taskComplexityCodesList),
             testTasksNumberPairList = intListToPairs(primitiveTestSettingsItemsModel.taskNumberList)
         )
     }
@@ -140,8 +156,12 @@ class SettingsViewModel(
             primitiveMathOperationType = settingsItems.primitiveMathOperationType,
             extraFieldNumbersList = setSelectedPairList(
                 settingsItems.extraFieldNumbersList,
-                getExtraFieldTargetNumber(getPrimitiveMathOperationTypeFromCode(categoryCode), selectedSettings.testComplexityLevel)),
-            testTaskComplexityPairList = setSelectedPairList(settingsItems.testTaskComplexityPairList, selectedSettings.testComplexityLevel),
+                getExtraFieldTargetNumber(getPrimitiveMathOperationTypeFromCode(categoryCode), selectedSettings.testComplexityLevel)
+            ),
+            testTaskComplexityCodesPairList = setSelectedPairList(
+                settingsItems.testTaskComplexityCodesPairList,
+                getComplexityCode(getPrimitiveMathOperationTypeFromCode(categoryCode), selectedSettings.testComplexityLevel)
+            ),
             testTasksNumberPairList = setSelectedPairList(settingsItems.testTasksNumberPairList, selectedSettings.testTasksNumber)
         )
     }
@@ -153,8 +173,20 @@ class SettingsViewModel(
         return when(primitiveMathOperationType) {
             PrimitiveMathOperationType.ADDITION -> getAdditionSettingsExtraFieldTargetNumber(testComplexityLevel)
             PrimitiveMathOperationType.SUBTRACTION -> getSubtractionSettingsExtraFieldTargetNumber(testComplexityLevel)
-            PrimitiveMathOperationType.MULTIPLICATION -> 0
-            PrimitiveMathOperationType.DIVISION -> 0
+            PrimitiveMathOperationType.MULTIPLICATION -> TODO()
+            PrimitiveMathOperationType.DIVISION -> TODO()
+        }
+    }
+
+    private fun getComplexityCode(
+        primitiveMathOperationType: PrimitiveMathOperationType,
+        testComplexityLevel: Int
+    ): Int {
+        return when(primitiveMathOperationType) {
+            PrimitiveMathOperationType.ADDITION -> getAdditionTestComplexityCode(testComplexityLevel)
+            PrimitiveMathOperationType.SUBTRACTION -> TODO()
+            PrimitiveMathOperationType.MULTIPLICATION -> TODO()
+            PrimitiveMathOperationType.DIVISION -> TODO()
         }
     }
 
@@ -184,6 +216,96 @@ class SettingsViewModel(
         return 0
     }
 
+    private fun getAdditionTestComplexityCode(
+        testComplexityLevel: Int
+    ): Int {
+        return when(testComplexityLevel) {
+            ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE -> GENERAL_TEST_LIGHT_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE -> GENERAL_TEST_NORMAL_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX -> GENERAL_TEST_MIDDLE_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY -> GENERAL_TEST_HARD_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE -> GENERAL_TEST_LIGHT_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE -> GENERAL_TEST_NORMAL_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX -> GENERAL_TEST_MIDDLE_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY -> GENERAL_TEST_HARD_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE -> GENERAL_TEST_LIGHT_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE -> GENERAL_TEST_NORMAL_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX -> GENERAL_TEST_MIDDLE_COMPLEXITY_CODE
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY -> GENERAL_TEST_HARD_COMPLEXITY_CODE
+            else -> GENERAL_TEST_LIGHT_COMPLEXITY_CODE
+        }
+    }
+
+    private fun getTestComplexityLevel(
+        primitiveMathOperationType: PrimitiveMathOperationType,
+        testComplexityCode: Int,
+        extraFieldNumber: Int
+    ): Int {
+        return when(primitiveMathOperationType) {
+            PrimitiveMathOperationType.ADDITION -> getAdditionTestComplexityLevel(testComplexityCode, extraFieldNumber)
+            PrimitiveMathOperationType.SUBTRACTION -> TODO()
+            PrimitiveMathOperationType.MULTIPLICATION -> TODO()
+            PrimitiveMathOperationType.DIVISION -> TODO()
+        }
+    }
+
+    private fun getAdditionTestComplexityLevel(
+        testComplexityCode: Int,
+        extraFieldNumber: Int
+    ): Int {
+        return when(testComplexityCode) {
+            GENERAL_TEST_LIGHT_COMPLEXITY_CODE -> getLightAdditionTestComplexityLevel(extraFieldNumber)
+            GENERAL_TEST_NORMAL_COMPLEXITY_CODE -> getNormalAdditionTestComplexityLevel(extraFieldNumber)
+            GENERAL_TEST_MIDDLE_COMPLEXITY_CODE -> getMiddleAdditionTestComplexityLevel(extraFieldNumber)
+            GENERAL_TEST_HARD_COMPLEXITY_CODE -> getHardAdditionTestComplexityLevel(extraFieldNumber)
+            else -> getLightAdditionTestComplexityLevel(extraFieldNumber)
+        }
+    }
+
+    private fun getLightAdditionTestComplexityLevel(
+        extraFieldNumber: Int
+    ): Int {
+        return when(extraFieldNumber) {
+            10 -> ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE
+            20 -> ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE
+            100 -> ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE
+            else -> ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE
+        }
+    }
+
+    private fun getNormalAdditionTestComplexityLevel(
+        extraFieldNumber: Int
+    ): Int {
+        return when(extraFieldNumber) {
+            10 -> ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE
+            20 -> ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE
+            100 -> ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE
+            else -> ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE
+        }
+    }
+
+    private fun getMiddleAdditionTestComplexityLevel(
+        extraFieldNumber: Int
+    ): Int {
+        return when(extraFieldNumber) {
+            10 -> ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX
+            20 -> ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX
+            100 -> ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX
+            else -> ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX
+        }
+    }
+
+    private fun getHardAdditionTestComplexityLevel(
+        extraFieldNumber: Int
+    ): Int {
+        return when(extraFieldNumber) {
+            10 -> ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY
+            20 -> ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
+            100 -> ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY
+            else -> ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY
+        }
+    }
+
     private fun setSelectedPairList(
         pairList: List<Pair<Int, Boolean>>,
         targetNumber: Int
@@ -191,6 +313,16 @@ class SettingsViewModel(
         return pairList.map { pair ->
             pair.copy(second = pair.first == targetNumber)
         }
+    }
+
+    private fun getSelectedFromPairList(
+        pairList: List<Pair<Int, Boolean>>?
+    ): Int {
+        if (pairList?.isEmpty() || pairList == null) return 0
+        pairList.forEach { item ->
+            if (item.second) return item.first
+        }
+        return pairList[0].first
     }
 
 }

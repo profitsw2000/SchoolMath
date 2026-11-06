@@ -6,6 +6,6 @@ data class PrimitiveTestSettingsPairModel(
     val testTaskTimePairList: List<Pair<Int, Boolean>>,
     val primitiveMathOperationType: PrimitiveMathOperationType,
     val extraFieldNumbersList: List<Pair<Int, Boolean>>,
-    val testTaskComplexityPairList: List<Pair<Int, Boolean>>,
+    val testTaskComplexityCodesPairList: List<Pair<Int, Boolean>>,
     val testTasksNumberPairList: List<Pair<Int, Boolean>>
 )
