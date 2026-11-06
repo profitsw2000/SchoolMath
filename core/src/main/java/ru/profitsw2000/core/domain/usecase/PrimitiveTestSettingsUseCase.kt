@@ -16,4 +16,16 @@ class PrimitiveTestSettingsUseCase(
             PrimitiveMathOperationType.DIVISION -> primitiveTestSettingsRepository.getDivisionTestSettings()
         }
     }
+
+    suspend fun writeTestSettings(
+        primitiveMathOperationType: PrimitiveMathOperationType,
+        primitiveTestSettingsModel: PrimitiveTestSettingsModel
+    ) {
+        when(primitiveMathOperationType) {
+            PrimitiveMathOperationType.ADDITION -> primitiveTestSettingsRepository.writeAdditionTestSettings(primitiveTestSettingsModel)
+            PrimitiveMathOperationType.SUBTRACTION -> primitiveTestSettingsRepository.writeSubtractionTestSettings(primitiveTestSettingsModel)
+            PrimitiveMathOperationType.MULTIPLICATION -> primitiveTestSettingsRepository.writeMultiplicationTestSettings(primitiveTestSettingsModel)
+            PrimitiveMathOperationType.DIVISION -> primitiveTestSettingsRepository.writeDivisionTestSettings(primitiveTestSettingsModel)
+        }
+    }
 }
