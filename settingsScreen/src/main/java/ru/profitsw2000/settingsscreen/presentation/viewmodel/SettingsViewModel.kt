@@ -6,6 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
@@ -26,6 +27,7 @@ import ru.profitsw2000.core.utils.DIVISION_CATEGORY_CODE
 import ru.profitsw2000.core.utils.MULTIPLICATION_CATEGORY_CODE
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.core.utils.SUBTRACTION_CATEGORY_CODE
+import ru.profitsw2000.settingsscreen.data.domain.model.PrimitiveTestSettingsItemsModel
 import ru.profitsw2000.settingsscreen.data.domain.model.PrimitiveTestSettingsPairModel
 import ru.profitsw2000.settingsscreen.data.domain.usecase.PrimitiveTestSettingsItemsUseCase
 
@@ -54,15 +56,68 @@ class SettingsViewModel(
             val selectedSettings = selectedSettingsDeferred.await()
 
             createSettingsPair(
-                settingsItems,
+                settingsItemsToPairsList(settingsItems),
                 selectedSettings,
                 categoryCode
             )
         }
     }
 
-    private fun updateTaskTime(time: Int) {
+    fun updateTaskTime(time: Int) {
+        _primitiveTestSettingsPairFlow.update {
+            it?.copy(
+                testTaskTimePairList = setSelectedPairList(it.testTaskTimePairList, time)
+            )
+        }
+    }
 
+    fun updateExtraFieldNumber(number: Int) {
+        _primitiveTestSettingsPairFlow.update {
+            it?.copy(
+                extraFieldNumbersList = setSelectedPairList(it.extraFieldNumbersList, number)
+            )
+        }
+    }
+
+    fun updateTestComplexity(complexity: Int) {
+        _primitiveTestSettingsPairFlow.update {
+            it?.copy(
+                testTaskComplexityPairList = setSelectedPairList(it.testTaskComplexityPairList, complexity)
+            )
+        }
+    }
+
+    fun updateTestTasksNumber(number: Int) {
+        _primitiveTestSettingsPairFlow.update {
+            it?.copy(
+                testTasksNumberPairList = setSelectedPairList(it.testTasksNumberPairList, number)
+            )
+        }
+    }
+
+    fun writeTestSettings() {
+
+    }
+
+    private fun settingsItemsToPairsList(
+        primitiveTestSettingsItemsModel: PrimitiveTestSettingsItemsModel
+    ): PrimitiveTestSettingsPairModel {
+        return PrimitiveTestSettingsPairModel(
+            testTaskTimePairList = intListToPairs(primitiveTestSettingsItemsModel.taskTimesList),
+            primitiveMathOperationType = primitiveTestSettingsItemsModel.primitiveMathOperationType,
+            extraFieldNumbersList = intListToPairs(primitiveTestSettingsItemsModel.extraFieldNumbersList),
+            testTaskComplexityPairList = intListToPairs(primitiveTestSettingsItemsModel.taskComplexityList),
+            testTasksNumberPairList = intListToPairs(primitiveTestSettingsItemsModel.taskNumberList)
+        )
+    }
+
+    private fun intListToPairs(intList: List<Int>): List<Pair<Int, Boolean>> {
+        val resultPairList: MutableList<Pair<Int, Boolean>> = mutableListOf()
+
+        intList.forEach { item ->
+            resultPairList.add(Pair(item, false))
+        }
+        return resultPairList
     }
 
     private fun getPrimitiveMathOperationTypeFromCode(categoryCode: Int): PrimitiveMathOperationType {
