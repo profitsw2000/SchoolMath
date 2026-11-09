@@ -106,13 +106,31 @@ class SettingsViewModel(
             getSelectedFromPairList(
                 primitiveTestSettingsPairModel.value?.testTasksNumberPairList
             )
-
-/*        primitiveTestSettingsUseCase.writeTestSettings(
-            operation,
-            PrimitiveTestSettingsModel(
-                _primitiveTestSettingsPairFlow.value
+        val testComplexityLevel =
+            getTestComplexityLevel(
+                operation,
+                getSelectedFromPairList(
+                    _primitiveTestSettingsPairFlow.value?.testTaskComplexityCodesPairList
+                ),
+                getSelectedFromPairList(
+                    _primitiveTestSettingsPairFlow.value?.extraFieldNumbersList
+                )
             )
-        )*/
+        val testTaskTime =
+            getSelectedFromPairList(
+                _primitiveTestSettingsPairFlow.value?.testTaskTimePairList
+            )
+
+        viewModelScope.launch {
+            primitiveTestSettingsUseCase.writeTestSettings(
+                operation,
+                PrimitiveTestSettingsModel(
+                    testTasksNumber = testTaskNumber,
+                    testComplexityLevel = testComplexityLevel,
+                    taskDurationTimeSeconds = testTaskTime
+                )
+            )
+        }
     }
 
     private fun settingsItemsToPairsList(
@@ -318,11 +336,13 @@ class SettingsViewModel(
     private fun getSelectedFromPairList(
         pairList: List<Pair<Int, Boolean>>?
     ): Int {
-        if (pairList?.isEmpty() || pairList == null) return 0
-        pairList.forEach { item ->
-            if (item.second) return item.first
+        pairList?.let {
+            pairList.forEach { item ->
+                if (item.second) return item.first
+            }
+            return pairList[0].first
         }
-        return pairList[0].first
+        return 0
     }
 
 }
