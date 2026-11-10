@@ -1,4 +1,4 @@
-package ru.profitsw2000.core.domain.usecase
+package ru.profitsw2000.core.usecase
 
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -8,6 +8,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
 import ru.profitsw2000.core.domain.repository.PrimitiveTestSettingsRepository
+import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 
@@ -15,7 +16,8 @@ import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 class PrimitiveTestSettingsUseCaseTest {
 
     private val primitiveTestSettingsRepository: PrimitiveTestSettingsRepository = mockk(relaxed = true)
-    private val primitiveTestSettingsUseCase = PrimitiveTestSettingsUseCase(primitiveTestSettingsRepository)
+    private val primitiveTestSettingsUseCase =
+        PrimitiveTestSettingsUseCase(primitiveTestSettingsRepository)
 
     private val mockAdditionSettingsModel: PrimitiveTestSettingsModel = mockk()
     private val mockSubtractionSettingsModel: PrimitiveTestSettingsModel = mockk()
