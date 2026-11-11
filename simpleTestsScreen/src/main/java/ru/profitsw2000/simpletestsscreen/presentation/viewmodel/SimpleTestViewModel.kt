@@ -18,12 +18,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestResultModel
+import ru.profitsw2000.core.model.PrimitiveMathTaskModel
+import ru.profitsw2000.core.model.PrimitiveTestResultModel
 import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveTestUiStateModel
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultDbWriteUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestResultUseCase
-import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestSettingsUseCase
+import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.simpletestsscreen.data.domain.usecase.PrimitiveTestTaskGeneratorUseCase
 import ru.profitsw2000.simpletestsscreen.utils.FIVE_ASSESSMENT
 import ru.profitsw2000.simpletestsscreen.utils.FIVE_ASSESSMENT_RIGHT_ANSWERS_PERCENTAGE
@@ -52,6 +52,9 @@ class SimpleTestViewModel(
     private val _primitiveTestUiStateFlow = MutableStateFlow(PrimitiveTestUiStateModel())
     val primitiveTestUiStateFlow: StateFlow<PrimitiveTestUiStateModel> = _primitiveTestUiStateFlow.asStateFlow()
 
+    private val _primitiveTestResultStateFlow = MutableStateFlow<PrimitiveTestResultModel?>(null)
+    val primitiveTestResultStateFlow: StateFlow<PrimitiveTestResultModel?> = _primitiveTestResultStateFlow.asStateFlow()
+
     private var testJob: Job? = null
 
     fun startTest(primitiveMathOperationType: PrimitiveMathOperationType) {
@@ -61,6 +64,47 @@ class SimpleTestViewModel(
             setInitialState(primitiveMathOperationType)
             updateTask(primitiveTestUiStateFlow.value.testComplexity)
             runTimerLoop()
+        }
+    }
+
+    fun appendAnswerResult(taskResult: Int) {
+        testJob?.cancel()
+
+        viewModelScope.launch {
+            nextTask(taskResult)
+        }
+    }
+
+    private suspend fun setInitialState(
+        primitiveMathOperationType: PrimitiveMathOperationType
+    ) {
+        primitiveTestSettingsModel = primitiveTestSettingsUseCase.getTestSettings(primitiveMathOperationType)
+
+        primitiveTestTaskResultModelList.clear()
+        testResultsList.clear()
+        taskTimeList.clear()
+
+        _primitiveTestUiStateFlow.update {
+            PrimitiveTestUiStateModel(
+                primitiveMathOperationType = primitiveMathOperationType,
+                totalTaskTime = primitiveTestSettingsModel.taskDurationTimeSeconds,
+                totalTaskNumber = primitiveTestSettingsModel.testTasksNumber,
+                taskTime = 0,
+                taskNumber = 1,
+                testComplexity = primitiveTestSettingsModel.testComplexityLevel,
+                testSettingsIsLoaded = true,
+                testIsCompleted = false
+            )
+        }
+    }
+
+    private suspend fun updateTask(testComplexityLevel: Int) {
+        primitiveMathTaskModel = primitiveTestTaskGeneratorUseCase.getAdditionTask(testComplexityLevel)
+        _primitiveTestUiStateFlow.update {
+            it.copy(
+                firstOperand = primitiveMathTaskModel.firstOperand,
+                secondOperand = primitiveMathTaskModel.secondOperand
+            )
         }
     }
 
@@ -80,14 +124,6 @@ class SimpleTestViewModel(
                     break
                 }
             }
-        }
-    }
-
-    fun appendAnswerResult(taskResult: Int) {
-        testJob?.cancel()
-
-        viewModelScope.launch {
-            nextTask(taskResult)
         }
     }
 
@@ -119,12 +155,19 @@ class SimpleTestViewModel(
 
     private suspend fun finishTest() {
         testJob?.cancel()
+        _primitiveTestUiStateFlow.update {
+            it.copy(
+                testSettingsIsLoaded = false,
+                testIsCompleted = true
+            )
+        }
         saveResultToDatabase()
         resetAll()
     }
 
     private suspend fun getPrimitiveTestResultModel(): PrimitiveTestResultModel {
-        return PrimitiveTestResultModel(
+        getTestTotalTime()
+        val result = PrimitiveTestResultModel(
             settingsModel = primitiveTestSettingsModel,
             correctAnswersNumber = getCorrectAnswersNumber(),
             testAssessment = getTestAssessment(),
@@ -134,6 +177,10 @@ class SimpleTestViewModel(
             testResultsList = testResultsList,
             testTasksTimeList = taskTimeList
         )
+        _primitiveTestResultStateFlow.update {
+            result
+        }
+        return result
     }
 
     private suspend fun getCorrectAnswersNumber(): Int {
@@ -158,57 +205,12 @@ class SimpleTestViewModel(
         }
     }
 
-    private fun getTaskCalculationResult(primitiveMathTaskModel: PrimitiveMathTaskModel): Int {
-
-        return when(primitiveMathTaskModel.primitiveMathOperationType) {
-            PrimitiveMathOperationType.ADDITION ->
-                primitiveMathTaskModel.firstOperand + primitiveMathTaskModel.secondOperand
-            PrimitiveMathOperationType.SUBTRACTION ->
-                primitiveMathTaskModel.firstOperand - primitiveMathTaskModel.secondOperand
-            PrimitiveMathOperationType.MULTIPLICATION ->
-                primitiveMathTaskModel.firstOperand * primitiveMathTaskModel.secondOperand
-            PrimitiveMathOperationType.DIVISION ->
-                primitiveMathTaskModel.firstOperand / primitiveMathTaskModel.secondOperand
-        }
-    }
-
     private fun getTestTotalTime(): Int = taskTimeList.sum()
 
-    private suspend fun setInitialState(
-        primitiveMathOperationType: PrimitiveMathOperationType
-    ) {
-        primitiveTestSettingsModel = primitiveTestSettingsUseCase.getTestSettings(primitiveMathOperationType)
-
-        primitiveTestTaskResultModelList.clear()
-        testResultsList.clear()
-        taskTimeList.clear()
-
-        _primitiveTestUiStateFlow.update {
-            PrimitiveTestUiStateModel(
-                primitiveMathOperationType = primitiveMathOperationType,
-                totalTaskTime = primitiveTestSettingsModel.taskDurationTimeSeconds,
-                totalTaskNumber = primitiveTestSettingsModel.testTasksNumber,
-                taskTime = 0,
-                taskNumber = 1,
-                testComplexity = primitiveTestSettingsModel.testComplexityLevel,
-                testIsRunning = true
-            )
-        }
-
-    }
-
-    private suspend fun updateTask(testComplexityLevel: Int) {
-        primitiveMathTaskModel = primitiveTestTaskGeneratorUseCase.getAdditionTask(testComplexityLevel)
-        _primitiveTestUiStateFlow.update {
-            it.copy(
-                firstOperand = primitiveMathTaskModel.firstOperand,
-                secondOperand = primitiveMathTaskModel.secondOperand
-            )
-        }
-    }
-
     private suspend fun saveResultToDatabase() {
+        getTestTotalTime()
         withContext(ioDispatcher) {
+            getTestTotalTime()
             primitiveTestResultDbWriteUseCase.writeTestResultToDatabase(
                 getPrimitiveTestResultModel()
             )
@@ -223,10 +225,11 @@ class SimpleTestViewModel(
 
     override fun onCleared() {
         super.onCleared()
-
-        externalScope.launch(ioDispatcher) {
-            withContext(NonCancellable) {
-                saveResultToDatabase()
+        if (!primitiveTestUiStateFlow.value.testIsCompleted) {
+            externalScope.launch(ioDispatcher) {
+                withContext(NonCancellable) {
+                    saveResultToDatabase()
+                }
             }
         }
     }
