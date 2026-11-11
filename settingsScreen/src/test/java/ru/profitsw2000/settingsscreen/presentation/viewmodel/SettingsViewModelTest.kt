@@ -10,6 +10,10 @@ import org.junit.Rule
 import org.junit.Test
 import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
+import ru.profitsw2000.core.utils.GENERAL_TEST_HARD_COMPLEXITY_CODE
+import ru.profitsw2000.core.utils.GENERAL_TEST_LIGHT_COMPLEXITY_CODE
+import ru.profitsw2000.core.utils.GENERAL_TEST_MIDDLE_COMPLEXITY_CODE
+import ru.profitsw2000.core.utils.GENERAL_TEST_NORMAL_COMPLEXITY_CODE
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.coroutines.MainDispatcherRule
 import ru.profitsw2000.settingsscreen.data.domain.model.PrimitiveTestSettingsItemsModel
@@ -56,6 +60,16 @@ class SettingsViewModelTest {
             Pair(10, false),
             Pair(20, true)
         )
+        val expectedComplexityCodePairs = listOf(
+            Pair(GENERAL_TEST_LIGHT_COMPLEXITY_CODE, false),
+            Pair(GENERAL_TEST_NORMAL_COMPLEXITY_CODE, false),
+            Pair(GENERAL_TEST_MIDDLE_COMPLEXITY_CODE, true),
+            Pair(GENERAL_TEST_HARD_COMPLEXITY_CODE, false)
+        )
+        val expectedTaskNumberPairs = listOf(
+            Pair(5, true),
+            Pair(10, false)
+        )
 
         coEvery { primitiveTestSettingsItemsUseCase.getPrimitiveTestSettingsItems(operationType) } returns settingsItems
         coEvery { primitiveTestSettingsUseCase.getTestSettings(operationType) } returns settings
@@ -67,33 +81,108 @@ class SettingsViewModelTest {
         assertEquals(PrimitiveMathOperationType.ADDITION, state?.primitiveMathOperationType)
         assertEquals(expectedTaskTimePairs, state?.testTaskTimePairList)
         assertEquals(expectedExtraFieldNumbersPairs, state?.extraFieldNumbersList)
+        assertEquals(expectedComplexityCodePairs, state?.testTaskComplexityCodesPairList)
+        assertEquals(expectedTaskNumberPairs, state?.testTasksNumberPairList)
 
         coVerify(exactly = 1) { primitiveTestSettingsItemsUseCase.getPrimitiveTestSettingsItems(operationType) }
         coVerify(exactly = 1) { primitiveTestSettingsUseCase.getTestSettings(operationType) }
     }
 
     @Test
-    fun loadSettings() {
+    fun `обновление времени теста в настройках`() = runTest {
+        setupAdditionInitialState()
+        val newTime = 20
+        settingsViewModel.updateTaskTime(newTime)
+
+        val currentState = settingsViewModel.primitiveTestSettingsPairModel.value
+        val expectedTaskTimePairs = listOf(
+            Pair(10, false),
+            Pair(20, true),
+            Pair(30, false),
+        )
+        assertNotNull(currentState)
+        assertEquals(expectedTaskTimePairs, currentState?.testTaskTimePairList)
     }
 
     @Test
-    fun updateTaskTime() {
+    fun `обновление поля с дополнительным цифровым значением`() = runTest {
+        setupAdditionInitialState()
+        val newExtraFieldNumber = 10
+        settingsViewModel.updateExtraFieldNumber(newExtraFieldNumber)
+
+        val currentState = settingsViewModel.primitiveTestSettingsPairModel.value
+        val expectedExtraFieldNumbersPairs = listOf(
+            Pair(10, true),
+            Pair(20, false)
+        )
+        assertNotNull(currentState)
+        assertEquals(expectedExtraFieldNumbersPairs, currentState?.extraFieldNumbersList)
     }
 
     @Test
-    fun updateExtraFieldNumber() {
+    fun `обновление поля настроек сложности теста`() = runTest {
+        setupAdditionInitialState()
+        settingsViewModel.updateTestComplexityCode(GENERAL_TEST_LIGHT_COMPLEXITY_CODE)
+
+        val currentState = settingsViewModel.primitiveTestSettingsPairModel.value
+        val expectedComplexityCodePairs = listOf(
+            Pair(GENERAL_TEST_LIGHT_COMPLEXITY_CODE, true),
+            Pair(GENERAL_TEST_NORMAL_COMPLEXITY_CODE, false),
+            Pair(GENERAL_TEST_MIDDLE_COMPLEXITY_CODE, false),
+            Pair(GENERAL_TEST_HARD_COMPLEXITY_CODE, false)
+        )
+        assertNotNull(currentState)
+        assertEquals(expectedComplexityCodePairs, currentState?.testTaskComplexityCodesPairList)
     }
 
     @Test
-    fun updateTestComplexityCode() {
+    fun `обновление поля настройки количества заданий в тесте`() = runTest {
+        setupAdditionInitialState()
+        settingsViewModel.updateTestTasksNumber(10)
+
+        val currentState = settingsViewModel.primitiveTestSettingsPairModel.value
+        val expectedTaskNumberPairs = listOf(
+            Pair(5, false),
+            Pair(10, true)
+        )
+        assertNotNull(currentState)
+        assertEquals(expectedTaskNumberPairs, currentState?.testTasksNumberPairList)
+
     }
 
     @Test
-    fun updateTestTasksNumber() {
+    fun `запись выбранных настроек для теста сложения`() = runTest {
+        setupAdditionInitialState()
+        settingsViewModel.updateTaskTime(20)
+        settingsViewModel.updateExtraFieldNumber(10)
+        settingsViewModel.updateTestComplexityCode(GENERAL_TEST_NORMAL_COMPLEXITY_CODE)
+        settingsViewModel.updateTestTasksNumber(10)
+
+        coEvery { primitiveTestSettingsUseCase.writeTestSettings(any(), any()) } returns Unit
+
+        settingsViewModel.writeTestSettings()
+        val expectedModel = PrimitiveTestSettingsModel(
+            testTasksNumber = 10,
+            testComplexityLevel = 2,
+            taskDurationTimeSeconds = 20
+        )
+
+        coVerify(exactly = 1) {
+            primitiveTestSettingsUseCase.writeTestSettings(
+                PrimitiveMathOperationType.ADDITION,
+                expectedModel
+            )
+        }
     }
 
-    @Test
-    fun writeTestSettings() {
+    private fun setupAdditionInitialState() {
+        val categoryCode = 1
+        val primitiveMathOperationType = mapper.getPrimitiveMathOperationTypeFromCode(categoryCode)
+
+        coEvery { primitiveTestSettingsItemsUseCase.getPrimitiveTestSettingsItems(primitiveMathOperationType) } returns settingsItems
+        coEvery { primitiveTestSettingsUseCase.getTestSettings(primitiveMathOperationType) } returns settings
+
+        settingsViewModel.loadSettings(categoryCode)
     }
 
 }
