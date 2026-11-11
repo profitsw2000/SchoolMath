@@ -1,6 +1,6 @@
 package ru.profitsw2000.simpletestsscreen.data.domain.usecase
 
-import ru.profitsw2000.simpletestsscreen.data.domain.model.PrimitiveMathTaskModel
+import ru.profitsw2000.core.model.PrimitiveMathTaskModel
 import ru.profitsw2000.simpletestsscreen.data.domain.repository.PrimitiveTestTaskGeneratorRepository
 
 class PrimitiveTestTaskGeneratorUseCase(
