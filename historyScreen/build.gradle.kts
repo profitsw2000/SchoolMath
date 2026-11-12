@@ -16,6 +16,7 @@ dependencies {
     implementation(libs.androidx.lifecycle)
     //Paging
     implementation(libs.androidx.paging)
+    implementation(libs.room.paging)
     //Тесты
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.io.mockk)
