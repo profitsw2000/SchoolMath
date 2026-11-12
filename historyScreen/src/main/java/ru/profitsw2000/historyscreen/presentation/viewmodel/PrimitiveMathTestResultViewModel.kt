@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import ru.profitsw2000.core.model.PrimitiveTestResultModel
+import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.historyscreen.data.domain.PrimitiveMathTestHistoryUseCase
 import ru.profitsw2000.historyscreen.data.model.PrimitiveMathTestHistoryFilter
 
@@ -20,6 +21,8 @@ class PrimitiveMathTestResultViewModel(
 
     private val _filterParameters = MutableStateFlow(PrimitiveMathTestHistoryFilter())
     val filterParameters: StateFlow<PrimitiveMathTestHistoryFilter> = _filterParameters.asStateFlow()
+    private val _selectedResultFlow = MutableStateFlow<PrimitiveTestResultModel?>(null)
+    val selectedResultFlow: StateFlow<PrimitiveTestResultModel?> = _selectedResultFlow.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val pagedPrimitiveTestResult: Flow<PagingData<PrimitiveTestResultModel>> = _filterParameters
@@ -32,5 +35,15 @@ class PrimitiveMathTestResultViewModel(
             )
         }
         .cachedIn(viewModelScope)
+
+    fun updateFilters(
+        primitiveMathOperationType: PrimitiveMathOperationType?,
+        testTasksNumber: Int?,
+        testComplexityCode: Int?,
+        extraFieldNumber: Int?,
+        testDurationTime: Int?
+    ) {
+
+    }
 
 }
