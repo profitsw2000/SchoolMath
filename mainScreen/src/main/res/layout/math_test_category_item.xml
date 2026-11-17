@@ -3,28 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
-    android:layout_width="match_parent"
-    android:layout_height="220dp"
-    android:layout_margin="8dp"
-    app:cardBackgroundColor="#3A9ADF"
-    app:cardCornerRadius="28dp"
-    app:cardElevation="4dp"
-    app:strokeWidth="0dp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/math_test_category_card_margin"
+    tools:cardBackgroundColor="#FF9800"
+    app:cardCornerRadius="@dimen/math_test_category_card_corner_radius"
+    app:cardElevation="@dimen/math_test_category_card_elevation">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="@dimen/math_test_category_item_padding">
 
         <!-- Заголовок карточки -->
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/math_test_category_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:fontFamily="sans-serif-black"
             android:textColor="@android:color/white"
-            android:textSize="24sp"
+            android:textSize="@dimen/math_test_category_title_text_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,17 +30,17 @@
             tools:text="Category" />
 
         <ImageView
-            android:id="@+id/ivIllustration"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="12dp"
+            android:id="@+id/math_test_category_item_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/math_test_category_item_image_view_top_margin"
             android:contentDescription="@null"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            tools:src="@drawable/fox" />
+            app:layout_constraintTop_toBottomOf="@id/math_test_category_text_view"
+            tools:src="@drawable/rabbit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
