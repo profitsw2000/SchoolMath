@@ -8,4 +8,6 @@
     <dimen name="math_test_category_item_image_view_top_margin">12dp</dimen>
     <dimen name="screen_standard_padding">12dp</dimen>
     <dimen name="main_screen_title_text_size">32sp</dimen>
+    <dimen name="screen_card_view_corner_radius">32dp</dimen>
+    <dimen name="screen_card_view_stroke_width">4dp</dimen>
 </resources>

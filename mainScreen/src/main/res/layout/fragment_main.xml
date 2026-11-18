@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:cardBackgroundColor="@color/titanium_white"
-    app:cardCornerRadius="32dp"
+    app:cardCornerRadius="@dimen/screen_card_view_corner_radius"
     app:cardElevation="0dp"
     app:strokeColor="@color/athens_gray"
-    app:strokeWidth="4dp"
+    app:strokeWidth="@dimen/screen_card_view_stroke_width"
     tools:context=".presentation.view.MainFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
