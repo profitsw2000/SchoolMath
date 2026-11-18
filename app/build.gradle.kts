@@ -7,10 +7,18 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
+    implementation(project(":mainScreen"))
+    implementation(project(":settingsScreen"))
+    implementation(project(":simpleTestsScreen"))
+    implementation(project(":navigator"))
+
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
