@@ -12,8 +12,16 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
+    implementation(libs.androidx.constraintlayout)
+    //recyclerview
+    implementation(libs.androidx.recyclerview)
+    //fragment
+    implementation(libs.androidx.fragment)
     //для ViewModel
     implementation(libs.androidx.lifecycle)
+    //Navigation
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
     //Тесты
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.io.mockk)
