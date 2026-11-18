@@ -4,6 +4,8 @@
     <dimen name="math_test_category_card_corner_radius">32dp</dimen>
     <dimen name="math_test_category_card_elevation">4dp</dimen>
     <dimen name="math_test_category_item_padding">16dp</dimen>
-    <dimen name="math_test_category_title_text_size">36sp</dimen>
+    <dimen name="math_test_category_title_text_size">24sp</dimen>
     <dimen name="math_test_category_item_image_view_top_margin">12dp</dimen>
+    <dimen name="screen_standard_padding">12dp</dimen>
+    <dimen name="main_screen_title_text_size">32sp</dimen>
 </resources>
