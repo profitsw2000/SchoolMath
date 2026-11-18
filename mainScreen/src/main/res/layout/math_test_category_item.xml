@@ -7,6 +7,9 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/math_test_category_card_margin"
     tools:cardBackgroundColor="#FF9800"
+    android:clickable="true"
+    android:focusable="true"
+    android:stateListAnimator="@animator/card_press_animator"
     app:cardCornerRadius="@dimen/math_test_category_card_corner_radius"
     app:cardElevation="@dimen/math_test_category_card_elevation">
 
