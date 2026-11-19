@@ -44,6 +44,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-test = { group = "androidx.test", name = "core-ktx", version.ref = "androidx_test" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+koin-insert = { group = "io-insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }

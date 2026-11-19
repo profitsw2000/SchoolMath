@@ -1,7 +1,6 @@
 package ru.profitsw2000.mainscreen.presentation.view
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView

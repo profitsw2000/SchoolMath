@@ -8,6 +8,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    implementation(project(":navigator"))
     //стандартные
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
@@ -29,6 +30,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui)
     //Koin
     implementation(libs.koin)
+    implementation(libs.koin.insert)
     //Data store
     implementation(libs.kotlinx.serialization)
     implementation(libs.datastore.preferences)
