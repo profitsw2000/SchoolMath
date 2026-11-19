@@ -8,60 +8,84 @@
     android:background="@drawable/slider_capsule_background"
     android:padding="4dp">
 
-    <!-- Скользящий белый бегунок (Thumb) -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/viewSwitchThumb"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="13dp"
-        app:cardElevation="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sliderDifficulty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stepSize="1.0"
+        android:value="1.0"
+        android:valueFrom="1.0"
+        android:valueTo="3.0"
+        app:labelBehavior="gone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.333"
-        app:strokeColor="#E2E8F0"
-        app:strokeWidth="1dp" />
+        app:thumbColor="#1D4ED8"
+        app:thumbHeight="28dp"
+        app:thumbRadius="14dp"
+        app:thumbStrokeColor="#BFDBFE"
+        app:thumbStrokeWidth="3dp"
+        app:thumbTrackGapSize="0dp"
+        app:thumbWidth="28dp"
+        app:trackColorActive="#3B82F6"
+        app:trackColorInactive="#E2E8F0"
+        app:trackHeight="14dp"
+        app:trackStopIndicatorSize="0dp" />
 
-    <!-- 3 кликабельные зоны с подписями поверх бегунка -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="4dp"
-        android:orientation="horizontal">
+    <!-- Скользящий белый бегунок (Thumb) -->
+<!--    <com.google.android.material.card.MaterialCardView-->
+<!--        android:id="@+id/viewSwitchThumb"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:cardBackgroundColor="#FFFFFF"-->
+<!--        app:cardCornerRadius="13dp"-->
+<!--        app:cardElevation="2dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintWidth_percent="0.333"-->
+<!--        app:strokeColor="#E2E8F0"-->
+<!--        app:strokeWidth="1dp" />-->
 
-        <TextView
-            android:id="@+id/tabEasy"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Лёгкий"
-            android:textColor="#22C55E"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+<!--    &lt;!&ndash; 3 кликабельные зоны с подписями поверх бегунка &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:elevation="4dp"-->
+<!--        android:orientation="horizontal">-->
 
-        <TextView
-            android:id="@+id/tabMedium"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Средний"
-            android:textColor="#6B7280"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+<!--        <TextView-->
+<!--            android:id="@+id/tabEasy"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:text="Лёгкий"-->
+<!--            android:textColor="#22C55E"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textStyle="bold" />-->
 
-        <TextView
-            android:id="@+id/tabHard"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Сложный"
-            android:textColor="#6B7280"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/tabMedium"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:text="Средний"-->
+<!--            android:textColor="#6B7280"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textStyle="bold" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tabHard"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:text="Сложный"-->
+<!--            android:textColor="#6B7280"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textStyle="bold" />-->
+<!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
