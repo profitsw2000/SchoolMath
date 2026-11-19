@@ -1,4 +1,4 @@
-package ru.profitsw2000.mainscreen.presentation.view
+package ru.profitsw2000.mainscreen.presentation.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

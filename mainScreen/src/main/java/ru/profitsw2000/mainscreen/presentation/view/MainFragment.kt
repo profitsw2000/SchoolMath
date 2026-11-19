@@ -16,6 +16,7 @@ import ru.profitsw2000.mainscreen.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.profitsw2000.mainscreen.databinding.FragmentMainBinding
 import ru.profitsw2000.mainscreen.presentation.uiState.MainUiState
+import ru.profitsw2000.mainscreen.presentation.view.adapter.CategoriesAdapter
 import ru.profitsw2000.mainscreen.presentation.viewmodel.MainViewModel
 import ru.profitsw2000.navigator.Navigator
 import kotlin.getValue
@@ -29,12 +30,8 @@ class MainFragment : Fragment() {
         ownerProducer = { findNavController().getBackStackEntry(R.id.main_screen_graph) }
     )
     private val navigator: Navigator by inject()
-    private val adapter = CategoriesAdapter{ categoryId ->
+    private val adapter = CategoriesAdapter { categoryId ->
         Toast.makeText(requireContext(), "CategoryId = $categoryId", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(

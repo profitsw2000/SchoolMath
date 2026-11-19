@@ -44,14 +44,14 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-test = { group = "androidx.test", name = "core-ktx", version.ref = "androidx_test" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-koin-insert = { group = "io-insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
+koin-insert = { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
-androidx-navigation-ui = { group = "androidx.navigation", name = "navigagation-ui-ktx", version.ref = "navigation" }
+androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 android-gradlePlugin = {group = "com.android.tools.build", name = "gradle", version.ref = "app"}
 kotlin-gradlePlugin = {group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin"}
 kotlin-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }

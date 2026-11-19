@@ -5,4 +5,6 @@
     <string name="multiplication_category_title">Умножение</string>
     <string name="division_category_title">Деление</string>
     <string name="categories_list_load_error_text">Ошибка загрузки списка категорий</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
