@@ -10,4 +10,13 @@
     <dimen name="main_screen_title_text_size">32sp</dimen>
     <dimen name="screen_card_view_corner_radius">32dp</dimen>
     <dimen name="screen_card_view_stroke_width">4dp</dimen>
+    <dimen name="math_test_category_screen_cards_margin">16dp</dimen>
+    <dimen name="math_test_category_screen_card_corner_radius">24dp</dimen>
+    <dimen name="math_test_category_screen_card_elevation">2dp</dimen>
+    <dimen name="math_test_category_screen_card_stroke_width">2dp</dimen>
+    <dimen name="category_details_card_padding">18dp</dimen>
+    <dimen name="math_test_category_details_card_title_margin_bottom">12dp</dimen>
+    <dimen name="math_test_category_details_card_title_text_size">18sp</dimen>
+    <dimen name="math_test_category_details_card_inner_horizontal_margin">18dp</dimen>
+    <dimen name="math_test_category_details_card_item_text_size">18sp</dimen>
 </resources>
