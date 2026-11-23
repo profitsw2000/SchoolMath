@@ -32,12 +32,15 @@ import ru.profitsw2000.mainscreen.data.model.PrimitiveTestSettingsCardModel
 import ru.profitsw2000.mainscreen.presentation.uiState.CategoryHistoryUiState
 import ru.profitsw2000.mainscreen.presentation.uiState.CategorySettingsUiState
 import ru.profitsw2000.mainscreen.presentation.uiState.MainUiState
+import ru.profitsw2000.mainscreen.presentation.utils.PrimitiveTestSettingsMapper
 
 class MainViewModel(
     private val testCategoryUseCase: TestCategoryUseCase,
     private val testHistoryUseCase: TestHistoryUseCase,
     private val primitiveTestSettingsUseCase: PrimitiveTestSettingsUseCase
 ) : ViewModel() {
+
+    private val primitiveTestSettingsMapper = PrimitiveTestSettingsMapper()
 
     private var selectedPrimitiveMathOperationTypeCode = 0
     private val _categoryUiState = MutableStateFlow<MainUiState>(MainUiState.Loading)
@@ -63,7 +66,7 @@ class MainViewModel(
                     getOperationTypeFromCategoryCode(selectedPrimitiveMathOperationTypeCode)
                 )
                 _settingsUiState.value = CategorySettingsUiState.Success(
-                    categorySettings
+                    categorySettings.map()
                 )
             } catch (exc: Exception) {
                 _settingsUiState.value = CategorySettingsUiState.Error
@@ -104,48 +107,18 @@ class MainViewModel(
         }
     }
 
-    private fun mapTestSettings(
-        primitiveTestSettingsModel: PrimitiveTestSettingsModel
-    ): PrimitiveTestSettingsCardModel {
-        val taskDurationMinutes = primitiveTestSettingsModel.taskDurationTimeSeconds/60
-        val taskDurationSeconds = primitiveTestSettingsModel.taskDurationTimeSeconds%60
+    fun PrimitiveTestSettingsModel.map(): PrimitiveTestSettingsCardModel {
+        val taskDurationMinutes = this.taskDurationTimeSeconds/60
+        val taskDurationSeconds = this.taskDurationTimeSeconds%60
         val taskDurationSecondsString = if (taskDurationSeconds == 0) "00"
         else taskDurationSeconds.toString()
 
         return PrimitiveTestSettingsCardModel(
-            primitiveTestSettingsModel.testTasksNumber.toString(),
+            this.testTasksNumber,
             "$taskDurationMinutes:$taskDurationSecondsString",
-            getExtraFieldNumber(primitiveTestSettingsModel.testComplexityLevel)
-
+            primitiveTestSettingsMapper.getExtraFieldNumber(selectedPrimitiveMathOperationTypeCode, this.testComplexityLevel),
+            primitiveTestSettingsMapper.getTestComplexityCode(selectedPrimitiveMathOperationTypeCode, this.testComplexityLevel)
         )
-    }
-
-    private fun getExtraFieldNumber(complexityCode: Int): Int {
-        when(selectedPrimitiveMathOperationTypeCode) {
-            ADDITION_CATEGORY_CODE -> getAdditionExtraFieldNumber(complexityCode)
-            SUBTRACTION_CATEGORY_CODE -> {}
-            MULTIPLICATION_CATEGORY_CODE -> {}
-            DIVISION_CATEGORY_CODE -> {}
-            else -> {}
-        }
-    }
-
-    private fun getAdditionExtraFieldNumber(complexityCode: Int): Int {
-        return when(complexityCode) {
-            ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE -> 10
-            ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE -> 10
-            ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX -> 10
-            ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY -> 10
-            ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE -> 20
-            ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE -> 20
-            ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX -> 20
-            ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY -> 20
-            ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE -> 100
-            ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE -> 100
-            ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX -> 100
-            ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY -> 100
-            else -> 10
-        }
     }
 
 }
