@@ -7,14 +7,28 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.profitsw2000.core.domain.usecase.PrimitiveTestSettingsUseCase
+import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.mainscreen.data.domain.usecase.TestCategoryUseCase
 import ru.profitsw2000.mainscreen.data.domain.usecase.TestHistoryUseCase
 import ru.profitsw2000.core.utils.ADDITION_CATEGORY_CODE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE
+import ru.profitsw2000.core.utils.ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE
 import ru.profitsw2000.core.utils.DIVISION_CATEGORY_CODE
 import ru.profitsw2000.mainscreen.data.utils.LOADED_TEST_RESULTS_NUMBER
 import ru.profitsw2000.core.utils.MULTIPLICATION_CATEGORY_CODE
 import ru.profitsw2000.core.utils.SUBTRACTION_CATEGORY_CODE
+import ru.profitsw2000.mainscreen.data.model.PrimitiveTestSettingsCardModel
 import ru.profitsw2000.mainscreen.presentation.uiState.CategoryHistoryUiState
 import ru.profitsw2000.mainscreen.presentation.uiState.CategorySettingsUiState
 import ru.profitsw2000.mainscreen.presentation.uiState.MainUiState
@@ -48,7 +62,9 @@ class MainViewModel(
                 val categorySettings = primitiveTestSettingsUseCase.getTestSettings(
                     getOperationTypeFromCategoryCode(selectedPrimitiveMathOperationTypeCode)
                 )
-                _settingsUiState.value = CategorySettingsUiState.Success(categorySettings)
+                _settingsUiState.value = CategorySettingsUiState.Success(
+                    categorySettings
+                )
             } catch (exc: Exception) {
                 _settingsUiState.value = CategorySettingsUiState.Error
             }
@@ -85,6 +101,50 @@ class MainViewModel(
             MULTIPLICATION_CATEGORY_CODE -> PrimitiveMathOperationType.MULTIPLICATION
             DIVISION_CATEGORY_CODE -> PrimitiveMathOperationType.DIVISION
             else -> PrimitiveMathOperationType.ADDITION
+        }
+    }
+
+    private fun mapTestSettings(
+        primitiveTestSettingsModel: PrimitiveTestSettingsModel
+    ): PrimitiveTestSettingsCardModel {
+        val taskDurationMinutes = primitiveTestSettingsModel.taskDurationTimeSeconds/60
+        val taskDurationSeconds = primitiveTestSettingsModel.taskDurationTimeSeconds%60
+        val taskDurationSecondsString = if (taskDurationSeconds == 0) "00"
+        else taskDurationSeconds.toString()
+
+        return PrimitiveTestSettingsCardModel(
+            primitiveTestSettingsModel.testTasksNumber.toString(),
+            "$taskDurationMinutes:$taskDurationSecondsString",
+            getExtraFieldNumber(primitiveTestSettingsModel.testComplexityLevel)
+
+        )
+    }
+
+    private fun getExtraFieldNumber(complexityCode: Int): Int {
+        when(selectedPrimitiveMathOperationTypeCode) {
+            ADDITION_CATEGORY_CODE -> getAdditionExtraFieldNumber(complexityCode)
+            SUBTRACTION_CATEGORY_CODE -> {}
+            MULTIPLICATION_CATEGORY_CODE -> {}
+            DIVISION_CATEGORY_CODE -> {}
+            else -> {}
+        }
+    }
+
+    private fun getAdditionExtraFieldNumber(complexityCode: Int): Int {
+        return when(complexityCode) {
+            ADDITION_TEST_UNDER_TEN_RESULT_SIMPLE -> 10
+            ADDITION_TEST_UNDER_TEN_RESULT_INTERMEDIATE -> 10
+            ADDITION_TEST_UNDER_TEN_RESULT_COMPLEX -> 10
+            ADDITION_TEST_UNDER_TEN_RESULT_HIGH_COMPLEXITY -> 10
+            ADDITION_TEST_UNDER_TWENTY_RESULT_SIMPLE -> 20
+            ADDITION_TEST_UNDER_TWENTY_RESULT_INTERMEDIATE -> 20
+            ADDITION_TEST_UNDER_TWENTY_RESULT_COMPLEX -> 20
+            ADDITION_TEST_UNDER_TWENTY_RESULT_HIGH_COMPLEXITY -> 20
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_SIMPLE -> 100
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_INTERMEDIATE -> 100
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_COMPLEX -> 100
+            ADDITION_TEST_UNDER_HUNDRED_RESULT_HIGH_COMPLEXITY -> 100
+            else -> 10
         }
     }
 

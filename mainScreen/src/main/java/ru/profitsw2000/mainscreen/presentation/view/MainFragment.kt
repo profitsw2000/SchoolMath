@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.profitsw2000.mainscreen.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.profitsw2000.mainscreen.databinding.FragmentMainBinding
@@ -26,11 +27,13 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding
         get() = _binding!!
-    private val mainViewModel: MainViewModel by viewModel(
+    private val mainViewModel: MainViewModel by koinNavGraphViewModel(R.id.main_screen_graph)
+/*    viewModel(
         ownerProducer = { findNavController().getBackStackEntry(R.id.main_screen_graph) }
-    )
+    )*/
     private val navigator: Navigator by inject()
     private val adapter = CategoriesAdapter { categoryId ->
+        mainViewModel.setCategory(categoryId)
         Toast.makeText(requireContext(), "CategoryId = $categoryId", Toast.LENGTH_SHORT).show()
     }
 
