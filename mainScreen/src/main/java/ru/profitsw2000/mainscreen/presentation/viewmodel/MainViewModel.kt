@@ -42,7 +42,8 @@ class MainViewModel(
 
     private val primitiveTestSettingsMapper = PrimitiveTestSettingsMapper()
 
-    private var selectedPrimitiveMathOperationTypeCode = 0
+    var selectedPrimitiveMathOperationTypeCode = 0
+        private set
     private val _categoryUiState = MutableStateFlow<MainUiState>(MainUiState.Loading)
     val categoryUiState: StateFlow<MainUiState> = _categoryUiState.asStateFlow()
     private val _settingsUiState = MutableStateFlow<CategorySettingsUiState>(CategorySettingsUiState.Loading)

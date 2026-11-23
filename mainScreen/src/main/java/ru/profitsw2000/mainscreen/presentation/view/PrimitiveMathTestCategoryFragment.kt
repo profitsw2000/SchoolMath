@@ -14,7 +14,12 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.profitsw2000.core.model.PrimitiveTestResultModel
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
+import ru.profitsw2000.core.utils.GENERAL_TEST_HARD_COMPLEXITY_CODE
+import ru.profitsw2000.core.utils.GENERAL_TEST_LIGHT_COMPLEXITY_CODE
+import ru.profitsw2000.core.utils.GENERAL_TEST_MIDDLE_COMPLEXITY_CODE
+import ru.profitsw2000.core.utils.GENERAL_TEST_NORMAL_COMPLEXITY_CODE
 import ru.profitsw2000.mainscreen.R
+import ru.profitsw2000.mainscreen.data.model.PrimitiveTestSettingsCardModel
 import ru.profitsw2000.mainscreen.databinding.FragmentPrimitiveMathTestCategoryBinding
 import ru.profitsw2000.mainscreen.presentation.uiState.CategoryHistoryUiState
 import ru.profitsw2000.mainscreen.presentation.uiState.CategorySettingsUiState
@@ -81,7 +86,7 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
         when(settingsUiState) {
             CategorySettingsUiState.Error -> handleSettingsError()
             CategorySettingsUiState.Loading -> {}
-            is CategorySettingsUiState.Success ->
+            is CategorySettingsUiState.Success -> setSettingsViews(settingsUiState.primitiveTestSettingsCardModel)
         }
     }
 
@@ -127,9 +132,30 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
     }*/
 
     private fun setSettingsViews(
-        primitiveTestSettingsModel: PrimitiveTestSettingsModel
-    ) =with(binding) {
+        primitiveTestSettingsCardModel: PrimitiveTestSettingsCardModel
+    ) = with(binding) {
+        taskCountValueTextView.text = primitiveTestSettingsCardModel.testTaskNumber.toString()
+        taskTimeValueTextView.text = primitiveTestSettingsCardModel.testTaskTime
+        taskComplexityItemTextView.text =
+            getTaskComplexityString(primitiveTestSettingsCardModel.complexityLevelCode)
+        if (primitiveTestSettingsCardModel.extraFieldNumber == null)
+            taskExtraFieldItemTextView.visibility = View.GONE
+        else
+            taskExtraFieldItemTextView.text = getExtraFieldSettingsString(mainViewModel.selectedPrimitiveMathOperationTypeCode)
+    }
 
+    private fun getTaskComplexityString(taskComplexityCode: Int): String {
+        return when(taskComplexityCode) {
+            GENERAL_TEST_LIGHT_COMPLEXITY_CODE -> resources.getString(R.string.light_complexity_task_settings_text)
+            GENERAL_TEST_NORMAL_COMPLEXITY_CODE -> resources.getString(R.string.normal_complexity_task_settings_text)
+            GENERAL_TEST_MIDDLE_COMPLEXITY_CODE -> resources.getString(R.string.middle_complexity_task_settings_text)
+            GENERAL_TEST_HARD_COMPLEXITY_CODE -> resources.getString(R.string.hard_complexity_task_settings_text)
+            else -> resources.getString(R.string.light_complexity_task_settings_text)
+        }
+    }
+
+    private fun getExtraFieldSettingsString(categoryCode: Int): String {
+        return "0"
     }
 }
 
