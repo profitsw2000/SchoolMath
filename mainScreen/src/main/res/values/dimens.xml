@@ -19,4 +19,7 @@
     <dimen name="math_test_category_details_card_title_text_size">18sp</dimen>
     <dimen name="math_test_category_details_card_inner_horizontal_margin">18dp</dimen>
     <dimen name="math_test_category_details_card_item_text_size">18sp</dimen>
+    <dimen name="card_items_bottom_margin">8dp</dimen>
+    <dimen name="button_text_size">16sp</dimen>
+    <dimen name="new_test_button_vertical_padding">12dp</dimen>
 </resources>

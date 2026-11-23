@@ -13,7 +13,6 @@
         android:orientation="vertical"
         android:padding="@dimen/screen_standard_padding">
 
-        <!-- 1-Я КАРТОЧКА: МОИ УСПЕХИ -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/results_history_card"
             android:layout_width="match_parent"
@@ -31,7 +30,6 @@
                 android:orientation="vertical"
                 android:padding="@dimen/category_details_card_padding">
 
-                <!-- Заголовок в стиле "Alphabet / Shapes" со скриншота -->
                 <TextView
                     android:id="@+id/math_test_results_history_card_title"
                     android:layout_width="wrap_content"
@@ -42,10 +40,20 @@
                     android:textSize="@dimen/math_test_category_details_card_title_text_size"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/no_last_tests_results_error_message_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_test_results_load_error_message_text"
+                    android:textColor="@color/wood_smoke"
+                    android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                    android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                    android:visibility="gone"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/card_items_bottom_margin"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -57,10 +65,10 @@
                         android:id="@+id/math_test_result_first_raw_image_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/add_icon"
+                        android:contentDescription="@string/test_results_item_content_description"
+                        android:src="@drawable/subtraction_icon"
                         android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"/>
 
-                    <!-- Запись 1 -->
                     <TextView
                         android:id="@+id/assessment_title_first_text_view"
                         android:layout_width="wrap_content"
@@ -86,9 +94,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <!-- Запись 1 -->
                     <TextView
-                        android:id="@+id/assessment_title_first_text_view"
+                        android:id="@+id/time_title_first_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/time_item_text"
@@ -99,7 +106,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/assessment_first_text_view"
+                        android:id="@+id/time_first_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="2:35"
@@ -110,11 +117,10 @@
 
             </LinearLayout>
 
-                <!-- Запись 2 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -122,16 +128,17 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
+                        <!-- Запись 1 -->
                         <ImageView
-                            android:id="@+id/math_test_result_first_raw_image_view"
+                            android:id="@+id/math_test_result_second_raw_image_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/add_icon"
-                            android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"/>
+                            android:contentDescription="@string/test_results_item_content_description"
+                            android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                            android:src="@drawable/multiplication_icon" />
 
-                        <!-- Запись 1 -->
                         <TextView
-                            android:id="@+id/assessment_title_first_text_view"
+                            android:id="@+id/assessment_title_second_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/assessment_item_text"
@@ -141,7 +148,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/assessment_first_text_view"
+                            android:id="@+id/assessment_second_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="3 (8/10)"
@@ -155,20 +162,19 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- Запись 1 -->
                         <TextView
-                            android:id="@+id/assessment_title_first_text_view"
+                            android:id="@+id/time_title_second_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="42dp"
+                            android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
                             android:text="@string/time_item_text"
                             android:textColor="@color/wood_smoke"
                             android:textSize="@dimen/math_test_category_details_card_item_text_size"
-                            android:layout_marginStart="42dp"
-                            android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/assessment_first_text_view"
+                            android:id="@+id/time_second_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="2:03"
@@ -179,11 +185,10 @@
 
                 </LinearLayout>
 
-                <!-- Запись 3 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -192,15 +197,15 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/math_test_result_first_raw_image_view"
+                            android:id="@+id/math_test_result_third_raw_image_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/add_icon"
+                            android:contentDescription="@string/test_results_item_content_description"
+                            android:src="@drawable/division_icon"
                             android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"/>
 
-                        <!-- Запись 1 -->
                         <TextView
-                            android:id="@+id/assessment_title_first_text_view"
+                            android:id="@+id/assessment_title_third_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/assessment_item_text"
@@ -210,7 +215,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/assessment_first_text_view"
+                            android:id="@+id/assessment_third_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="5 (10/10)"
@@ -224,9 +229,8 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- Запись 1 -->
                         <TextView
-                            android:id="@+id/assessment_title_first_text_view"
+                            android:id="@+id/time_title_third_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/time_item_text"
@@ -237,7 +241,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/assessment_first_text_view"
+                            android:id="@+id/time_third_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="3:21"
@@ -249,9 +253,9 @@
                 </LinearLayout>
 
             </LinearLayout>
+
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 2-Я КАРТОЧКА: НАСТРОЙКИ -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/settings_card"
             android:layout_width="match_parent"
@@ -274,99 +278,141 @@
                     android:id="@+id/settings_title_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Настройки"
+                    android:text="@string/settings_text"
                     android:layout_marginBottom="@dimen/math_test_category_details_card_title_margin_bottom"
                     android:textColor="@color/oslo_gray"
                     android:textSize="@dimen/math_test_category_details_card_title_text_size"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvTasksCount"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="Заданий - 10"
-                    android:textColor="#111827"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin">
 
-                <TextView
-                    android:id="@+id/tvTimeLimit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="Время - 20 с"
-                    android:textColor="#111827"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvCondition"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="Условие - до 20"
-                    android:textColor="#111827"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvDifficulty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:text="Сложность - лёгкий"
-                    android:textColor="#22C55E"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <!-- Ползунок в овальной капсуле как на скриншоте -->
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:background="@drawable/slider_capsule_background"
-                    android:paddingHorizontal="10dp">
-
-                    <com.google.android.material.slider.Slider
-                        android:id="@+id/sliderDifficulty"
-                        android:layout_width="327dp"
+                    <ImageView
+                        android:id="@+id/task_count_image_view"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:stepSize="1.0"
-                        android:value="1.0"
-                        android:valueFrom="1.0"
-                        android:valueTo="3.0"
-                        app:labelBehavior="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:thumbColor="#1D4ED8"
-                        app:thumbHeight="28dp"
-                        app:thumbRadius="14dp"
-                        app:thumbStrokeColor="#BFDBFE"
-                        app:thumbStrokeWidth="3dp"
-                        app:thumbTrackGapSize="0dp"
-                        app:thumbWidth="28dp"
-                        app:trackColorActive="@android:color/transparent"
-                        app:trackColorInactive="@android:color/transparent"
-                        app:trackHeight="28dp"
-                        app:trackStopIndicatorSize="0dp" />
-                </FrameLayout>
+                        android:contentDescription="@string/test_tasks_count_item_icon_content_description"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                        android:src="@drawable/count_icon"/>
+
+                    <TextView
+                        android:id="@+id/task_count_item_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/test_tasks_count_settings_text"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/task_count_value_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="20"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin">
+
+                    <ImageView
+                        android:id="@+id/task_time_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/task_time_item_icon_content_description"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                        android:src="@drawable/time_icon"/>
+
+                    <TextView
+                        android:id="@+id/task_time_item_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/test_tasks_time_settings_text"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/task_time_value_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="0:10"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/extra_field_linear_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin">
+
+                    <ImageView
+                        android:id="@+id/task_extra_field_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/extra_field_item_icon_content_description"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                        android:src="@drawable/extra_field_icon"/>
+
+                    <TextView
+                        android:id="@+id/task_extra_field_item_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/primitive_test_extra_settings_sum_under"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin">
+
+                    <ImageView
+                        android:id="@+id/task_complexity_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/test_complexity_level_item_icon_content_description"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                        android:src="@drawable/complexity_icon"/>
+
+                    <TextView
+                        android:id="@+id/task_complexity_item_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/light_complexity_task_settings_text"
+                        android:textColor="@color/emerald_green"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
             </LinearLayout>
+
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- КНОПКА НОВЫЙ ТЕСТ -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnNewTest"
+            android:id="@+id/new_test_button"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="НОВЫЙ ТЕСТ"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/new_test_button_vertical_padding"
+            android:text="@string/new_test_button_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_text_size"
             android:textStyle="bold"
-            app:backgroundTint="#D95D39"
-            app:cornerRadius="18dp"
-            app:elevation="2dp" />
+            app:backgroundTint="@color/rust_orange" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -6,5 +6,7 @@
     <color name="wood_smoke">#FF18181B</color>
     <color name="oslo_gray">#8C8C8C</color>
     <color name="athens_gray">#FFE4E4E7</color>
+    <color name="emerald_green">#FF22C55E</color>
+    <color name="rust_orange">#FFD95D39</color>
     <color name="red">#FF0000</color>
 </resources>
