@@ -30,6 +30,14 @@
                 android:orientation="vertical"
                 android:padding="@dimen/category_details_card_padding">
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/test_results_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="math_test_result_first_linear_layout, math_test_result_second_linear_layout, math_test_result_third_linear_layout"
+                    />
+
                 <TextView
                     android:id="@+id/math_test_results_history_card_title"
                     android:layout_width="wrap_content"
@@ -51,6 +59,7 @@
                     android:visibility="gone"/>
 
             <LinearLayout
+                android:id="@+id/math_test_result_first_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_items_bottom_margin"
@@ -118,6 +127,7 @@
             </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/math_test_result_second_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/card_items_bottom_margin"
@@ -186,6 +196,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/math_test_result_third_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/card_items_bottom_margin"
@@ -273,6 +284,14 @@
                 android:orientation="vertical"
                 android:padding="@dimen/category_details_card_padding">
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/settings_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="tasks_count_linear_layout, task_time_linear_layout, extra_field_linear_layout, task_complexity_linear_layout"
+                    />
+
                 <!-- Заголовок карточки -->
                 <TextView
                     android:id="@+id/settings_title_text_view"
@@ -284,7 +303,18 @@
                     android:textSize="@dimen/math_test_category_details_card_title_text_size"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/settings_error_message_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_test_results_load_error_message_text"
+                    android:textColor="@color/wood_smoke"
+                    android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                    android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                    android:visibility="gone"/>
+
                 <LinearLayout
+                    android:id="@+id/tasks_count_linear_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/card_items_bottom_margin">
@@ -318,6 +348,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/task_time_linear_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/card_items_bottom_margin">
@@ -376,6 +407,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/task_complexity_linear_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/card_items_bottom_margin">
@@ -415,4 +447,5 @@
             app:backgroundTint="@color/rust_orange" />
 
     </LinearLayout>
+
 </androidx.core.widget.NestedScrollView>
