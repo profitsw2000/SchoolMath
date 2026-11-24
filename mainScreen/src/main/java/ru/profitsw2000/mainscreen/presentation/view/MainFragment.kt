@@ -28,13 +28,11 @@ class MainFragment : Fragment() {
     private val binding
         get() = _binding!!
     private val mainViewModel: MainViewModel by koinNavGraphViewModel(R.id.main_screen_graph)
-/*    viewModel(
-        ownerProducer = { findNavController().getBackStackEntry(R.id.main_screen_graph) }
-    )*/
     private val navigator: Navigator by inject()
     private val adapter = CategoriesAdapter { categoryId ->
         mainViewModel.setCategory(categoryId)
-        Toast.makeText(requireContext(), "CategoryId = $categoryId", Toast.LENGTH_SHORT).show()
+        navigator.navigateToCategoryDetails()
+        //Toast.makeText(requireContext(), "CategoryId = $categoryId", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateView(
