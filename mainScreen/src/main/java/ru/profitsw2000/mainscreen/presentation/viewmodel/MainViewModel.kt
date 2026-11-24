@@ -108,7 +108,7 @@ class MainViewModel(
         }
     }
 
-    fun PrimitiveTestSettingsModel.map(): PrimitiveTestSettingsCardModel {
+    private fun PrimitiveTestSettingsModel.map(): PrimitiveTestSettingsCardModel {
         val taskDurationMinutes = this.taskDurationTimeSeconds/60
         val taskDurationSeconds = this.taskDurationTimeSeconds%60
         val taskDurationSecondsString = if (taskDurationSeconds == 0) "00"
