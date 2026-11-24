@@ -12,17 +12,13 @@ class MainLibraryGradlePlugin: Plugin<Project> {
                 apply("com.google.devtools.ksp")
                 apply("org.jetbrains.kotlin.plugin.parcelize")
                 apply("org.jetbrains.kotlin.plugin.serialization")
+                //apply("ru.profi")
             }
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 buildFeatures.buildConfig = true
                 defaultConfig { consumerProguardFile("consumer-rules.pro")}
-                testOptions {
-                    unitTests {
-                        isIncludeAndroidResources = true
-                    }
-                }
             }
         }
     }

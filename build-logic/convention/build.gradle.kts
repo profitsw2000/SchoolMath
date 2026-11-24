@@ -23,8 +23,8 @@ gradlePlugin {
             implementationClass = "MainLibraryGradlePlugin"
         }
         register("androidUiTestConventionPlugin") {
-            id = libs.plugins.sm.main.lib.gradle.plugin.get().pluginId
-            implementationClass = "AndroidUiTestConventionPlugin"
+            id = libs.plugins.sm.main.android.ui.convention.plugin.get().pluginId
+            implementationClass = "gradleplugins.AndroidUiTestConventionPlugin"
         }
     }
 }

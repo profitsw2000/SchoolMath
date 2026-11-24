@@ -78,4 +78,5 @@ room-testing = { group = "androidx.room", name = "room-testing", version.ref = "
 android-application = { id = "com.android.application", version.ref = "agp" }
 sm-main-app-gradle-plugin = { id = "sm.main.app.gradle.plugin", version = "unspecified" }
 sm-main-lib-gradle-plugin = { id = "sm.main.lib.gradle.plugin", version = "unspecified" }
+sm-main-android-ui-convention-plugin = { id = "sm-main-android-ui-convention-plugin", version = "unspecified" }
 android-library = { id = "com.android.library", version.ref = "agp" }
