@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,10 +15,14 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.profitsw2000.core.model.PrimitiveTestResultModel
 import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
+import ru.profitsw2000.core.utils.ADDITION_CATEGORY_CODE
+import ru.profitsw2000.core.utils.DIVISION_CATEGORY_CODE
 import ru.profitsw2000.core.utils.GENERAL_TEST_HARD_COMPLEXITY_CODE
 import ru.profitsw2000.core.utils.GENERAL_TEST_LIGHT_COMPLEXITY_CODE
 import ru.profitsw2000.core.utils.GENERAL_TEST_MIDDLE_COMPLEXITY_CODE
 import ru.profitsw2000.core.utils.GENERAL_TEST_NORMAL_COMPLEXITY_CODE
+import ru.profitsw2000.core.utils.MULTIPLICATION_CATEGORY_CODE
+import ru.profitsw2000.core.utils.SUBTRACTION_CATEGORY_CODE
 import ru.profitsw2000.mainscreen.R
 import ru.profitsw2000.mainscreen.data.model.PrimitiveTestSettingsCardModel
 import ru.profitsw2000.mainscreen.databinding.FragmentPrimitiveMathTestCategoryBinding
@@ -53,7 +58,9 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
     }
 
     private fun initViews() = with(binding) {
+        newTestButton.setOnClickListener {
 
+        }
     }
 
     private fun observeFlows() {
@@ -112,24 +119,35 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
     ) = with(binding) {
         primitiveTestResultModelList.forEachIndexed { index, model ->
             when(index) {
-                1 ->
-                    assessmentFirstTextView.text =
-                        "${model.testAssessment} (${model.correctAnswersNumber}/${model.settingsModel.testTasksNumber})"
-                2 ->
-                    assessmentSecondTextView.text =
-                        "${model.testAssessment} (${model.correctAnswersNumber}/${model.settingsModel.testTasksNumber})"
-                3 ->
-                    assessmentThirdTextView.text =
-                        "${model.testAssessment} (${model.correctAnswersNumber}/${model.settingsModel.testTasksNumber})"
+                1 -> setHistoryView(
+                    mathTestResultFirstLinearLayout,
+                    assessmentFirstTextView,
+                    model
+                )
+                2 -> setHistoryView(
+                    mathTestResultSecondLinearLayout,
+                    assessmentSecondTextView,
+                    model
+                )
+                3 -> setHistoryView(
+                    mathTestResultThirdLinearLayout,
+                    assessmentThirdTextView,
+                    model
+                )
                 else -> {}
             }
         }
     }
 
-/*    private fun setHistoryView(textView: TextView, text: String) {
-        t
-        textView.text = text
-    }*/
+    private fun setHistoryView(
+        linearLayout: LinearLayout,
+        textView: TextView,
+        primitiveTestResultModel: PrimitiveTestResultModel
+    ) {
+        linearLayout.visibility = View.VISIBLE
+        textView.text =
+            "${primitiveTestResultModel.testAssessment} (${primitiveTestResultModel.correctAnswersNumber}/${primitiveTestResultModel.settingsModel.testTasksNumber})"
+    }
 
     private fun setSettingsViews(
         primitiveTestSettingsCardModel: PrimitiveTestSettingsCardModel
@@ -141,7 +159,11 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
         if (primitiveTestSettingsCardModel.extraFieldNumber == null)
             taskExtraFieldItemTextView.visibility = View.GONE
         else
-            taskExtraFieldItemTextView.text = getExtraFieldSettingsString(mainViewModel.selectedPrimitiveMathOperationTypeCode)
+            taskExtraFieldItemTextView.text =
+                getExtraFieldSettingsString(
+                    mainViewModel.selectedPrimitiveMathOperationTypeCode,
+                    primitiveTestSettingsCardModel.extraFieldNumber
+                )
     }
 
     private fun getTaskComplexityString(taskComplexityCode: Int): String {
@@ -154,74 +176,16 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
         }
     }
 
-    private fun getExtraFieldSettingsString(categoryCode: Int): String {
-        return "0"
+    private fun getExtraFieldSettingsString(
+        categoryCode: Int,
+        extraFieldNumber: Int
+    ): String {
+        return when(categoryCode) {
+            ADDITION_CATEGORY_CODE -> resources.getString(R.string.primitive_test_extra_settings_sum_under, extraFieldNumber)
+            SUBTRACTION_CATEGORY_CODE -> ""
+            MULTIPLICATION_CATEGORY_CODE -> ""
+            DIVISION_CATEGORY_CODE -> ""
+            else -> ""
+        }
     }
 }
-
-/**
- * package com.example.yourapp // Замените на ваш package
- *
- * import android.content.res.ColorStateList
- * import android.graphics.Color
- * import android.os.Bundle
- * import android.widget.TextView
- * import androidx.appcompat.app.AppCompatActivity
- * import com.google.android.material.button.MaterialButton
- * import com.google.android.material.slider.Slider
- *
- * class MainActivity : AppCompatActivity() {
- *
- *     private var selectedDifficulty = 1 // 1 - лёгкий, 2 - средний, 3 - сложный
- *
- *     override fun onCreate(savedInstanceState: Bundle?) {
- *         super.onCreate(savedInstanceState)
- *         setContentView(R.layout.activity_main)
- *
- *         val tvDifficulty = findViewById<TextView>(R.id.tvDifficulty)
- *         val sliderDifficulty = findViewById<Slider>(R.id.sliderDifficulty)
- *         val btnNewTest = findViewById<MaterialButton>(R.id.btnNewTest)
- *
- *         // Слушатель изменения положения ползунка
- *         sliderDifficulty.addOnChangeListener { _, value, _ ->
- *             selectedDifficulty = value.toInt()
- *             updateDifficultyUI(selectedDifficulty, tvDifficulty, sliderDifficulty)
- *         }
- *
- *         // Обработка нажатия на кнопку НОВЫЙ ТЕСТ
- *         btnNewTest.setOnClickListener {
- *             // Здесь можно запустить экран теста и передать selectedDifficulty
- *         }
- *     }
- *
- *     private fun updateDifficultyUI(level: Int, textView: TextView, slider: Slider) {
- *         when (level) {
- *             1 -> {
- *                 textView.text = "Сложность - лёгкий"
- *                 val green = Color.parseColor("#22C55E")
- *                 textView.setTextColor(green)
- *                 slider.thumbTintList = ColorStateList.valueOf(Color.parseColor("#16A34A"))
- *                 slider.trackActiveTintList = ColorStateList.valueOf(green)
- *                 slider.trackInactiveTintList = ColorStateList.valueOf(Color.parseColor("#DCFCE7"))
- *             }
- *             2 -> {
- *                 textView.text = "Сложность - средний"
- *                 val amber = Color.parseColor("#F59E0B")
- *                 textView.setTextColor(amber)
- *                 slider.thumbTintList = ColorStateList.valueOf(Color.parseColor("#D97706"))
- *                 slider.trackActiveTintList = ColorStateList.valueOf(amber)
- *                 slider.trackInactiveTintList = ColorStateList.valueOf(Color.parseColor("#FEF3C7"))
- *             }
- *             3 -> {
- *                 textView.text = "Сложность - сложный"
- *                 val red = Color.parseColor("#EF4444")
- *                 textView.setTextColor(red)
- *                 slider.thumbTintList = ColorStateList.valueOf(Color.parseColor("#DC2626"))
- *                 slider.trackActiveTintList = ColorStateList.valueOf(red)
- *                 slider.trackInactiveTintList = ColorStateList.valueOf(Color.parseColor("#FEE2E2"))
- *             }
- *         }
- *     }
- * }
- *
- */

@@ -63,6 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_items_bottom_margin"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -131,6 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/card_items_bottom_margin"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -200,6 +202,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/card_items_bottom_margin"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <LinearLayout
