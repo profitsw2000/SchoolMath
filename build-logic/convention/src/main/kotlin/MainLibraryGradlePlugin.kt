@@ -18,6 +18,11 @@ class MainLibraryGradlePlugin: Plugin<Project> {
                 configureKotlinAndroid(this)
                 buildFeatures.buildConfig = true
                 defaultConfig { consumerProguardFile("consumer-rules.pro")}
+                testOptions {
+                    unitTests {
+                        isIncludeAndroidResources = true
+                    }
+                }
             }
         }
     }

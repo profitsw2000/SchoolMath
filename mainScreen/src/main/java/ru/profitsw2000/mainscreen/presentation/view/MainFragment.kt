@@ -91,4 +91,9 @@ class MainFragment : Fragment() {
         setProgressBar(false)
         adapter.submitList(categoryIdList)
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
