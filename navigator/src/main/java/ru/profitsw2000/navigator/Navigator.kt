@@ -4,4 +4,6 @@ interface Navigator {
 
     fun navigateUp()
 
+    fun navigateToCategoryDetails()
+
 }

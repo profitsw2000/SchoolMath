@@ -19,4 +19,8 @@ class AppNavigator : Navigator {
         navController?.navigateUp()
     }
 
+    override fun navigateToCategoryDetails() {
+        navController?.navigate(ru.profitsw2000.mainscreen.R.id.action_main_to_category_details)
+    }
+
 }
