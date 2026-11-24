@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.sm.main.lib.gradle.plugin)
+    alias(libs.plugins.sm.main.android.ui.convention.plugin)
 }
 
 android {
@@ -35,9 +36,9 @@ dependencies {
     implementation(libs.kotlinx.serialization)
     implementation(libs.datastore.preferences)
     //Тесты
-    testImplementation(libs.kotlinx.coroutines.test)
+/*    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.io.mockk)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.junit)*/
 }

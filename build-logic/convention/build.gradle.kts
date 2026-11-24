@@ -24,7 +24,7 @@ gradlePlugin {
         }
         register("androidUiTestConventionPlugin") {
             id = libs.plugins.sm.main.android.ui.convention.plugin.get().pluginId
-            implementationClass = "gradleplugins.AndroidUiTestConventionPlugin"
+            implementationClass = "AndroidUiTestConventionPlugin"
         }
     }
 }
