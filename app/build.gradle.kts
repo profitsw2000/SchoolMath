@@ -1,43 +1,32 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.sm.main.app.gradle.plugin)
 }
 
 android {
     namespace = "ru.profitsw2000.schoolmath"
-    compileSdk {
-        version = release(37)
-    }
-
-    defaultConfig {
-        applicationId = "ru.profitsw2000.schoolmath"
-        minSdk = 28
-        targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            optimization {
-                enable = false
-            }
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
 }
 
 dependencies {
+    implementation(project(":core"))
+    implementation(project(":mainScreen"))
+    implementation(project(":settingsScreen"))
+    implementation(project(":simpleTestsScreen"))
+    implementation(project(":navigator"))
+
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
     implementation(libs.material)
+    //Koin
+    implementation(libs.koin)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+}
+
+tasks.withType<Test> {
+    systemProperty("net.bytebuddy.experimental", "true")
 }
