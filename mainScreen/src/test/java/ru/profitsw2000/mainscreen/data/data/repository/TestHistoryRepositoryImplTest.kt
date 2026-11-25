@@ -15,6 +15,7 @@ import org.junit.Assert.assertThrows
 import ru.profitsw2000.core.mappers.PrimitiveTestResultMapper
 import ru.profitsw2000.core.model.PrimitiveTestResultModel
 import ru.profitsw2000.core.room.dao.PrimitiveTestResultDao
+import ru.profitsw2000.core.room.database.AppDatabase
 import ru.profitsw2000.core.room.entity.PrimitiveTestResultEntity
 import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.mainscreen.coroutines.MainDispatcherRule
@@ -24,13 +25,14 @@ import ru.profitsw2000.mainscreen.data.domain.repository.TestHistoryRepository
 class TestHistoryRepositoryImplTest {
 
     private val primitiveTestResultDao: PrimitiveTestResultDao = mockk()
+    private val appDatabase: AppDatabase = mockk()
     private val mapper: PrimitiveTestResultMapper = mockk()
     private lateinit var testHistoryRepository: TestHistoryRepository
 
     @Before
     fun setUp() {
         testHistoryRepository = TestHistoryRepositoryImpl(
-            primitiveTestResultDao,
+            appDatabase,
             mapper
         )
     }

@@ -16,6 +16,7 @@ import ru.profitsw2000.core.utils.PrimitiveMathOperationType
 import ru.profitsw2000.mainscreen.coroutines.MainDispatcherRule
 import ru.profitsw2000.mainscreen.data.domain.usecase.TestCategoryUseCase
 import ru.profitsw2000.mainscreen.data.domain.usecase.TestHistoryUseCase
+import ru.profitsw2000.mainscreen.data.model.PrimitiveTestSettingsCardModel
 import ru.profitsw2000.mainscreen.presentation.uiState.CategoryHistoryUiState
 import ru.profitsw2000.mainscreen.presentation.uiState.CategorySettingsUiState
 import ru.profitsw2000.mainscreen.presentation.uiState.MainUiState
@@ -61,6 +62,12 @@ class MainViewModelTest {
             testComplexityLevel = 2,
             taskDurationTimeSeconds = 10
         )
+        val settingsCard = PrimitiveTestSettingsCardModel(
+            testTaskNumber = 10,
+            testTaskTime = "0:10",
+            extraFieldNumber = 10,
+            complexityLevelCode = 2
+        )
         mainViewModel.setCategory(1)
 
         coEvery {
@@ -71,7 +78,7 @@ class MainViewModelTest {
         assertEquals(CategorySettingsUiState.Loading, mainViewModel.settingsUiState.value)
         advanceUntilIdle()
 
-        assertEquals(CategorySettingsUiState.Success(settings), mainViewModel.settingsUiState.value)
+        assertEquals(CategorySettingsUiState.Success(settingsCard), mainViewModel.settingsUiState.value)
     }
 
     @Test
@@ -96,7 +103,7 @@ class MainViewModelTest {
         coEvery {
             testHistoryUseCase.getLastTestsResults(
                 PrimitiveMathOperationType.ADDITION,
-                5
+                3
             )
         } returns mockHistory
 
@@ -115,7 +122,7 @@ class MainViewModelTest {
         coEvery {
             testHistoryUseCase.getLastTestsResults(
                 PrimitiveMathOperationType.MULTIPLICATION,
-                5
+                3
             )
         } returns mockHistory
 
