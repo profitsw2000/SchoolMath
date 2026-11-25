@@ -4,13 +4,17 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
@@ -73,6 +77,44 @@ class MainFragmentTest {
             .check(matches(isDisplayed()))
         onView(withId(ru.profitsw2000.mainscreen.R.id.error_message_text_view))
             .check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    fun `ошибка загрузки списка категорий`() {
+        uiStateFlow.value = MainUiState.Error
+
+        launchMainFragment()
+
+        onView(withId(ru.profitsw2000.mainscreen.R.id.progress_bar))
+            .check(matches(not(isDisplayed())))
+        onView(withId(ru.profitsw2000.mainscreen.R.id.error_message_text_view))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun `отображение списка категорий и обработка нажатия на элемент списка`() {
+        val categoryIds = listOf(1, 2, 3, 4)
+        uiStateFlow.value = MainUiState.Success(categoryIds)
+
+        launchMainFragment()
+
+        onView(withId(ru.profitsw2000.mainscreen.R.id.progress_bar))
+            .check(matches(not(isDisplayed())))
+        onView(withId(ru.profitsw2000.mainscreen.R.id.error_message_text_view))
+            .check(matches(not(isDisplayed())))
+        onView(withId(ru.profitsw2000.mainscreen.R.id.math_test_categories_recyclerview))
+            .check(matches(isDisplayed()))
+
+        onView(withId(ru.profitsw2000.mainscreen.R.id.math_test_categories_recyclerview))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                    3,
+                    click()
+                )
+            )
+
+        verify { mainViewModel.setCategory(4) }
+        verify { navigator.navigateToCategoryDetails() }
     }
 
     private fun launchMainFragment() {
