@@ -119,17 +119,17 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
     ) = with(binding) {
         primitiveTestResultModelList.forEachIndexed { index, model ->
             when(index) {
-                1 -> setHistoryView(
+                0 -> setHistoryView(
                     mathTestResultFirstLinearLayout,
                     assessmentFirstTextView,
                     model
                 )
-                2 -> setHistoryView(
+                1 -> setHistoryView(
                     mathTestResultSecondLinearLayout,
                     assessmentSecondTextView,
                     model
                 )
-                3 -> setHistoryView(
+                2 -> setHistoryView(
                     mathTestResultThirdLinearLayout,
                     assessmentThirdTextView,
                     model
@@ -187,5 +187,10 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
             DIVISION_CATEGORY_CODE -> ""
             else -> ""
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
