@@ -15,8 +15,6 @@ import ru.profitsw2000.core.model.PrimitiveTestSettingsModel
 import ru.profitsw2000.core.domain.repository.PrimitiveTestSettingsRepository
 import java.io.IOException
 
-val Context.settingsDataStore by preferencesDataStore(name = "app_settings_pref")
-
 class PrimitiveTestSettingsRepositoryImpl(
     private val dataStore: DataStore<Preferences>
 ) : PrimitiveTestSettingsRepository {

@@ -6,7 +6,7 @@ ksp = "2.3.6"
 coreKtx = "1.19.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
-espressoCore = "3.7.0"
+espresso = "3.7.0"
 appcompat = "1.8.0"
 material = "1.14.0"
 activityKtx = "1.13.0"
@@ -21,6 +21,9 @@ recyclerview = "1.4.0"
 paging = "3.3.6"
 androidx_test = "1.6.1"
 robolectric = "4.14"
+fragment = "1.8.5"
+navigation = "2.10.2"
+koin = "4.2.0"
 
 applicationId = "ru.profitsw2000.schoolmath"
 minSdk = "28"
@@ -33,33 +36,47 @@ testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-test = { group = "androidx.test", name = "core-ktx", version.ref = "androidx_test" }
-robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+koin-insert = { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
+koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 android-gradlePlugin = {group = "com.android.tools.build", name = "gradle", version.ref = "app"}
 kotlin-gradlePlugin = {group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin"}
 kotlin-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }
 kotlin-serialization-gradlePlugin = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "ktxJson" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "ktxTest" }
-io-mockk = { group = "io.mockk", name = "mockk-jvm", version.ref = "mockk" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room_version"}
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room_version" }
-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room_version"}
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room_version" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room_version" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 androidx-paging  ={ group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+#Тесты
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+androidx-test = { group = "androidx.test", name = "core-ktx", version.ref = "androidx_test" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitVersion" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+androidx-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espresso" }
+androidx-fragment-testing-manifest = { group = "androidx.fragment", name = "fragment-testing-manifest", version.ref = "fragment" }
+androidx-fragment-testing = { group = "androidx.fragment", name = "fragment-testing", version.ref = "fragment" }
+androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigation" }
+io-mockk = { group = "io.mockk", name = "mockk-jvm", version.ref = "mockk" }
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "ktxTest" }
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room_version"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 sm-main-app-gradle-plugin = { id = "sm.main.app.gradle.plugin", version = "unspecified" }
 sm-main-lib-gradle-plugin = { id = "sm.main.lib.gradle.plugin", version = "unspecified" }
+sm-main-android-ui-convention-plugin = { id = "sm-main-android-ui-convention-plugin", version = "unspecified" }
 android-library = { id = "com.android.library", version.ref = "agp" }
