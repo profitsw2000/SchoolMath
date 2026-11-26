@@ -1,5 +1,6 @@
 package ru.profitsw2000.mainscreen.presentation.view
 
+import android.widget.ImageView
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -49,8 +50,8 @@ class PrimitiveMathTestCategoryFragmentTest {
         settingsUiState = MutableStateFlow(CategorySettingsUiState.Loading)
 
         mainViewModel = mockk(relaxed = true) {
-            every { historyUiState } returns historyUiState
-            every { settingsUiState } returns settingsUiState
+            every { historyUiState } returns this@PrimitiveMathTestCategoryFragmentTest.historyUiState
+            every { settingsUiState } returns this@PrimitiveMathTestCategoryFragmentTest.settingsUiState
             every { selectedPrimitiveMathOperationTypeCode } returns 1
         }
         navigator = mockk(relaxed = true)
@@ -71,6 +72,66 @@ class PrimitiveMathTestCategoryFragmentTest {
     }
 
     @Test
+    fun `установка иконки для категории сложения`() {
+        every {
+            mainViewModel.selectedPrimitiveMathOperationTypeCode
+        } returns 1
+        val scenario = launchPrimitiveMathTestCategoryFragment()
+
+        scenario.onFragment { fragment ->
+            val view = fragment.requireView()
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_first_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.add_icon)
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_second_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.add_icon)
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_third_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.add_icon)
+        }
+    }
+
+    @Test
+    fun `установка иконки для категории вычитания`() {
+        every {
+            mainViewModel.selectedPrimitiveMathOperationTypeCode
+        } returns 1
+        val scenario = launchPrimitiveMathTestCategoryFragment()
+
+        scenario.onFragment { fragment ->
+            val view = fragment.requireView()
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_first_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.subtraction_icon)
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_second_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.subtraction_icon)
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_third_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.subtraction_icon)
+        }
+    }
+
+    @Test
+    fun `установка иконки для категории умножения`() {
+        every {
+            mainViewModel.selectedPrimitiveMathOperationTypeCode
+        } returns 1
+        val scenario = launchPrimitiveMathTestCategoryFragment()
+
+        scenario.onFragment { fragment ->
+            val view = fragment.requireView()
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_first_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.multiplication_icon)
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_second_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.multiplication_icon)
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_third_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.multiplication_icon)
+        }
+    }
+
+    @Test
+    fun `установка иконки для категории деления`() {
+        every {
+            mainViewModel.selectedPrimitiveMathOperationTypeCode
+        } returns 1
+        val scenario = launchPrimitiveMathTestCategoryFragment()
+
+        scenario.onFragment { fragment ->
+            val view = fragment.requireView()
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_first_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.division_icon)
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_second_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.division_icon)
+            assertImageResource(view.findViewById(ru.profitsw2000.mainscreen.R.id.math_test_result_third_raw_image_view), ru.profitsw2000.mainscreen.R.drawable.division_icon)
+        }
+    }
+
+    @Test
     fun `ошибка загрузки истории тестов`() {
         launchPrimitiveMathTestCategoryFragment()
 
@@ -80,26 +141,33 @@ class PrimitiveMathTestCategoryFragmentTest {
             .check(matches(not(isDisplayed())))
     }
 
-    private fun launchPrimitiveMathTestCategoryFragment() {
-        val navController = TestNavHostController(ApplicationProvider.getApplicationContext()).apply {
-            setViewModelStore(androidx.lifecycle.ViewModelStore())
-            setGraph(ru.profitsw2000.mainscreen.R.navigation.main_screen_graph)
-        }
+    private fun assertImageResource(imageView: ImageView, expectedResId: Int) {
+        val expectedDrawable = androidx.core.content.ContextCompat.getDrawable(
+            imageView.context,
+            expectedResId
+        )
+        assertEquals(expectedDrawable?.constantState, imageView.drawable?.constantState)
+    }
 
-        launchFragmentInContainer<PrimitiveMathTestCategoryFragment> (
+    private fun launchPrimitiveMathTestCategoryFragment() = launchFragmentInContainer<PrimitiveMathTestCategoryFragment> (
             themeResId = R.style.Theme_SchoolMath,
             factory = object : androidx.fragment.app.FragmentFactory() {
                 override fun instantiate(classLoader: ClassLoader, className: String): androidx.fragment.app.Fragment {
                     return PrimitiveMathTestCategoryFragment().also { fragment ->
                         fragment.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
                             if (viewLifecycleOwner != null) {
-                                Navigation.setViewNavController(fragment.requireView(), navController)
+                                Navigation.setViewNavController(fragment.requireView(), createNavController())
                             }
                         }
                     }
                 }
             }
         )
+
+
+    private fun createNavController() = TestNavHostController(ApplicationProvider.getApplicationContext()).apply {
+        setViewModelStore(androidx.lifecycle.ViewModelStore())
+        setGraph(ru.profitsw2000.mainscreen.R.navigation.main_screen_graph)
     }
 
 }
