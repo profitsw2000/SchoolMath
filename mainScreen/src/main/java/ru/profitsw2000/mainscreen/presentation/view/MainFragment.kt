@@ -31,8 +31,9 @@ class MainFragment : Fragment() {
     private val navigator: Navigator by inject()
     private val adapter = CategoriesAdapter { categoryId ->
         mainViewModel.setCategory(categoryId)
+        mainViewModel.loadCategoryHistory()
+        mainViewModel.loadCategorySettings()
         navigator.navigateToCategoryDetails()
-        //Toast.makeText(requireContext(), "CategoryId = $categoryId", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateView(
@@ -48,6 +49,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState == null) mainViewModel.loadCategories()
         initViews()
         observeFlows()
     }
