@@ -58,9 +58,24 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
     }
 
     private fun initViews() = with(binding) {
+        initIcons()
         newTestButton.setOnClickListener {
 
         }
+    }
+
+    private fun initIcons() = with(binding) {
+        val imageId = when(mainViewModel.selectedPrimitiveMathOperationTypeCode) {
+            ADDITION_CATEGORY_CODE -> R.drawable.add_icon
+            SUBTRACTION_CATEGORY_CODE -> R.drawable.subtraction_icon
+            MULTIPLICATION_CATEGORY_CODE -> R.drawable.multiplication_icon
+            DIVISION_CATEGORY_CODE -> R.drawable.division_icon
+            else -> R.drawable.add_icon
+        }
+
+        mathTestResultFirstRawImageView.setImageResource(imageId)
+        mathTestResultSecondRawImageView.setImageResource(imageId)
+        mathTestResultThirdRawImageView.setImageResource(imageId)
     }
 
     private fun observeFlows() {
@@ -117,6 +132,9 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
     private fun setHistoryLayouts(
         primitiveTestResultModelList: List<PrimitiveTestResultModel>
     ) = with(binding) {
+        testResultsGroup.visibility = View.VISIBLE
+        noLastTestsResultsErrorMessageTextView.visibility = View.GONE
+
         primitiveTestResultModelList.forEachIndexed { index, model ->
             when(index) {
                 0 -> setHistoryView(
@@ -152,6 +170,8 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
     private fun setSettingsViews(
         primitiveTestSettingsCardModel: PrimitiveTestSettingsCardModel
     ) = with(binding) {
+        settingsGroup.visibility = View.VISIBLE
+        settingsErrorMessageTextView.visibility = View.GONE
         taskCountValueTextView.text = primitiveTestSettingsCardModel.testTaskNumber.toString()
         taskTimeValueTextView.text = primitiveTestSettingsCardModel.testTaskTime
         taskComplexityItemTextView.text =
