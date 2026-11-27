@@ -5,9 +5,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import ru.profitsw2000.core.utils.ADDITION_CATEGORY_CODE
 import ru.profitsw2000.core.utils.DIVISION_CATEGORY_CODE
 import ru.profitsw2000.core.utils.MULTIPLICATION_CATEGORY_CODE
@@ -66,7 +68,7 @@ class CategoriesAdapter(
                         card,
                         image,
                         title,
-                        ru.profitsw2000.core.R.color.oslo_gray,
+                        ru.profitsw2000.core.R.color.orange_peel,
                         R.drawable.elephant,
                         R.string.addition_category_title)
                 SUBTRACTION_CATEGORY_CODE ->
@@ -74,7 +76,7 @@ class CategoriesAdapter(
                         card,
                         image,
                         title,
-                        ru.profitsw2000.core.R.color.red,
+                        ru.profitsw2000.core.R.color.royal_blue,
                         R.drawable.rabbit,
                         R.string.subtraction_category_title)
                 MULTIPLICATION_CATEGORY_CODE ->
@@ -82,7 +84,7 @@ class CategoriesAdapter(
                         card,
                         image,
                         title,
-                        ru.profitsw2000.core.R.color.red,
+                        ru.profitsw2000.core.R.color.lemon_gold,
                         R.drawable.bear,
                         R.string.multiplication_category_title)
                 DIVISION_CATEGORY_CODE ->
@@ -90,7 +92,7 @@ class CategoriesAdapter(
                         card,
                         image,
                         title,
-                        ru.profitsw2000.core.R.color.red,
+                        ru.profitsw2000.core.R.color.pink_flamingo,
                         R.drawable.raccoon,
                         R.string.division_category_title)
                 else ->
@@ -105,14 +107,14 @@ class CategoriesAdapter(
         }
 
         private fun setItemUi(
-            cardView: CardView,
+            cardView: MaterialCardView,
             imageView: ImageView,
             textView: TextView,
             colorResourceId: Int,
             imageResourceId: Int,
             textResourceId: Int
         ) {
-            cardView.setCardBackgroundColor(colorResourceId)
+            cardView.setCardBackgroundColor(ContextCompat.getColor(itemView.context, colorResourceId))
             imageView.setImageResource(imageResourceId)
             textView.setText(textResourceId)
         }
