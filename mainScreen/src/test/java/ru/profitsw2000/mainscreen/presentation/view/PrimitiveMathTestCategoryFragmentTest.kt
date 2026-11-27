@@ -189,6 +189,24 @@ class PrimitiveMathTestCategoryFragmentTest {
     }
 
     @Test
+    fun `успешная загрузка двух результатов теста отображает две строки`() {
+        launchPrimitiveMathTestCategoryFragment()
+        val results = listOf(
+            createResultModel(assessment = 5, correct = 10, total = 10),
+            createResultModel(assessment = 3, correct = 6, total = 20)
+        )
+
+        historyUiState.value = CategoryHistoryUiState.Success(results)
+
+        onView(withId(ru.profitsw2000.mainscreen.R.id.no_last_tests_results_error_message_text_view)).check(matches(not(isDisplayed())))
+        onView(withId(ru.profitsw2000.mainscreen.R.id.math_test_result_first_linear_layout)).check(matches(isDisplayed()))
+        onView(withId(ru.profitsw2000.mainscreen.R.id.assessment_first_text_view)).check(matches(withText("5 (10/10)")))
+        onView(withId(ru.profitsw2000.mainscreen.R.id.math_test_result_second_linear_layout)).check(matches(isDisplayed()))
+        onView(withId(ru.profitsw2000.mainscreen.R.id.assessment_second_text_view)).check(matches(withText("3 (6/20)")))
+        onView(withId(ru.profitsw2000.mainscreen.R.id.math_test_result_third_linear_layout)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
     fun `успешная загрузка трех результатов тестов корректно заполняет все три строки`() {
         launchPrimitiveMathTestCategoryFragment()
         val results = listOf(
