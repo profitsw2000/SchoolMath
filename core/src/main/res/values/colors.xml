@@ -9,4 +9,10 @@
     <color name="emerald_green">#FF22C55E</color>
     <color name="rust_orange">#FFD95D39</color>
     <color name="red">#FF0000</color>
+
+    <color name="orange_peel">#FFFF9800</color>
+    <color name="royal_blue">#FF2573F6</color>
+    <color name="lemon_gold">#6AFF2C</color>
+    <color name="pink_flamingo">#FF43EC</color>
+
 </resources>
