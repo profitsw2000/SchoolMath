@@ -1,6 +1,7 @@
 package ru.profitsw2000.mainscreen.presentation.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -123,6 +124,8 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
     }
 
     private fun setHistoryViews(primitiveTestResultModelList: List<PrimitiveTestResultModel>) {
+
+        Log.d("VVV", ": setHistoryViews")
         when(primitiveTestResultModelList.size) {
             0 -> handleHistoryError()
             else -> setHistoryLayouts(primitiveTestResultModelList)
@@ -178,12 +181,15 @@ class PrimitiveMathTestCategoryFragment : Fragment() {
             getTaskComplexityString(primitiveTestSettingsCardModel.complexityLevelCode)
         if (primitiveTestSettingsCardModel.extraFieldNumber == null)
             taskExtraFieldItemTextView.visibility = View.GONE
-        else
+        else {
+            extraFieldLinearLayout.visibility = View.VISIBLE
             taskExtraFieldItemTextView.text =
                 getExtraFieldSettingsString(
                     mainViewModel.selectedPrimitiveMathOperationTypeCode,
                     primitiveTestSettingsCardModel.extraFieldNumber
                 )
+        }
+
     }
 
     private fun getTaskComplexityString(taskComplexityCode: Int): String {

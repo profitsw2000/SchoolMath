@@ -26,13 +26,13 @@ class PrimitiveTestSettingsMapper {
     fun getExtraFieldNumber(
         categoryCode: Int,
         testComplexityLevel: Int
-    ): Int {
+    ): Int? {
         return when(categoryCode) {
             ADDITION_CATEGORY_CODE -> getAdditionExtraFieldNumber(testComplexityLevel)
-            SUBTRACTION_CATEGORY_CODE -> TODO()
-            MULTIPLICATION_CATEGORY_CODE -> TODO()
-            DIVISION_CATEGORY_CODE -> TODO()
-            else -> TODO()
+            SUBTRACTION_CATEGORY_CODE -> null
+            MULTIPLICATION_CATEGORY_CODE -> null
+            DIVISION_CATEGORY_CODE -> null
+            else -> null
         }
     }
 
@@ -62,10 +62,10 @@ class PrimitiveTestSettingsMapper {
     ): Int {
         return when(categoryCode) {
             ADDITION_CATEGORY_CODE -> getAdditionComplexityCode(testComplexityLevel)
-            SUBTRACTION_CATEGORY_CODE -> TODO()
-            MULTIPLICATION_CATEGORY_CODE -> TODO()
-            DIVISION_CATEGORY_CODE -> TODO()
-            else -> TODO()
+            SUBTRACTION_CATEGORY_CODE -> GENERAL_TEST_LIGHT_COMPLEXITY_CODE
+            MULTIPLICATION_CATEGORY_CODE -> GENERAL_TEST_LIGHT_COMPLEXITY_CODE
+            DIVISION_CATEGORY_CODE -> GENERAL_TEST_LIGHT_COMPLEXITY_CODE
+            else -> GENERAL_TEST_LIGHT_COMPLEXITY_CODE
         }
     }
 

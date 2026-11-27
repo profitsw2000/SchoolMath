@@ -388,6 +388,7 @@
                     android:id="@+id/extra_field_linear_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginBottom="@dimen/card_items_bottom_margin">
 
                     <ImageView
