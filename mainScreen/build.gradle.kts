@@ -1,0 +1,38 @@
+plugins {
+    alias(libs.plugins.sm.main.lib.gradle.plugin)
+    alias(libs.plugins.sm.main.android.ui.convention.plugin)
+}
+
+android {
+    namespace = "ru.profitsw2000.mainscreen"
+}
+
+dependencies {
+    implementation(project(":core"))
+    implementation(project(":navigator"))
+    //стандартные
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.material)
+    implementation(libs.androidx.constraintlayout)
+    //Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    ksp(libs.androidx.room.compiler)
+    //recyclerview
+    implementation(libs.androidx.recyclerview)
+    //fragment
+    implementation(libs.androidx.fragment)
+    //для ViewModel
+    implementation(libs.androidx.lifecycle)
+    //Navigation
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+    //Koin
+    implementation(libs.koin)
+    implementation(libs.koin.insert)
+    //Data store
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.datastore.preferences)
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_screen_graph"
+    app:startDestination="@id/main_screen">
+
+    <fragment
+        android:id="@+id/main_screen"
+        android:name="ru.profitsw2000.mainscreen.presentation.view.MainFragment"
+        android:label="Категории">
+
+        <action
+            android:id="@+id/action_main_to_category_details"
+            app:destination="@+id/category_details_screen"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/category_details_screen"
+        android:name="ru.profitsw2000.mainscreen.presentation.view.PrimitiveMathTestCategoryFragment"
+        android:label="Категория"
+        tools:layout="@layout/fragment_primitive_math_test_category"/>
+
+</navigation>

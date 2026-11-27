@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/titanium_white"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_standard_padding">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/results_history_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/math_test_category_screen_cards_margin"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/math_test_category_screen_card_corner_radius"
+            app:cardElevation="@dimen/math_test_category_screen_card_elevation"
+            app:strokeColor="@color/athens_gray"
+            app:strokeWidth="@dimen/math_test_category_screen_card_stroke_width">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/category_details_card_padding">
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/test_results_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="math_test_result_first_linear_layout, math_test_result_second_linear_layout, math_test_result_third_linear_layout"
+                    />
+
+                <TextView
+                    android:id="@+id/math_test_results_history_card_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/math_test_result_history_card_title_text"
+                    android:layout_marginBottom="@dimen/math_test_category_details_card_title_margin_bottom"
+                    android:textColor="@color/oslo_gray"
+                    android:textSize="@dimen/math_test_category_details_card_title_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/no_last_tests_results_error_message_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_test_results_load_error_message_text"
+                    android:textColor="@color/wood_smoke"
+                    android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                    android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                    android:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/math_test_result_first_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/card_items_bottom_margin"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/math_test_result_first_raw_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/test_results_item_content_description"
+                        android:src="@drawable/subtraction_icon"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"/>
+
+                    <TextView
+                        android:id="@+id/assessment_title_first_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/assessment_item_text"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/assessment_first_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="4 (9/10)"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/time_title_first_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_item_text"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:layout_marginStart="42dp"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/time_first_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="2:35"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/math_test_result_second_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Запись 1 -->
+                        <ImageView
+                            android:id="@+id/math_test_result_second_raw_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/test_results_item_content_description"
+                            android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                            android:src="@drawable/multiplication_icon" />
+
+                        <TextView
+                            android:id="@+id/assessment_title_second_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/assessment_item_text"
+                            android:textColor="@color/wood_smoke"
+                            android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                            android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/assessment_second_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="3 (8/10)"
+                            android:textColor="@color/wood_smoke"
+                            android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/time_title_second_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="42dp"
+                            android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                            android:text="@string/time_item_text"
+                            android:textColor="@color/wood_smoke"
+                            android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/time_second_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="2:03"
+                            android:textColor="@color/wood_smoke"
+                            android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/math_test_result_third_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/math_test_result_third_raw_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/test_results_item_content_description"
+                            android:src="@drawable/division_icon"
+                            android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"/>
+
+                        <TextView
+                            android:id="@+id/assessment_title_third_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/assessment_item_text"
+                            android:textColor="@color/wood_smoke"
+                            android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                            android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/assessment_third_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="5 (10/10)"
+                            android:textColor="@color/wood_smoke"
+                            android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/time_title_third_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/time_item_text"
+                            android:textColor="@color/wood_smoke"
+                            android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                            android:layout_marginStart="42dp"
+                            android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/time_third_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="3:21"
+                            android:textColor="@color/wood_smoke"
+                            android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/settings_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/math_test_category_screen_cards_margin"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/math_test_category_screen_card_corner_radius"
+            app:cardElevation="@dimen/math_test_category_screen_card_elevation"
+            app:strokeColor="@color/athens_gray"
+            app:strokeWidth="@dimen/math_test_category_screen_card_stroke_width">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/category_details_card_padding">
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/settings_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="tasks_count_linear_layout, task_time_linear_layout, extra_field_linear_layout, task_complexity_linear_layout"
+                    />
+
+                <!-- Заголовок карточки -->
+                <TextView
+                    android:id="@+id/settings_title_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_text"
+                    android:layout_marginBottom="@dimen/math_test_category_details_card_title_margin_bottom"
+                    android:textColor="@color/oslo_gray"
+                    android:textSize="@dimen/math_test_category_details_card_title_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/settings_error_message_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_test_results_load_error_message_text"
+                    android:textColor="@color/wood_smoke"
+                    android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                    android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:id="@+id/tasks_count_linear_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin">
+
+                    <ImageView
+                        android:id="@+id/task_count_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/test_tasks_count_item_icon_content_description"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                        android:src="@drawable/count_icon"/>
+
+                    <TextView
+                        android:id="@+id/task_count_item_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/test_tasks_count_settings_text"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/task_count_value_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="20"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/task_time_linear_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin">
+
+                    <ImageView
+                        android:id="@+id/task_time_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/task_time_item_icon_content_description"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                        android:src="@drawable/time_icon"/>
+
+                    <TextView
+                        android:id="@+id/task_time_item_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/test_tasks_time_settings_text"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/task_time_value_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="0:10"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/extra_field_linear_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin">
+
+                    <ImageView
+                        android:id="@+id/task_extra_field_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/extra_field_item_icon_content_description"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                        android:src="@drawable/extra_field_icon"/>
+
+                    <TextView
+                        android:id="@+id/task_extra_field_item_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/primitive_test_extra_settings_sum_under"
+                        android:textColor="@color/wood_smoke"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/task_complexity_linear_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/card_items_bottom_margin">
+
+                    <ImageView
+                        android:id="@+id/task_complexity_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/test_complexity_level_item_icon_content_description"
+                        android:layout_marginEnd="@dimen/math_test_category_details_card_inner_horizontal_margin"
+                        android:src="@drawable/complexity_icon"/>
+
+                    <TextView
+                        android:id="@+id/task_complexity_item_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/light_complexity_task_settings_text"
+                        android:textColor="@color/emerald_green"
+                        android:textSize="@dimen/math_test_category_details_card_item_text_size"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/new_test_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/new_test_button_vertical_padding"
+            android:text="@string/new_test_button_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            app:backgroundTint="@color/rust_orange" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
