@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -55,30 +56,63 @@ class CategoriesAdapter(
 
         val image = binding.mathTestCategoryItemImageView
         val title = binding.mathTestCategoryTextView
-
+        val card = binding.mainCardView
         fun bind(categoryId: Int) {
             currentCategoryId = categoryId
 
             when(categoryId) {
                 ADDITION_CATEGORY_CODE ->
-                    setItemUi(image, title, R.drawable.elephant, R.string.addition_category_title)
+                    setItemUi(
+                        card,
+                        image,
+                        title,
+                        ru.profitsw2000.core.R.color.oslo_gray,
+                        R.drawable.elephant,
+                        R.string.addition_category_title)
                 SUBTRACTION_CATEGORY_CODE ->
-                    setItemUi(image, title, R.drawable.rabbit, R.string.subtraction_category_title)
+                    setItemUi(
+                        card,
+                        image,
+                        title,
+                        ru.profitsw2000.core.R.color.red,
+                        R.drawable.rabbit,
+                        R.string.subtraction_category_title)
                 MULTIPLICATION_CATEGORY_CODE ->
-                    setItemUi(image, title, R.drawable.bear, R.string.multiplication_category_title)
+                    setItemUi(
+                        card,
+                        image,
+                        title,
+                        ru.profitsw2000.core.R.color.red,
+                        R.drawable.bear,
+                        R.string.multiplication_category_title)
                 DIVISION_CATEGORY_CODE ->
-                    setItemUi(image, title, R.drawable.raccoon, R.string.division_category_title)
+                    setItemUi(
+                        card,
+                        image,
+                        title,
+                        ru.profitsw2000.core.R.color.red,
+                        R.drawable.raccoon,
+                        R.string.division_category_title)
                 else ->
-                    setItemUi(image, title, R.drawable.elephant, R.string.addition_category_title)
+                    setItemUi(
+                        card,
+                        image,
+                        title,
+                        ru.profitsw2000.core.R.color.oslo_gray,
+                        R.drawable.elephant,
+                        R.string.addition_category_title)
             }
         }
 
         private fun setItemUi(
+            cardView: CardView,
             imageView: ImageView,
             textView: TextView,
+            colorResourceId: Int,
             imageResourceId: Int,
             textResourceId: Int
         ) {
+            cardView.setCardBackgroundColor(colorResourceId)
             imageView.setImageResource(imageResourceId)
             textView.setText(textResourceId)
         }

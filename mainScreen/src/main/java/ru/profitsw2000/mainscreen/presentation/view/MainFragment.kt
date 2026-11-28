@@ -31,8 +31,9 @@ class MainFragment : Fragment() {
     private val navigator: Navigator by inject()
     private val adapter = CategoriesAdapter { categoryId ->
         mainViewModel.setCategory(categoryId)
+        mainViewModel.loadCategoryHistory()
+        mainViewModel.loadCategorySettings()
         navigator.navigateToCategoryDetails()
-        //Toast.makeText(requireContext(), "CategoryId = $categoryId", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateView(
@@ -48,6 +49,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState == null) mainViewModel.loadCategories()
         initViews()
         observeFlows()
     }
@@ -76,10 +78,11 @@ class MainFragment : Fragment() {
 
     private fun handleError() = with(binding) {
         setProgressBar(false)
-        errorMessageTextView.visibility = View.GONE
+        errorMessageTextView.visibility = View.VISIBLE
     }
 
     private fun setProgressBar(isVisible: Boolean) = with(binding) {
+        errorMessageTextView.visibility = View.GONE
         if (isVisible) {
             progressBar.visibility = View.VISIBLE
         } else {
@@ -87,8 +90,9 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun setCategoryList(categoryIdList: List<Int>) {
+    private fun setCategoryList(categoryIdList: List<Int>) = with(binding) {
         setProgressBar(false)
+        errorMessageTextView.visibility = View.GONE
         adapter.submitList(categoryIdList)
     }
 
